@@ -79,7 +79,7 @@ export const refreshTokenControllers = async (req: Request, res: Response, next:
         next(error);
     }
 };
-export const demoControllers = async (req: Request, res: Response, next: NextFunction) => {
+export const registerControllers = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const model: UsersInterface = req.body
         const _res: any = await filterUsernameUsersService(model.username)
@@ -88,8 +88,6 @@ export const demoControllers = async (req: Request, res: Response, next: NextFun
             error.statusCode = config.STATUS_CODE_ERROR;
             throw error;
         }
-
-
 
         result(res, null)
     } catch (error) {

@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import messages from '../messages'
 import config from '../config'
 import { checkPassword, result } from '../util';
-import { LoginInterface } from '../interface/loginInterface'
+import { LoginInterface, UsersInterface } from '../interface/loginInterface'
 import { filterUsernameUsersService } from "../service/sysm_users";
 import jwt from 'jsonwebtoken'
 
@@ -79,8 +79,16 @@ export const refreshTokenControllers = async (req: Request, res: Response, next:
         next(error);
     }
 };
-export const demoControllers = async (req: Request, res: Response, next: NextFunction) => {
+export const registerControllers = async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const model: UsersInterface = req.body
+        const _res: any = await filterUsernameUsersService(model.username)
+        if (_res) {
+            const error: any = new Error(messages.errorRegister);
+            error.statusCode = config.STATUS_CODE_ERROR;
+            throw error;
+        }
+
         result(res, null)
     } catch (error) {
         next(error);

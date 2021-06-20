@@ -1,10 +1,12 @@
 import { Request, Response, NextFunction } from "express";
 import messages from '../messages'
 import config from '../config'
-import { checkPassword, result } from '../util';
+import { checkPassword, encryptPassword, result } from '../util';
 import { LoginInterface, UsersInterface } from '../interface/loginInterface'
-import { filterUsernameUsersService } from "../service/sysm_users";
+import { filterUsernameUsersService, registerService } from "../service/sysm_users";
 import jwt from 'jsonwebtoken'
+import { sequelize } from "../models";
+import { createDatPersonService } from "../service/dat_person";
 
 let refreshTokens: any = []
 
@@ -80,17 +82,25 @@ export const refreshTokenControllers = async (req: Request, res: Response, next:
     }
 };
 export const registerControllers = async (req: Request, res: Response, next: NextFunction) => {
+    const transaction = await sequelize.transaction();
     try {
         const model: UsersInterface = req.body
-        const _res: any = await filterUsernameUsersService(model.username)
+        const _res: any = await filterUsernameUsersService(model.username);
+
         if (_res) {
             const error: any = new Error(messages.errorRegister);
             error.statusCode = config.STATUS_CODE_ERROR;
             throw error;
         }
 
-        result(res, null)
+        model.password = await encryptPassword(model.password)
+        model.user_id = await registerService(model, transaction)
+        await createDatPersonService(model, transaction)
+
+        await transaction.commit();
+        result(res, model.user_id)
     } catch (error) {
+        if (transaction) await transaction.rollback();
         next(error);
     }
 };

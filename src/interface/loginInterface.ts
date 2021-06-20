@@ -6,8 +6,8 @@ export interface UsersInterface {
     id?: string,
     user_id?: string,
     username: string,
-    password?: string,
-    email?: string,
+    password: string,
+    email: string,
     roles_id?: string,
     isuse?: number,
     created_by?: string
@@ -21,7 +21,7 @@ export interface UsersInterface {
     last_name_en?: string,
     nick_name?: string,
     gender?: number
-    birthday?: Date | string
+    birthday: string
     id_card?: string
     passport_number?: string
     insurance_code?: string

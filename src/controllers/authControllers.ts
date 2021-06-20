@@ -79,8 +79,7 @@ export const refreshTokenControllers = async (req: Request, res: Response, next:
         next(error);
     }
 };
-
-export const registerControllers = async (req: Request, res: Response, next: NextFunction) => {
+export const demoControllers = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const model: UsersInterface = req.body
         const _res: any = await filterUsernameUsersService(model.username)

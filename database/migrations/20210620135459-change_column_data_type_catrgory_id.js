@@ -12,9 +12,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    return await queryInterface.changeColumn({
-      tableName: "dat_blog",
-      schema: "bestbuddy_data",
-    }, "category_id")
+    
   }
 };

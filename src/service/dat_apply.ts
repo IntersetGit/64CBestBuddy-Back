@@ -8,9 +8,10 @@ initModels(sequelize);
 
 
 export const addManageApplyService = async (model: any) => {
+    const id = uuid4()
 
     await dat_apply.create({
-        id: uuid4(),
+        id,
         position_id: model.position_id,
         prefix_id: model.prefix_id,
         fullname_th: model.fullname_th,
@@ -33,12 +34,11 @@ export const addManageApplyService = async (model: any) => {
         created_date: new Date()
     })
 
-    return uuid4()
+    return id
 }
 
 export const updateManageApplyService = async (model: any) => {
     await dat_apply.update({
-        id: uuid4(),
         position_id: model.position_id,
         prefix_id: model.prefix_id,
         fullname_th: model.fullname_th,
@@ -61,7 +61,7 @@ export const updateManageApplyService = async (model: any) => {
         update_date: new Date()
     }, { where: { id: model.id } })
 
-    return true
+    return model.id 
 }
 
 export default {

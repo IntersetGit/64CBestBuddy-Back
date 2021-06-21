@@ -5,7 +5,7 @@ import type { sysm_users, sysm_usersId } from './sysm_users';
 
 export interface dat_blogAttributes {
   id?: string;
-  category_id: string;
+  category_id?: string;
   blog_title: string;
   blog_detail?: string;
   path_img?: any;
@@ -24,7 +24,7 @@ export type dat_blogCreationAttributes = Optional<dat_blogAttributes, dat_blogPk
 
 export class dat_blog extends Model<dat_blogAttributes, dat_blogCreationAttributes> implements dat_blogAttributes {
   id?: string;
-  category_id!: string;
+  category_id?: string;
   blog_title!: string;
   blog_detail?: string;
   path_img?: any;
@@ -54,95 +54,95 @@ export class dat_blog extends Model<dat_blogAttributes, dat_blogCreationAttribut
 
   static initModel(sequelize: Sequelize.Sequelize): typeof dat_blog {
     dat_blog.init({
-    id: {
-      type: DataTypes.UUID,
-      allowNull: false,
-      defaultValue: DataTypes.UUIDV4,
-      comment: "รหัสหลักหน้า blog",
-      primaryKey: true
-    },
-    category_id: {
-      type: DataTypes.UUID,
-      allowNull: false,
-      comment: "รหัส ตาราง ประเภท หมวด ของ blog",
-      references: {
-        model: 'master_category_blog',
-        key: 'id'
-      }
-    },
-    blog_title: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-      comment: "หัวข้อ"
-    },
-    blog_detail: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-      comment: "รายละเอียด"
-    },
-    path_img: {
-      type: DataTypes.JSON,
-      allowNull: true,
-      comment: "ที่จัดเก็บรูป"
-    },
-    blog_count: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      comment: "จำนวนคนเข้าชม"
-    },
-    status: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      comment: "สถานะ : 1 = บทความ , 2 = กิจกรรมบริษัท"
-    },
-    isuse: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      comment: "สถานะ : 0 = ยกเลิก , 1 = ใช้งาน"
-    },
-    created_by: {
-      type: DataTypes.UUID,
-      allowNull: false,
-      comment: "สร้างข้อมูลโดย",
-      references: {
-        model: 'sysm_users',
-        key: 'id'
-      }
-    },
-    created_date: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      comment: "สร้างข้อมูลวันที่"
-    },
-    update_by: {
-      type: DataTypes.UUID,
-      allowNull: true,
-      comment: "แก้ไขข้อมูลโดย",
-      references: {
-        model: 'sysm_users',
-        key: 'id'
-      }
-    },
-    update_date: {
-      type: DataTypes.DATE,
-      allowNull: true,
-      comment: "แก้ไขข้อมูลวันที่"
-    }
-  }, {
-    sequelize,
-    tableName: 'dat_blog',
-    schema: 'bestbuddy_data',
-    timestamps: false,
-    indexes: [
-      {
-        name: "dat_blog_pkey",
-        unique: true,
-        fields: [
-          { name: "id" },
-        ]
+      id: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        defaultValue: DataTypes.UUIDV4,
+        comment: "รหัสหลักหน้า blog",
+        primaryKey: true
       },
-    ]
-  });
-  return dat_blog;
+      category_id: {
+        type: DataTypes.UUID,
+        allowNull: true,
+        comment: "รหัส ตาราง ประเภท หมวด ของ blog",
+        references: {
+          model: 'master_category_blog',
+          key: 'id'
+        }
+      },
+      blog_title: {
+        type: DataTypes.STRING(255),
+        allowNull: false,
+        comment: "หัวข้อ"
+      },
+      blog_detail: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+        comment: "รายละเอียด"
+      },
+      path_img: {
+        type: DataTypes.JSON,
+        allowNull: true,
+        comment: "ที่จัดเก็บรูป"
+      },
+      blog_count: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        comment: "จำนวนคนเข้าชม"
+      },
+      status: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        comment: "สถานะ : 1 = บทความ , 2 = กิจกรรมบริษัท"
+      },
+      isuse: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        comment: "สถานะ : 0 = ยกเลิก , 1 = ใช้งาน"
+      },
+      created_by: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        comment: "สร้างข้อมูลโดย",
+        references: {
+          model: 'sysm_users',
+          key: 'id'
+        }
+      },
+      created_date: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        comment: "สร้างข้อมูลวันที่"
+      },
+      update_by: {
+        type: DataTypes.UUID,
+        allowNull: true,
+        comment: "แก้ไขข้อมูลโดย",
+        references: {
+          model: 'sysm_users',
+          key: 'id'
+        }
+      },
+      update_date: {
+        type: DataTypes.DATE,
+        allowNull: true,
+        comment: "แก้ไขข้อมูลวันที่"
+      }
+    }, {
+      sequelize,
+      tableName: 'dat_blog',
+      schema: 'bestbuddy_data',
+      timestamps: false,
+      indexes: [
+        {
+          name: "dat_blog_pkey",
+          unique: true,
+          fields: [
+            { name: "id" },
+          ]
+        },
+      ]
+    });
+    return dat_blog;
   }
 }

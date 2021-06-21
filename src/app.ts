@@ -5,6 +5,7 @@ import upload from 'express-fileupload'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import helmet from 'helmet'
+import paginate from 'express-paginate'
 
 import errorHandler from './middleware/errorHandler'
 
@@ -24,6 +25,7 @@ const app = express();
 app.use(cors());
 app.use(helmet());
 app.use(upload())
+app.use(paginate.middleware(10, 50));
 
 // view engine setup
 

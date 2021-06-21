@@ -8,6 +8,6 @@ const router = express.Router();
 router.post('/manageBlog', [authenticateToken], blogControllers.manageBlog);
 
 
-router.get('/getAllDataBlog', blogControllers.manageBlog);
+router.get('/getAllDataBlog', blogControllers.getAllDataBlog);
 
 export default router;

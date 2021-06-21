@@ -4,6 +4,7 @@ import config from '../config'
 import { sequelizeString, sequelizeStringFindOne } from '../util';
 import { v4 as uuid4 } from 'uuid';
 import { ManageBlogInterface } from "../interface/blogInterface";
+import { Request } from "express";
 
 initModels(sequelize);
 
@@ -37,6 +38,29 @@ export const createBlogService = async (model: ManageBlogInterface, transaction:
     return id;
 }
 
+export const getAllDataBlogService = async (model: any, req: Request) => {
+    let sql = `SELECT
+    a.id , a.category_id , a.blog_title , a.blog_detail , a.path_img , a.blog_count , a.created_date , a.status
+    , (b.first_name_th || ' ' || b.last_name_th) as created_name
+    , (SELECT category_name FROM master.master_category_blog WHERE id = a.category_id) as category_name
+    FROM bestbuddy_data.dat_blog as a
+    INNER JOIN bestbuddy_data.dat_person as b ON a.created_by = b.user_id WHERE a.status = ${model.status}`
+    let sqlCount = `SELECT count(a.id) FROM bestbuddy_data.dat_blog as a WHERE a.status = ${model.status}`
+
+    if (model.category) {
+        sql += ` AND a.category_id = '${model.category}' `;
+        sqlCount += ` AND a.category_id = '${model.category}' `;
+    }
+
+    sql += ` ORDER BY a.blog_count DESC , a.update_date DESC ,a.created_date DESC LIMIT ${req.query.limit}  OFFSET ${req.skip} `;
+    const res_count: any = await sequelizeString(sqlCount)
+    const count = (res_count.length > 0) ? Number(res_count[0].count) : 0;
+    return {
+        data: await sequelizeString(sql),
+        count,
+    }
+
+}
 
 export default {
     createBlogService,

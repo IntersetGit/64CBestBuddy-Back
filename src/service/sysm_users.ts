@@ -17,7 +17,7 @@ export const filterUsernameUsersService = async (username: string) => {
     `, [username]);
 };
 
-export const registerService = async (model: UsersInterface, transaction: any = "null") => {
+export const registerService = async (model: UsersInterface, transaction: any = undefined) => {
     const id = uuidv4();
     await sysm_users.create({
         id,

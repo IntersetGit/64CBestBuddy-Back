@@ -10,10 +10,13 @@ router.post('/manageBlog', [authenticateToken], blogControllers.manageBlogContro
 /**  เรัยกข้อมูล Blog หรือ กิจกรรม หน้าเว็บ */
 router.get('/getAllDataBlog', blogControllers.getAllDataBlogControllers);
 
-/**  เรียกข้อมูล By id */
-router.get('/getByIdBlog/:id', blogControllers.getByIdBlogControllers);
+/**  เรียกข้อมูล By id  หลังบ้าน */
+router.get('/getByIdBlog/:id', [authenticateToken], blogControllers.getByIdBlogControllers);
 
-/**  เรียกข้อมูล By id */
+/**  เลบข้อมูล */
 router.get('/delBlog/:id', [authenticateToken], blogControllers.delBlogControllers);
+
+/**  เลบข้อมูล */
+router.get('/editStatus/:id/:status', [authenticateToken], blogControllers.editStatusControllers);
 
 export default router;

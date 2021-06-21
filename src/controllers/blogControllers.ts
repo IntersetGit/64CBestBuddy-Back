@@ -4,7 +4,7 @@ import messages from '../messages'
 import config from '../config'
 import { result, decodeToken } from '../util';
 import { ManageBlogInterface } from "../interface/blogInterface";
-import { createBlogService, destroyBlogService, getAllDataBlogService, getByIdBlogService, updateBlogService } from "../service/blog";
+import { createBlogService, destroyBlogService, editStatusBlogService, getAllDataBlogService, getByIdBlogService, updateBlogService } from "../service/blog";
 
 /** เพิ่มแก้ไข */
 export const manageBlogControllers = async (req: Request, res: Response, next: NextFunction) => {
@@ -65,9 +65,24 @@ export const delBlogControllers = async (req: Request, res: Response, next: Next
     }
 }
 
+export const editStatusControllers = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const decode: any = await decodeToken(req.headers['authorization']);
+        const id: string = req.params.id;
+        const status: number = Number(req.params.status);
+        const user_id = decode.user_id;
+
+        await editStatusBlogService({ id, status, user_id })
+        result(res, true)
+    } catch (error) {
+        next(error);
+    }
+}
+
 export default {
     manageBlogControllers,
     getAllDataBlogControllers,
     getByIdBlogControllers,
     delBlogControllers,
+    editStatusControllers,
 }

@@ -9,3 +9,9 @@ export interface ManageBlogInterface {
     path_img?: UploadFile | null | undefined,
     status: number,
 }
+export interface EditStatusBlogInterface {
+    id: string,
+    status: number,
+    user_id: string,
+}
+

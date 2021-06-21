@@ -2,7 +2,7 @@ import { initModels, dat_blog } from "../models/init-models";
 import { sequelize } from '../models';
 import { sequelizeString } from '../util';
 import { v4 as uuid4 } from 'uuid';
-import { ManageBlogInterface } from "../interface/blogInterface";
+import { EditStatusBlogInterface, ManageBlogInterface } from "../interface/blogInterface";
 import { Request } from "express";
 
 initModels(sequelize);
@@ -67,6 +67,15 @@ export const getByIdBlogService = async (id: string) => {
 
 export const destroyBlogService = async (id: string) => {
     return await dat_blog.destroy({ where: { id } });
+}
+
+export const editStatusBlogService = async (model: EditStatusBlogInterface, transaction: any = undefined) => {
+    await dat_blog.update({
+        status: model.status,
+        update_by: model.user_id,
+        update_date: new Date()
+    }, { where: { id: model.id, }, transaction });
+    return model.id
 }
 
 export default {

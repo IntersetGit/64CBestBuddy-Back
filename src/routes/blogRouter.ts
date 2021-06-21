@@ -16,7 +16,7 @@ router.get('/getByIdBlog/:id', [authenticateToken], blogControllers.getByIdBlogC
 /**  เลบข้อมูล */
 router.get('/delBlog/:id', [authenticateToken], blogControllers.delBlogControllers);
 
-/**  เลบข้อมูล */
+/**  แก้ไข Isuse */
 router.get('/editStatus/:id/:status', [authenticateToken], blogControllers.editStatusControllers);
 
 export default router;

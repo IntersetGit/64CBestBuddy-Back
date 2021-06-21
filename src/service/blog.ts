@@ -1,7 +1,6 @@
 import { initModels, dat_blog } from "../models/init-models";
 import { sequelize } from '../models';
-import config from '../config'
-import { sequelizeString, sequelizeStringFindOne } from '../util';
+import { sequelizeString } from '../util';
 import { v4 as uuid4 } from 'uuid';
 import { ManageBlogInterface } from "../interface/blogInterface";
 import { Request } from "express";
@@ -62,6 +61,18 @@ export const getAllDataBlogService = async (model: any, req: Request) => {
 
 }
 
+export const getByIdBlogService = async (id: string) => {
+    return await dat_blog.findOne({ where: { id } })
+}
+
+export const destroyBlogService = async (id: string) => {
+    return await dat_blog.destroy({ where: { id } });
+}
+
 export default {
     createBlogService,
+    updateBlogService,
+    getAllDataBlogService,
+    getByIdBlogService,
+    destroyBlogService,
 }

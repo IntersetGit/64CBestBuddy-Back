@@ -4,10 +4,10 @@ import messages from '../messages'
 import config from '../config'
 import { result, decodeToken } from '../util';
 import { ManageBlogInterface } from "../interface/blogInterface";
-import { createBlogService, getAllDataBlogService, updateBlogService } from "../service/blog";
+import { createBlogService, destroyBlogService, getAllDataBlogService, getByIdBlogService, updateBlogService } from "../service/blog";
 
 /** เพิ่มแก้ไข */
-export const manageBlog = async (req: Request, res: Response, next: NextFunction) => {
+export const manageBlogControllers = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const decode: any = await decodeToken(req.headers['authorization']);
         const model: ManageBlogInterface = req.body;
@@ -25,7 +25,7 @@ export const manageBlog = async (req: Request, res: Response, next: NextFunction
     }
 }
 
-export const getAllDataBlog = async (req: Request, res: Response, next: NextFunction) => {
+export const getAllDataBlogControllers = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { status = 1, category } = req.query;
         const limit: any = req.query.limit
@@ -46,7 +46,28 @@ export const getAllDataBlog = async (req: Request, res: Response, next: NextFunc
     }
 }
 
+export const getByIdBlogControllers = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const id: string = req.params.id;
+        result(res, await getByIdBlogService(id))
+    } catch (error) {
+        next(error);
+    }
+}
+
+export const delBlogControllers = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const id: string = req.params.id;
+        await destroyBlogService(id)
+        result(res, true)
+    } catch (error) {
+        next(error);
+    }
+}
+
 export default {
-    manageBlog,
-    getAllDataBlog,
+    manageBlogControllers,
+    getAllDataBlogControllers,
+    getByIdBlogControllers,
+    delBlogControllers,
 }

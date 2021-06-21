@@ -43,8 +43,8 @@ export const getAllDataBlogService = async (model: any, req: Request) => {
     , (b.first_name_th || ' ' || b.last_name_th) as created_name
     , (SELECT category_name FROM master.master_category_blog WHERE id = a.category_id) as category_name
     FROM bestbuddy_data.dat_blog as a
-    INNER JOIN bestbuddy_data.dat_person as b ON a.created_by = b.user_id WHERE a.status = ${model.status}`
-    let sqlCount = `SELECT count(a.id) FROM bestbuddy_data.dat_blog as a WHERE a.status = ${model.status}`
+    INNER JOIN bestbuddy_data.dat_person as b ON a.created_by = b.user_id WHERE a.status = ${model.status} AND a.isuse = 1 `
+    let sqlCount = `SELECT count(a.id) FROM bestbuddy_data.dat_blog as a WHERE a.status = ${model.status} AND a.isuse = 1 `
 
     if (model.category) {
         sql += ` AND a.category_id = '${model.category}' `;
@@ -71,7 +71,7 @@ export const destroyBlogService = async (id: string) => {
 
 export const editStatusBlogService = async (model: EditStatusBlogInterface, transaction: any = undefined) => {
     await dat_blog.update({
-        status: model.status,
+        isuse: model.status,
         update_by: model.user_id,
         update_date: new Date()
     }, { where: { id: model.id, }, transaction });

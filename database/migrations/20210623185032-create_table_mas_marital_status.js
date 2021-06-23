@@ -2,24 +2,24 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    return queryInterface.createTable("mas_province", {
+    return queryInterface.createTable("mas_marital_status", {
       id: {
-        type: Sequelize.STRING(100),
+        type: Sequelize.INTEGER(100),
         allowNull: false,
         primaryKey: true
       },
-      name: {
-        type: Sequelize.STRING(40),
+      codename: {
+        type: Sequelize.STRING(100),
         allowNull: false,
       }
     }, {
-      comment: "ตารางจังหวัด"
+      comment: "ตารางสถานภาพการสมรส"
     })
   },
 
   down: async (queryInterface, Sequelize) => {
     return queryInterface.dropTable({
-      tableName: "mas_province",
+      tableName: "mas_marital_status",
     })
   }
 };

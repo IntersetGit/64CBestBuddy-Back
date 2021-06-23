@@ -4,7 +4,7 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     return queryInterface.createTable("mas_sub_district", {
       id: {
-        type: Sequelize.STRING(11),
+        type: Sequelize.STRING(100),
         allowNull: false,
         primaryKey: true
       },
@@ -15,6 +15,10 @@ module.exports = {
       district_id: {
         type: Sequelize.STRING(11),
         allowNull: false,
+        references: {
+          model: 'mas_district',
+          key: 'id' 
+        }
       },
       post_code: {
         type: Sequelize.INTEGER(6),

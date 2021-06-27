@@ -18,5 +18,8 @@ router.get('/GetPayerRelationData', masterDataControlles.GetPayerRelationData);
 router.get('/GetRefPolicyRelData', masterDataControlles.GetRefPolicyRelData);
 
 
+router.get('/GetAllApiMasterData', masterDataControlles.GetAllApiMasterData)
+
+
 
 export default router;

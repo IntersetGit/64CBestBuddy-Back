@@ -113,6 +113,29 @@ export const GetRefPolicyRelData = async(req: Request, res: Response, next:NextF
     }
 }
 
+export const GetAllApiMasterData = async(req: Request, res: Response, next:NextFunction) => {
+    try {
+        const GetNameTitle = await GetNameTitleDataService()
+        const BeneficiaryRelation = await GetBeneficiaryRelationDataService()
+        const MaritalStatus = await GetMaritalStatusDataService()
+        const Occupation = await GetOccupationDataService()
+        const PayerRelation = await GetPayerRelationDataService()
+        const RefPolicyRel = await GetRefPolicyRelDataService()
+
+        result(res, {
+            GetNameTitle: GetNameTitle,
+            BeneficiaryRelation: BeneficiaryRelation,
+            MaritalStatus: MaritalStatus,
+            Occupation: Occupation,
+            PayerRelation: PayerRelation,
+            RefPolicyRel: RefPolicyRel
+        })
+
+    } catch (error) {
+        next(error);
+    }
+}
+
 export default {
     GetNameTiteData,
     GetProvinceData,
@@ -122,5 +145,6 @@ export default {
     GetMaritalStatusData,
     GetOccupationData,
     GetPayerRelationData,
-    GetRefPolicyRelData
+    GetRefPolicyRelData,
+    GetAllApiMasterData
 }

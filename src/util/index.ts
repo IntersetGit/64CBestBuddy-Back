@@ -57,5 +57,6 @@ export default {
     sequelizeStringFindOne,
     encryptPassword,
     checkPassword,
-    decodeToken
+    decodeToken,
+    result
 }

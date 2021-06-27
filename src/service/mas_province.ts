@@ -7,10 +7,10 @@ import { v4 as uuidv4 } from 'uuid';
 
 initModels(sequelize);
 
-export const GetProvicedataService = async() => {
+export const GetProviceDataService = async() => {
     return await mas_province.findAll();
 }
 
 export default {
-    GetProvicedataService
+    GetProviceDataService
 }

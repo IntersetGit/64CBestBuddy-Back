@@ -7,10 +7,10 @@ import { v4 as uuidv4 } from 'uuid';
 
 initModels(sequelize);
 
-export const GetDistrictDataService = async() => {
+export const GetMaritalStatusDataService = async() => {
     return await mas_marital_status.findAll();
 }
 
 export default {
-    GetDistrictDataService
+    GetMaritalStatusDataService
 }

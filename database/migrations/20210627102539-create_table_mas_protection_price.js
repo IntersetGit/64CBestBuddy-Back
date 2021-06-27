@@ -19,7 +19,7 @@ module.exports = {
         comment: "รหัสแผนประกัน"
       },
       mas_protection_id: {
-        type: Sequelize.TEXT(),
+        type: Sequelize.STRING(100),
         allowNull: true,
         references: {
           model: 'mas_protection',
@@ -38,11 +38,8 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    /**
-     * Add reverting commands here.
-     *
-     * Example:
-     * await queryInterface.dropTable('users');
-     */
+    return queryInterface.dropTable({
+      tableName: "mas_protection_price",
+    })
   }
 };

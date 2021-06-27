@@ -15,22 +15,30 @@ module.exports = {
         comment: "รหัสประกัน"
       },
       mas_installment_id: {
-        type: Sequelize.TEXT(),
+        type: Sequelize.STRING(100),
         allowNull: true,
+        references: {
+          model: 'mas_installment',
+          key: 'id' 
+        },
         comment: "รหัสแต่ละงวด"
       },
       mas_age_range_id: {
-        type: Sequelize.TEXT(),
+        type: Sequelize.STRING(100),
         allowNull: true,
+        references: {
+          model: 'mas_age_range',
+          key: 'id' 
+        },
         comment: "รหัสช่วงอายุ"
       },
       price_normal: {
-        type: Sequelize.TEXT(),
+        type: Sequelize.BIGINT(11),
         allowNull: true,
         comment: "ราคาปกติ"
       },
       price_sale: {
-        type: Sequelize.TEXT(),
+        type: Sequelize.BIGINT(11),
         allowNull: true,
         comment: "ราคาที่ลด"
       },
@@ -40,11 +48,8 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    /**
-     * Add reverting commands here.
-     *
-     * Example:
-     * await queryInterface.dropTable('users');
-     */
+    return queryInterface.dropTable({
+      tableName: "insurance_price",
+    })
   }
 };

@@ -8,6 +8,7 @@ import { GetMaritalStatusDataService } from '../service/mas_marital_status';
 import { GetOccupationDataService } from '../service/mas_occupation';
 import { GetPayerRelationDataService } from '../service/mas_payer_relation';
 import { GetRefPolicyRelDataService } from '../service/mas_ref_policy_rel';
+import { GetMasInsuranceTypeService } from '../service/mas_insurance_type';
 import { result } from '../util/index';
 
 /** เรียกข้อมูล คำนำหน้าชื่อ */
@@ -113,6 +114,18 @@ export const GetRefPolicyRelData = async(req: Request, res: Response, next:NextF
     }
 }
 
+/** เรียกข้อมูล ประเภทประกัน */
+export const GetMasInsuranceTypeData = async(req: Request, res: Response, next:NextFunction) => {
+    try {
+        
+        result(res, await GetMasInsuranceTypeService());
+        
+    } catch (error) {
+        next(error);
+    }
+}
+
+
 export const GetAllApiMasterData = async(req: Request, res: Response, next:NextFunction) => {
     try {
         const GetNameTitle = await GetNameTitleDataService()
@@ -146,5 +159,6 @@ export default {
     GetOccupationData,
     GetPayerRelationData,
     GetRefPolicyRelData,
-    GetAllApiMasterData
+    GetAllApiMasterData,
+    GetMasInsuranceTypeData
 }

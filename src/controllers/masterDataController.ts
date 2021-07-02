@@ -9,6 +9,8 @@ import { GetOccupationDataService } from '../service/mas_occupation';
 import { GetPayerRelationDataService } from '../service/mas_payer_relation';
 import { GetRefPolicyRelDataService } from '../service/mas_ref_policy_rel';
 import { GetMasInsuranceTypeService } from '../service/mas_insurance_type';
+import { GetMasAgeRangeDataService } from '../service/mas_age_range';
+import { GetMasInstallmentDataService } from '../service/mas_installment';
 import { result } from '../util/index';
 
 /** เรียกข้อมูล คำนำหน้าชื่อ */
@@ -125,6 +127,28 @@ export const GetMasInsuranceTypeData = async(req: Request, res: Response, next:N
     }
 }
 
+/** เรียกช่วงอายุ */
+export const GetMasAgeRangeData = async(req: Request, res: Response, next:NextFunction) => {
+    try {
+        
+        result(res, await GetMasAgeRangeDataService());
+        
+    } catch (error) {
+        next(error);
+    }
+}
+
+/** เรียกช่วงรายปี */
+export const GetMasInstallmentData = async(req: Request, res: Response, next:NextFunction) => {
+    try {
+        
+        result(res, await GetMasInstallmentDataService());
+        
+    } catch (error) {
+        next(error);
+    }
+}
+
 
 export const GetAllApiMasterData = async(req: Request, res: Response, next:NextFunction) => {
     try {
@@ -160,5 +184,7 @@ export default {
     GetPayerRelationData,
     GetRefPolicyRelData,
     GetAllApiMasterData,
-    GetMasInsuranceTypeData
+    GetMasInsuranceTypeData,
+    GetMasAgeRangeData,
+    GetMasInstallmentData
 }

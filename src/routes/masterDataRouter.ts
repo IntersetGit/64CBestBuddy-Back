@@ -12,6 +12,10 @@ router.get('/GetSubDistrictData', masterDataControlles.GetSubDistrictData);
 router.get('/GetNameTiteData', masterDataControlles.GetNameTiteData);
 /** เรียกประเภทประกัน */
 router.get('/GetMasInsuranceTypeData', masterDataControlles.GetMasInsuranceTypeData);
+/** เรียกช่วงอายุ */
+router.get('/GetMasAgeRangeData', masterDataControlles.GetMasAgeRangeData);
+/** เรียกช่วง รายเดือน รายปี */
+router.get('/GetMasInstallmentData', masterDataControlles.GetMasInstallmentData);
 
 router.get('/GetBeneficiaryRelationData', masterDataControlles.GetBeneficiaryRelationData);
 router.get('/GetMaritalStatusData', masterDataControlles.GetMaritalStatusData);

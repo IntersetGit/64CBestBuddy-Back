@@ -10,6 +10,8 @@ router.get('/GetDistrictData', masterDataControlles.GetDistrictData);
 router.get('/GetSubDistrictData', masterDataControlles.GetSubDistrictData);
 /** เรียกคำนำหน้าชื่อ */
 router.get('/GetNameTiteData', masterDataControlles.GetNameTiteData);
+/** เรียกประเภทประกัน */
+router.get('/GetMasInsuranceTypeData', masterDataControlles.GetMasInsuranceTypeData);
 
 router.get('/GetBeneficiaryRelationData', masterDataControlles.GetBeneficiaryRelationData);
 router.get('/GetMaritalStatusData', masterDataControlles.GetMaritalStatusData);

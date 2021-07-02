@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 initModels(sequelize);
 
 export const GetMasInsuranceTypeService = async() => {
-    return await mas_insurance_type.findAll();
+    return await mas_insurance_type.findAll({where: {isuse: 1}});
 }
 
 export default {

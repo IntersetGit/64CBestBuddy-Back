@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction} from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { GetNameTitleDataService } from '../service/mas_name_title';
 import { GetProviceDataService } from '../service/mas_province';
 import { GetDistrictDataService } from '../service/mas_district';
@@ -14,55 +14,55 @@ import { GetMasInstallmentDataService } from '../service/mas_installment';
 import { result } from '../util/index';
 
 /** เรียกข้อมูล คำนำหน้าชื่อ */
-export const GetNameTiteData = async(req: Request, res: Response, next:NextFunction) => {
+export const GetNameTiteData = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        
+
         result(res, await GetNameTitleDataService());
-        
+
     } catch (error) {
         next(error);
     }
 }
 
 /** เรีกยข้อมูล จังหวัด */
-export const GetProvinceData = async(req: Request, res: Response, next:NextFunction) => {
+export const GetProvinceData = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        
+
         result(res, await GetProviceDataService());
-        
+
     } catch (error) {
         next(error);
     }
 }
 
 /** เรียกข้อมูล อำเภอ */
-export const GetDistrictData = async(req: Request, res: Response, next:NextFunction) => {
+export const GetDistrictData = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        
+
         result(res, await GetDistrictDataService());
-        
+
     } catch (error) {
         next(error);
     }
 }
 
 /** เรียกข้อมูล ตำบล */
-export const GetSubDistrictData = async(req: Request, res: Response, next:NextFunction) => {
+export const GetSubDistrictData = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        
+
         result(res, await GetSubDistrictDataService());
-        
+
     } catch (error) {
         next(error);
     }
 }
 
 
-export const GetBeneficiaryRelationData = async(req: Request, res: Response, next:NextFunction) => {
+export const GetBeneficiaryRelationData = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        
+
         result(res, await GetBeneficiaryRelationDataService());
-        
+
     } catch (error) {
         next(error);
     }
@@ -70,11 +70,11 @@ export const GetBeneficiaryRelationData = async(req: Request, res: Response, nex
 
 
 
-export const GetMaritalStatusData = async(req: Request, res: Response, next:NextFunction) => {
+export const GetMaritalStatusData = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        
+
         result(res, await GetMaritalStatusDataService());
-        
+
     } catch (error) {
         next(error);
     }
@@ -82,11 +82,11 @@ export const GetMaritalStatusData = async(req: Request, res: Response, next:Next
 
 
 
-export const GetOccupationData = async(req: Request, res: Response, next:NextFunction) => {
+export const GetOccupationData = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        
+
         result(res, await GetOccupationDataService());
-        
+
     } catch (error) {
         next(error);
     }
@@ -94,11 +94,11 @@ export const GetOccupationData = async(req: Request, res: Response, next:NextFun
 
 
 
-export const GetPayerRelationData = async(req: Request, res: Response, next:NextFunction) => {
+export const GetPayerRelationData = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        
+
         result(res, await GetPayerRelationDataService());
-        
+
     } catch (error) {
         next(error);
     }
@@ -106,51 +106,51 @@ export const GetPayerRelationData = async(req: Request, res: Response, next:Next
 
 
 
-export const GetRefPolicyRelData = async(req: Request, res: Response, next:NextFunction) => {
+export const GetRefPolicyRelData = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        
+
         result(res, await GetRefPolicyRelDataService());
-        
+
     } catch (error) {
         next(error);
     }
 }
 
 /** เรียกข้อมูล ประเภทประกัน */
-export const GetMasInsuranceTypeData = async(req: Request, res: Response, next:NextFunction) => {
+export const GetMasInsuranceTypeData = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        
+
         result(res, await GetMasInsuranceTypeService());
-        
+
     } catch (error) {
         next(error);
     }
 }
 
 /** เรียกช่วงอายุ */
-export const GetMasAgeRangeData = async(req: Request, res: Response, next:NextFunction) => {
+export const GetMasAgeRangeData = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        
+
         result(res, await GetMasAgeRangeDataService());
-        
+
     } catch (error) {
         next(error);
     }
 }
 
 /** เรียกช่วงรายปี */
-export const GetMasInstallmentData = async(req: Request, res: Response, next:NextFunction) => {
+export const GetMasInstallmentData = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        
+
         result(res, await GetMasInstallmentDataService());
-        
+
     } catch (error) {
         next(error);
     }
 }
 
 
-export const GetAllApiMasterData = async(req: Request, res: Response, next:NextFunction) => {
+export const GetAllApiMasterData = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const GetNameTitle = await GetNameTitleDataService()
         const BeneficiaryRelation = await GetBeneficiaryRelationDataService()
@@ -173,6 +173,22 @@ export const GetAllApiMasterData = async(req: Request, res: Response, next:NextF
     }
 }
 
+/*  */
+export const GetMasterInsurance = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+
+        result(res, {
+            Type: await GetMasInsuranceTypeService(),
+            AgeRang: await GetMasAgeRangeDataService(),
+            Installment: await GetMasInstallmentDataService(),
+        })
+
+    } catch (error) {
+        next(error);
+    }
+}
+
+
 export default {
     GetNameTiteData,
     GetProvinceData,
@@ -186,5 +202,6 @@ export default {
     GetAllApiMasterData,
     GetMasInsuranceTypeData,
     GetMasAgeRangeData,
-    GetMasInstallmentData
+    GetMasInstallmentData,
+    GetMasterInsurance
 }

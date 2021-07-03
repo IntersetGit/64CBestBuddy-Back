@@ -28,8 +28,8 @@ const data = [
   {
     id: "9aa8f0f0-0b92-4b15-aed3-c116c1e68bbb",
     age_range: "56-59",
-    age_start: "41",
-    age_end: "45",
+    age_start: "56",
+    age_end: "59",
     note: "(Renewal only)",
     sort: "9",
   },

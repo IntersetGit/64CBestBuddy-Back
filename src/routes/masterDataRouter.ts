@@ -26,6 +26,8 @@ router.get('/GetRefPolicyRelData', masterDataControlles.GetRefPolicyRelData);
 
 router.get('/GetAllApiMasterData', masterDataControlles.GetAllApiMasterData)
 
+router.get('/GetMasterInsurance', masterDataControlles.GetMasterInsurance)
+
 
 
 export default router;

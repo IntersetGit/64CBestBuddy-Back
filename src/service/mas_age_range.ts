@@ -9,7 +9,9 @@ initModels(sequelize);
 
 
 export const GetMasAgeRangeDataService = async() => {
-    return await mas_age_range.findAll();
+    return await mas_age_range.findAll({
+        order: [['age_range', 'asc']]
+    });
 }
 
 export default {

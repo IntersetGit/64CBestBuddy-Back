@@ -8,6 +8,7 @@ export interface mas_age_rangeAttributes {
   age_start?: string;
   age_end?: string;
   note?: string;
+  sort?: number;
 }
 
 export type mas_age_rangePk = "id";
@@ -20,6 +21,7 @@ export class mas_age_range extends Model<mas_age_rangeAttributes, mas_age_rangeC
   age_start?: string;
   age_end?: string;
   note?: string;
+  sort?: number;
 
   // mas_age_range hasMany insurance_price via mas_age_range_id
   insurance_prices!: insurance_price[];
@@ -61,6 +63,11 @@ export class mas_age_range extends Model<mas_age_rangeAttributes, mas_age_rangeC
       type: DataTypes.STRING(100),
       allowNull: true,
       comment: "หมายเหตุ"
+    },
+    sort: {
+      type: DataTypes.SMALLINT,
+      allowNull: true,
+      comment: "เรียงลำดับ"
     }
   }, {
     sequelize,

@@ -8,9 +8,9 @@ import { v4 as uuidv4 } from 'uuid';
 initModels(sequelize);
 
 
-export const GetMasAgeRangeDataService = async() => {
+export const GetMasAgeRangeDataService = async () => {
     return await mas_age_range.findAll({
-        order: [['age_range', 'asc']]
+        order: [['sort', 'asc']]
     });
 }
 

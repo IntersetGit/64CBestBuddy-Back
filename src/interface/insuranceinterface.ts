@@ -20,10 +20,17 @@ export interface insuranceinterface {
     mas_insurance_type_id?: string
 }
 
-export interface insurance_type {
-
+export interface insurance_typeInterface {
     insurance_id: string
     name?: string
     isuse: number
+    sort: number
+}
+
+
+export interface installmentInterface {
+    insurance_type_id: string
+    installment_id: string
+    name?: string
     sort: number
 }

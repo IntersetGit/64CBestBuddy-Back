@@ -4,7 +4,7 @@ import config from '../config'
 import { sequelizeString, sequelizeStringFindOne } from '../util';
 import { UsersInterface } from '../interface/loginInterface'
 import { v4 as uuidv4 } from 'uuid';
-import { insuranceinterface, insurance_type } from '../interface/insuranceinterface';
+import { insuranceinterface, insurance_typeInterface, installmentInterface } from '../interface/insuranceinterface';
 
 initModels(sequelize);
 
@@ -28,20 +28,24 @@ export const editInsuranceService = async (model: insuranceinterface) => {
     return model.id
 }
 
-export const getAllInsuranceService = async (model: insurance_type) => {
-    let sql = `SELECT a.*
-    ,(SELECT b.price_normal FROM insurance_price b
-    INNER JOIN mas_installment AS c ON b.mas_installment_id = c.id
-    WHERE b.id IS NOT NULL LIMIT 1) AS price_normal
-    ,(SELECT imp.details FROM insurance_mas_protection AS imp WHERE a.id IN
-    (SELECT a.id FROM insurance_mas_protection AS a WHERE a.id = 'e7956b7e-d83b-4c71-9914-4f9010647f47')) AS details
+export const getAllInsuranceService = async (model: installmentInterface) => {
+    let sql = `SELECT a.id , a.name , a.img_header, a.img_cover, a.details , a.percentage , a.status , a.is_one_price , a.mas_insurance_type_id
+    ,(SELECT name FROM mas_insurance_type WHERE id = a.mas_insurance_type_id) AS mas_insurance_type_name
+    ,(SELECT MIN((IF(a.status = 1, b.price_sale, b.price_normal))) FROM insurance_price AS b
+    WHERE insurance_id = a.id
+    AND mas_installment_id = '${model.installment_id}'
+    AND price_normal != 0) as price
+    ,(SELECT MIN((IF(a.status = 1, b.price_normal, null))) FROM insurance_price AS b
+    WHERE insurance_id = a.id
+    AND mas_installment_id = '${model.installment_id}'
+    AND price_normal != 0) as price_full
 
     FROM insurance AS a
-    INNER JOIN mas_insurance_type AS d ON a.mas_insurance_type_id = d.id
     WHERE a.isuse = 1
     `
-    if (model.insurance_id != null && model.insurance_id != "") {
-        sql += `AND d.id = '${model.insurance_id}'`
+
+    if (model.insurance_type_id != "" && model.insurance_type_id != null) {
+        sql += `AND (SELECT id FROM mas_insurance_type WHERE id = a.mas_insurance_type_id) = '${model.insurance_type_id}' `
     }
 
     sql += `ORDER BY a.sort`

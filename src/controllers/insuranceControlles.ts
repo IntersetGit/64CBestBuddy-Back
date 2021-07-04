@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { result } from '../util/index';
 import { addInsuranceService, editInsuranceService, getAllInsuranceService, getByIdInsuranceService, delInsuranceService } from '../service/insurance';
-import { insuranceinterface, insurance_type } from '../interface/insuranceinterface';
+import { insuranceinterface, insurance_typeInterface, installmentInterface } from '../interface/insuranceinterface';
 import { UsersInterface } from '../interface/loginInterface';
 
 export const mangeInsurance = async (req: Request, res: Response, next: NextFunction) => {
@@ -22,7 +22,7 @@ export const mangeInsurance = async (req: Request, res: Response, next: NextFunc
 
 export const getAllInsurance = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const model: insurance_type = req.body;
+        const model: installmentInterface = req.body;
         result(res, await getAllInsuranceService(model));
 
     } catch (error) {

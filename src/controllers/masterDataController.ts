@@ -120,7 +120,7 @@ export const GetRefPolicyRelData = async (req: Request, res: Response, next: Nex
 export const GetMasInsuranceTypeData = async (req: Request, res: Response, next: NextFunction) => {
     try {
 
-        result(res, await GetMasInsuranceTypeService());
+        result(res, await GetMasInsuranceTypeService())
 
     } catch (error) {
         next(error);
@@ -176,7 +176,6 @@ export const GetAllApiMasterData = async (req: Request, res: Response, next: Nex
 /*  */
 export const GetMasterInsurance = async (req: Request, res: Response, next: NextFunction) => {
     try {
-
         result(res, {
             Type: await GetMasInsuranceTypeService(),
             AgeRang: await GetMasAgeRangeDataService(),

@@ -1,29 +1,29 @@
-import {Request, Response, NextFunction} from 'express';
-import {result} from '../util/index';
-import { addInsuranceService, editInsuranceService, getAllInsuranceService, getByIdInsuranceService, delInsuranceService} from '../service/insurance';
-import { insuranceinterface } from '../interface/insuranceinterface';
+import { Request, Response, NextFunction } from 'express';
+import { result } from '../util/index';
+import { addInsuranceService, editInsuranceService, getAllInsuranceService, getByIdInsuranceService, delInsuranceService } from '../service/insurance';
+import { insuranceinterface, insurance_type } from '../interface/insuranceinterface';
 import { UsersInterface } from '../interface/loginInterface';
 
-export const mangeInsurance = async(req: Request, res: Response, next: NextFunction) => {
+export const mangeInsurance = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const model: insuranceinterface = req.body;
 
-        if(model.id){
+        if (model.id) {
             result(res, await editInsuranceService(model), 201);
         } else {
             result(res, await addInsuranceService(model), 201);
         }
-            
-        
+
+
     } catch (error) {
         next(error);
     }
 }
 
-export const getAllInsurance = async(req: Request, res: Response, next: NextFunction) => {
+export const getAllInsurance = async (req: Request, res: Response, next: NextFunction) => {
     try {
-
-        result(res, await getAllInsuranceService());
+        const model: insurance_type = req.body;
+        result(res, await getAllInsuranceService(model));
 
     } catch (error) {
         next(error);
@@ -31,7 +31,7 @@ export const getAllInsurance = async(req: Request, res: Response, next: NextFunc
 }
 
 
-export const getByIdInsurance = async(req: Request, res: Response, next: NextFunction) => {
+export const getByIdInsurance = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const id: string = req.params.id
 
@@ -43,7 +43,7 @@ export const getByIdInsurance = async(req: Request, res: Response, next: NextFun
 }
 
 
-export const delInsurance = async(req: Request, res: Response, next: NextFunction) => {
+export const delInsurance = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const id: string = req.params.id
 

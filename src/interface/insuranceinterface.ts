@@ -19,3 +19,11 @@ export interface insuranceinterface {
     is_one_price?: number
     mas_insurance_type_id?: string
 }
+
+export interface insurance_type {
+
+    insurance_id: string
+    name?: string
+    isuse: number
+    sort: number
+}

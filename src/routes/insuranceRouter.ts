@@ -11,4 +11,6 @@ router.get('/getByIdInsurance/:id', insuranceControlles.getByIdInsurance);
 /** ลบข้อมูลประกัน */
 router.post('/delInsurance/:id', insuranceControlles.delInsurance);
 
+router.post('/addInsurance', insuranceControlles.addInsurance);
+
 export default router;

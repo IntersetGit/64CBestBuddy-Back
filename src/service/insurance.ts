@@ -72,9 +72,28 @@ export const delInsuranceService = async (id: string) => {
 }
 
 
+export const createInsuranceService = async (model: any, transaction: any) => {
+    await insurance.create({
+        id: model.id,
+        product_code: model.product_code,
+        name: model.name,
+        img_header: model.img_header,
+        img_cover: model.img_cover,
+        details: model.details,
+        status: model.status,
+        percentage: model.percentage,
+        is_one_price: model.is_one_price,
+        mas_insurance_type_id: model.mas_insurance_type_id,
+        isuse: 1,
+    }, { transaction })
+    return model.id
+}
+
+
 export default {
     addInsuranceService,
     editInsuranceService,
     getByIdInsuranceService,
-    delInsuranceService
+    delInsuranceService,
+    createInsuranceService
 }

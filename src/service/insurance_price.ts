@@ -22,7 +22,7 @@ export const getPriceInsuranceService = async (model: any) => {
     AND a.mas_plan_id = $4
     AND a.mas_installment_id = $5 `
     const data: any = await sequelizeStringFindOne(sql, [model.insurance_id, model.age, model.gender, model.mas_plan_id, model.mas_installment_id])
-    return data.price
+    return data ? data.price : "-"
 }
 
 

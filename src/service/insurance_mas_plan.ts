@@ -8,7 +8,16 @@ export const bulkCreateInsuranceMasPlanService = async (model: any, transaction:
     return await insurance_mas_plan.bulkCreate(model, { transaction })
 }
 
+export const getByInsuranceIdInsuranceMasPlanService = async (insurance_id: string) => {
+    return await insurance_mas_plan.findAll({
+        where: { insurance_id }, order: [
+            ['sort', 'ASC'],
+        ],
+    })
+}
+
 
 export default {
     bulkCreateInsuranceMasPlanService,
+    getByInsuranceIdInsuranceMasPlanService
 }

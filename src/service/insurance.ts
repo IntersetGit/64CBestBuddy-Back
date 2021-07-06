@@ -55,11 +55,7 @@ export const getAllInsuranceService = async (model: installmentInterface) => {
 
 
 export const getByIdInsuranceService = async (id: string) => {
-
-    let sql = `
-    
-    `
-
+    return insurance.findByPk(id)
 }
 
 

@@ -56,11 +56,9 @@ export const getAllInsuranceService = async (model: installmentInterface) => {
 
 export const getByIdInsuranceService = async (id: string) => {
 
-    let sql = `SELECT a.*, b.* FROM insurance a
-    INNER JOIN insurance_mas_plan b ON b.insurance_id = a.id 
-    WHERE a.id = '${id}' ORDER BY b.sort`
-
-    return await sequelizeString(sql)
+    let sql = `
+    
+    `
 
 }
 

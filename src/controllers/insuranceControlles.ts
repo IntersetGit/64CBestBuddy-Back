@@ -9,7 +9,9 @@ import { sequelize } from '../models';
 import { bulkCreateInsuranceMasPlanService, getByInsuranceIdInsuranceMasPlanService } from '../service/insurance_mas_plan';
 import { bulkCreateinsuranceMasProtectionService, getByInsuranceIdInsuranceMasProtectionService } from '../service/insurance_mas_protection';
 import { bulkCreateMatchProtectionPlanService, getDataByProtectionIdService } from '../service/match_protection_plan';
-import { bulkCreateInsurancePriceService } from '../service/insurance_price';
+import { bulkCreateInsurancePriceService, getPriceInsuranceService } from '../service/insurance_price';
+import { getInstallmentByIdInsuranceService } from '../service/mas_installment';
+import messages from '../messages';
 
 export const mangeInsurance = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -38,6 +40,48 @@ export const getAllInsurance = async (req: Request, res: Response, next: NextFun
 }
 
 
+export const getPriceInsurance = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { insurance_id, gender = 1, age = 30, installment_id = "7c0244d2-eb1f-48c6-9820-1d690c891015" } = req.body;
+        if (!insurance_id) {
+            const error: any = new Error("ต้องการ insurance_id");
+            error.statusCode = 404;
+            throw error;
+        }
+
+        const plan = await getByInsuranceIdInsuranceMasPlanService(insurance_id)
+
+        const data = plan.map((e: any) => {
+            return {
+                id: e.id,
+                insurance_id: e.insurance_id,
+                name: e.name,
+                sort: e.sort,
+                price: 0,
+            }
+        })
+
+        for (const key in data) {
+            if (Object.prototype.hasOwnProperty.call(data, key)) {
+                const e: any = data[key];
+                e.price = await getPriceInsuranceService({
+                    insurance_id,
+                    age,
+                    gender,
+                    mas_plan_id: e.id,
+                    mas_installment_id: installment_id,
+                })
+                let d = 0
+            }
+        }
+
+
+        result(res, data);
+    } catch (error) {
+        next(error);
+    }
+}
+
 export const getByIdInsurance = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id } = req.params;
@@ -64,6 +108,9 @@ export const getByIdInsurance = async (req: Request, res: Response, next: NextFu
         result(res, {
             data: await getByIdInsuranceService(id),
             table,
+            master: {
+                installment: await getInstallmentByIdInsuranceService(id)
+            }
         });
 
     } catch (error) {
@@ -131,6 +178,7 @@ export default {
     mangeInsurance,
     getAllInsurance,
     getByIdInsurance,
+    getPriceInsurance,
     delInsurance,
     addInsurance,
 }

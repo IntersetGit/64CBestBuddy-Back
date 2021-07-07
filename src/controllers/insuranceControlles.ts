@@ -71,7 +71,6 @@ export const getPriceInsurance = async (req: Request, res: Response, next: NextF
                     mas_plan_id: e.id,
                     mas_installment_id: installment_id,
                 })
-                let d = 0
             }
         }
 

@@ -18,7 +18,7 @@ export const getPriceInsuranceService = async (model: any) => {
     INNER JOIN insurance AS d ON a.insurance_id = d.id
     WHERE a.insurance_id = $1
     AND $2 BETWEEN b.age_start AND b.age_end
-    AND a.gender = (IF(d.is_one_price = 0, $3, null))
+    AND a.gender = (IF(d.is_one_price = 0, $3, 0))
     AND a.mas_plan_id = $4
     AND a.mas_installment_id = $5 `
     const data: any = await sequelizeStringFindOne(sql, [model.insurance_id, model.age, model.gender, model.mas_plan_id, model.mas_installment_id])

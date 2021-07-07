@@ -63,6 +63,10 @@ export const getByIdInsuranceService = async (id: string) => {
     (SELECT impt.id FROM insurance AS impt WHERE impt.id)) AS detail
     FROM insurance AS i
 
+    SELECT i.id, i.name, i.product_code
+    ,(SELECT JSON_ARRAYAGG((JSON_OBJECT("id", imp.id, "details", imp.details)))
+    FROM insurance_mas_protection AS imp WHERE imp.insurance_id IN (multiple )AS detail
+    FROM insurance AS i
     `
     return sequelizeString(sql);
 }

@@ -34,11 +34,11 @@ export const getAllInsuranceService = async (model: installmentInterface) => {
     ,(SELECT MIN((IF(a.status = 1, b.price_sale, b.price_normal))) FROM insurance_price AS b
     WHERE insurance_id = a.id
     AND mas_installment_id = '${model.installment_id}'
-    AND price_normal != 0) as price
+    AND price_normal = 0) as price
     ,(SELECT MIN((IF(a.status = 1, b.price_normal, null))) FROM insurance_price AS b
     WHERE insurance_id = a.id
     AND mas_installment_id = '${model.installment_id}'
-    AND price_normal != 0) as price_full
+    AND price_normal = 1) as price_full
 
     FROM insurance AS a
     WHERE a.isuse = 1

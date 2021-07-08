@@ -12,6 +12,7 @@ export interface insurance_priceAttributes {
   price_sale?: number;
   gender?: number;
   mas_plan_id?: string;
+  is_show_price?: number;
 }
 
 export type insurance_pricePk = "id";
@@ -27,6 +28,7 @@ export class insurance_price extends Model<insurance_priceAttributes, insurance_
   price_sale?: number;
   gender?: number;
   mas_plan_id?: string;
+  is_show_price?: number;
 
   // insurance_price belongsTo mas_age_range via mas_age_range_id
   mas_age_range!: mas_age_range;
@@ -89,6 +91,12 @@ export class insurance_price extends Model<insurance_priceAttributes, insurance_
       type: DataTypes.STRING(100),
       allowNull: true,
       comment: "รหัสแผนประกัน S, M, L"
+    },
+    is_show_price: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+      defaultValue: 0,
+      comment: "โชว์ราคา"
     }
   }, {
     sequelize,

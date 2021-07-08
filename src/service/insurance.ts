@@ -28,27 +28,32 @@ export const editInsuranceService = async (model: insuranceinterface) => {
     return model.id
 }
 
-export const getAllInsuranceService = async (model: installmentInterface) => {
-    let sql = `SELECT a.id , a.name , a.img_header, a.img_cover, a.details , a.percentage , a.status , a.is_one_price , a.mas_insurance_type_id
+export const getAllInsuranceService = async (model: any) => {
+    let sql = `SELECT a.id , a.name ,  a.img_cover, a.details  , a.mas_insurance_type_id
     ,(SELECT name FROM mas_insurance_type WHERE id = a.mas_insurance_type_id) AS mas_insurance_type_name
-    ,(SELECT MIN((IF(a.status = 1, b.price_sale, b.price_normal))) FROM insurance_price AS b
-    WHERE insurance_id = a.id
-    AND mas_installment_id = '${model.installment_id}'
-    AND price_normal = 0) as price
-    ,(SELECT MIN((IF(a.status = 1, b.price_normal, null))) FROM insurance_price AS b
-    WHERE insurance_id = a.id
-    AND mas_installment_id = '${model.installment_id}'
-    AND price_normal = 1) as price_full
 
+    ,(SELECT IF(a.status = 1, price_sale, price_normal) FROM insurance_price
+    WHERE insurance_id = a.id
+    AND is_show_price = 1
+    LIMIT 1) AS price
+
+    ,(SELECT SUBSTRING(mins.name, 4)  FROM insurance_price AS pins
+    INNER JOIN mas_installment AS mins ON pins.mas_installment_id = mins.id
+    WHERE insurance_id = a.id
+    AND is_show_price = 1
+    LIMIT 1) AS installment_name
     FROM insurance AS a
     WHERE a.isuse = 1
     `
 
-    if (model.insurance_type_id != "" && model.insurance_type_id != null) {
-        sql += `AND (SELECT id FROM mas_insurance_type WHERE id = a.mas_insurance_type_id) = '${model.insurance_type_id}' `
+    if (model.mas_insurance_type_id) {
+        sql += `AND a.mas_insurance_type_id = '${model.mas_insurance_type_id}' `
     }
 
-    sql += `ORDER BY a.sort`
+    if (model.order_by == "asc") sql += ` ORDER BY price ASC `
+    else if (model.order_by == "desc") sql += ` ORDER BY price DESC `
+    else sql += ` ORDER BY a.sort `
+
 
     return await sequelizeString(sql);
 }

@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { result } from '../util/index';
-import { addInsuranceService, editInsuranceService, getAllInsuranceService, getByIdInsuranceService, delInsuranceService, createInsuranceService } from '../service/insurance';
+import { addInsuranceService, editInsuranceService, getAllInsuranceService, getByIdInsuranceService, delInsuranceService, createInsuranceService, getImagesHeaderInsuranceService } from '../service/insurance';
 import { insuranceinterface, installmentInterface } from '../interface/insuranceinterface';
 import path from 'path';
 import config from "../config";
@@ -174,7 +174,7 @@ export const addInsurance = async (req: Request, res: Response, next: NextFuncti
 
 export const getImagesHeaderInsurance = async (req: Request, res: Response, next: NextFunction) => {
     const _res: any = []
-    await (await getAllInsuranceService({})).forEach((e: any) => (e.img_header) ? _res.push(`${config.SERVICE_HOST}/${JSON.parse(e.img_header).path}`) : null);
+    await (await getImagesHeaderInsuranceService()).forEach((e: any) => (e.img_header) ? _res.push(`${config.SERVICE_HOST}/${JSON.parse(e.img_header).path}`) : null);
     result(res, _res);
 }
 

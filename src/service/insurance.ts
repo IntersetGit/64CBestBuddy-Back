@@ -58,6 +58,10 @@ export const getAllInsuranceService = async (model: any) => {
     return await sequelizeString(sql);
 }
 
+export const getImagesHeaderInsuranceService = async () => {
+    return await sequelizeString(`SELECT a.img_header FROM insurance AS a WHERE a.isuse = 1 AND a.img_header IS NOT null ORDER BY a.sort LIMIT 5`);
+}
+
 
 export const getByIdInsuranceService = async (id: string) => {
     return insurance.findByPk(id)
@@ -96,5 +100,6 @@ export default {
     editInsuranceService,
     getByIdInsuranceService,
     delInsuranceService,
-    createInsuranceService
+    createInsuranceService,
+    getImagesHeaderInsuranceService
 }

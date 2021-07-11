@@ -18,4 +18,6 @@ router.get('/getByIdInsurance/:id', insuranceControlles.getByIdInsurance);
 /** ค้นหาราคา ประกัน  */
 router.post('/getPriceInsurance', insuranceControlles.getPriceInsurance);
 
+router.get('/getImagesHeaderInsurance', insuranceControlles.getImagesHeaderInsurance);
+
 export default router;

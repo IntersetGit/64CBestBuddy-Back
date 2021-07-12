@@ -66,7 +66,22 @@ export const getImagesHeaderInsuranceService = async () => {
 export const getByIdInsuranceService = async (id: string) => {
     /** เอาอายุที่น้อย และมาก ที่สุดของแต่ละประกันใน subqurey */
     let sql = `
-    SELECT a.*
+    SELECT 
+    a.id
+    ,a.product_code
+    ,a.name
+    ,a.img_header
+    ,a.img_cover
+    ,a.details
+    ,a.note
+    ,a.status
+    ,a.percentage
+    ,a.isuse
+    ,a.sort
+    ,a.is_one_price
+    ,a.mas_insurance_type_id
+    ,a.haed_highlight
+    ,a.number_visitors as count
     ,(SELECT min(mar.age_start)
     FROM mas_age_range AS mar
     INNER JOIN insurance_price AS ip ON mar.id = ip.mas_age_range_id
@@ -79,8 +94,13 @@ export const getByIdInsuranceService = async (id: string) => {
     FROM insurance AS a
     WHERE a.id = $1`
 
-    return sequelizeStringFindOne(sql, [id])
+    const result_sql: any = await sequelizeStringFindOne(sql, [id])
 
+    await insurance.update({
+        number_visitors: result_sql.count + 1
+    }, { where: { id } })
+
+    return result_sql
 
 }
 

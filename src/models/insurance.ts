@@ -19,6 +19,7 @@ export interface insuranceAttributes {
   is_one_price?: number;
   mas_insurance_type_id?: string;
   haed_highlight?: string;
+  number_visitors?: number;
 }
 
 export type insurancePk = "id";
@@ -40,6 +41,7 @@ export class insurance extends Model<insuranceAttributes, insuranceCreationAttri
   is_one_price?: number;
   mas_insurance_type_id?: string;
   haed_highlight?: string;
+  number_visitors?: number;
 
   // insurance hasMany insurance_mas_plan via insurance_id
   insurance_mas_plans!: insurance_mas_plan[];
@@ -147,6 +149,12 @@ export class insurance extends Model<insuranceAttributes, insuranceCreationAttri
       type: DataTypes.TEXT,
       allowNull: true,
       comment: "ไอคอน 3 ตัว"
+    },
+    number_visitors: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      defaultValue: 0,
+      comment: "จำนวนผู้เข้าชม"
     }
   }, {
     sequelize,

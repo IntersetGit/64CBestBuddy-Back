@@ -70,17 +70,18 @@ export const getByIdInsuranceService = async (id: string) => {
     ,(SELECT min(mar.age_start)
     FROM mas_age_range AS mar
     INNER JOIN insurance_price AS ip ON mar.id = ip.mas_age_range_id
-    INNER JOIN insurance AS i ON i.id = ip.insurance_id) as age_young
+    INNER JOIN insurance AS i ON i.id = ip.insurance_id) as age_start
     ,(SELECT max(mar.age_start)
     FROM mas_age_range AS mar
     INNER JOIN insurance_price AS ip ON mar.id = ip.mas_age_range_id
-    INNER JOIN insurance AS i ON i.id = ip.insurance_id) as age_old
+    INNER JOIN insurance AS i ON i.id = ip.insurance_id) as age_end
 
     FROM insurance AS a
     WHERE a.id = $1`
 
     return sequelizeStringFindOne(sql, [id])
-    // return insurance.findByPk(id)
+
+
 }
 
 

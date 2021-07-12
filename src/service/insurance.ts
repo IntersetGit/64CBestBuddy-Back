@@ -79,7 +79,7 @@ export const getByIdInsuranceService = async (id: string) => {
     FROM insurance AS a
     WHERE a.id = $1`
 
-    return sequelizeString(sql, [id])
+    return sequelizeStringFindOne(sql, [id])
     // return insurance.findByPk(id)
 }
 

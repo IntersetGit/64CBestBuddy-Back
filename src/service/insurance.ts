@@ -95,9 +95,9 @@ export const getByIdInsuranceService = async (id: string) => {
     WHERE a.id = $1`
 
     const result_sql: any = await sequelizeStringFindOne(sql, [id])
-
+    result_sql.count = result_sql.count + 1;
     await insurance.update({
-        number_visitors: result_sql.count + 1
+        number_visitors: result_sql.count
     }, { where: { id } })
 
     return result_sql

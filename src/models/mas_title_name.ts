@@ -1,9 +1,12 @@
 import * as Sequelize from 'sequelize';
 import { DataTypes, Model, Optional } from 'sequelize';
+import type { insurance_applicant, insurance_applicantId } from './insurance_applicant';
+import type { insurance_beneficiary, insurance_beneficiaryId } from './insurance_beneficiary';
 
 export interface mas_title_nameAttributes {
   id: number;
   title_name: string;
+  isuse?: number;
 }
 
 export type mas_title_namePk = "id";
@@ -13,7 +16,32 @@ export type mas_title_nameCreationAttributes = Optional<mas_title_nameAttributes
 export class mas_title_name extends Model<mas_title_nameAttributes, mas_title_nameCreationAttributes> implements mas_title_nameAttributes {
   id!: number;
   title_name!: string;
+  isuse?: number;
 
+  // mas_title_name hasMany insurance_applicant via mas_title_name_id
+  insurance_applicants!: insurance_applicant[];
+  getInsurance_applicants!: Sequelize.HasManyGetAssociationsMixin<insurance_applicant>;
+  setInsurance_applicants!: Sequelize.HasManySetAssociationsMixin<insurance_applicant, insurance_applicantId>;
+  addInsurance_applicant!: Sequelize.HasManyAddAssociationMixin<insurance_applicant, insurance_applicantId>;
+  addInsurance_applicants!: Sequelize.HasManyAddAssociationsMixin<insurance_applicant, insurance_applicantId>;
+  createInsurance_applicant!: Sequelize.HasManyCreateAssociationMixin<insurance_applicant>;
+  removeInsurance_applicant!: Sequelize.HasManyRemoveAssociationMixin<insurance_applicant, insurance_applicantId>;
+  removeInsurance_applicants!: Sequelize.HasManyRemoveAssociationsMixin<insurance_applicant, insurance_applicantId>;
+  hasInsurance_applicant!: Sequelize.HasManyHasAssociationMixin<insurance_applicant, insurance_applicantId>;
+  hasInsurance_applicants!: Sequelize.HasManyHasAssociationsMixin<insurance_applicant, insurance_applicantId>;
+  countInsurance_applicants!: Sequelize.HasManyCountAssociationsMixin;
+  // mas_title_name hasMany insurance_beneficiary via mas_title_name_id
+  insurance_beneficiaries!: insurance_beneficiary[];
+  getInsurance_beneficiaries!: Sequelize.HasManyGetAssociationsMixin<insurance_beneficiary>;
+  setInsurance_beneficiaries!: Sequelize.HasManySetAssociationsMixin<insurance_beneficiary, insurance_beneficiaryId>;
+  addInsurance_beneficiary!: Sequelize.HasManyAddAssociationMixin<insurance_beneficiary, insurance_beneficiaryId>;
+  addInsurance_beneficiaries!: Sequelize.HasManyAddAssociationsMixin<insurance_beneficiary, insurance_beneficiaryId>;
+  createInsurance_beneficiary!: Sequelize.HasManyCreateAssociationMixin<insurance_beneficiary>;
+  removeInsurance_beneficiary!: Sequelize.HasManyRemoveAssociationMixin<insurance_beneficiary, insurance_beneficiaryId>;
+  removeInsurance_beneficiaries!: Sequelize.HasManyRemoveAssociationsMixin<insurance_beneficiary, insurance_beneficiaryId>;
+  hasInsurance_beneficiary!: Sequelize.HasManyHasAssociationMixin<insurance_beneficiary, insurance_beneficiaryId>;
+  hasInsurance_beneficiaries!: Sequelize.HasManyHasAssociationsMixin<insurance_beneficiary, insurance_beneficiaryId>;
+  countInsurance_beneficiaries!: Sequelize.HasManyCountAssociationsMixin;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof mas_title_name {
     mas_title_name.init({
@@ -25,6 +53,11 @@ export class mas_title_name extends Model<mas_title_nameAttributes, mas_title_na
     title_name: {
       type: DataTypes.STRING(100),
       allowNull: false
+    },
+    isuse: {
+      type: DataTypes.SMALLINT,
+      allowNull: true,
+      comment: "สถานะใช้งานข้อมูล 0 = ไม่ใช้งาน 1 = ใช้งาน"
     }
   }, {
     sequelize,

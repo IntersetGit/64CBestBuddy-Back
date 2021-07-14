@@ -3,6 +3,10 @@ import { SequelizeMeta } from "./SequelizeMeta";
 import type { SequelizeMetaAttributes, SequelizeMetaCreationAttributes } from "./SequelizeMeta";
 import { insurance } from "./insurance";
 import type { insuranceAttributes, insuranceCreationAttributes } from "./insurance";
+import { insurance_applicant } from "./insurance_applicant";
+import type { insurance_applicantAttributes, insurance_applicantCreationAttributes } from "./insurance_applicant";
+import { insurance_beneficiary } from "./insurance_beneficiary";
+import type { insurance_beneficiaryAttributes, insurance_beneficiaryCreationAttributes } from "./insurance_beneficiary";
 import { insurance_mas_plan } from "./insurance_mas_plan";
 import type { insurance_mas_planAttributes, insurance_mas_planCreationAttributes } from "./insurance_mas_plan";
 import { insurance_mas_protection } from "./insurance_mas_protection";
@@ -39,6 +43,8 @@ import type { match_protection_planAttributes, match_protection_planCreationAttr
 export {
   SequelizeMeta,
   insurance,
+  insurance_applicant,
+  insurance_beneficiary,
   insurance_mas_plan,
   insurance_mas_protection,
   insurance_price,
@@ -62,6 +68,10 @@ export type {
   SequelizeMetaCreationAttributes,
   insuranceAttributes,
   insuranceCreationAttributes,
+  insurance_applicantAttributes,
+  insurance_applicantCreationAttributes,
+  insurance_beneficiaryAttributes,
+  insurance_beneficiaryCreationAttributes,
   insurance_mas_planAttributes,
   insurance_mas_planCreationAttributes,
   insurance_mas_protectionAttributes,
@@ -99,6 +109,8 @@ export type {
 export function initModels(sequelize: Sequelize) {
   SequelizeMeta.initModel(sequelize);
   insurance.initModel(sequelize);
+  insurance_applicant.initModel(sequelize);
+  insurance_beneficiary.initModel(sequelize);
   insurance_mas_plan.initModel(sequelize);
   insurance_mas_protection.initModel(sequelize);
   insurance_price.initModel(sequelize);
@@ -116,28 +128,52 @@ export function initModels(sequelize: Sequelize) {
   mas_title_name.initModel(sequelize);
   match_protection_plan.initModel(sequelize);
 
+  insurance_applicant.belongsTo(insurance, { as: "insurance", foreignKey: "insurance_id"});
+  insurance.hasMany(insurance_applicant, { as: "insurance_applicants", foreignKey: "insurance_id"});
   insurance_mas_plan.belongsTo(insurance, { as: "insurance", foreignKey: "insurance_id"});
   insurance.hasMany(insurance_mas_plan, { as: "insurance_mas_plans", foreignKey: "insurance_id"});
   insurance_mas_protection.belongsTo(insurance, { as: "insurance", foreignKey: "insurance_id"});
   insurance.hasMany(insurance_mas_protection, { as: "insurance_mas_protections", foreignKey: "insurance_id"});
+  insurance_beneficiary.belongsTo(insurance_applicant, { as: "insurance_applicant", foreignKey: "insurance_applicant_id"});
+  insurance_applicant.hasMany(insurance_beneficiary, { as: "insurance_beneficiaries", foreignKey: "insurance_applicant_id"});
   match_protection_plan.belongsTo(insurance_mas_plan, { as: "mas_plan", foreignKey: "mas_plan_id"});
   insurance_mas_plan.hasMany(match_protection_plan, { as: "match_protection_plans", foreignKey: "mas_plan_id"});
   match_protection_plan.belongsTo(insurance_mas_protection, { as: "mas_protection", foreignKey: "mas_protection_id"});
   insurance_mas_protection.hasMany(match_protection_plan, { as: "match_protection_plans", foreignKey: "mas_protection_id"});
   insurance_price.belongsTo(mas_age_range, { as: "mas_age_range", foreignKey: "mas_age_range_id"});
   mas_age_range.hasMany(insurance_price, { as: "insurance_prices", foreignKey: "mas_age_range_id"});
+  insurance_applicant.belongsTo(mas_district, { as: "mas_district", foreignKey: "mas_district_id"});
+  mas_district.hasMany(insurance_applicant, { as: "insurance_applicants", foreignKey: "mas_district_id"});
   mas_sub_district.belongsTo(mas_district, { as: "district", foreignKey: "district_id"});
   mas_district.hasMany(mas_sub_district, { as: "mas_sub_districts", foreignKey: "district_id"});
   insurance_price.belongsTo(mas_installment, { as: "mas_installment", foreignKey: "mas_installment_id"});
   mas_installment.hasMany(insurance_price, { as: "insurance_prices", foreignKey: "mas_installment_id"});
   insurance.belongsTo(mas_insurance_type, { as: "mas_insurance_type", foreignKey: "mas_insurance_type_id"});
   mas_insurance_type.hasMany(insurance, { as: "insurances", foreignKey: "mas_insurance_type_id"});
+  insurance_applicant.belongsTo(mas_marital_status, { as: "mas_marital_status", foreignKey: "mas_marital_status_id"});
+  mas_marital_status.hasMany(insurance_applicant, { as: "insurance_applicants", foreignKey: "mas_marital_status_id"});
+  insurance_applicant.belongsTo(mas_occupation, { as: "mas_occupation", foreignKey: "mas_occupation_id"});
+  mas_occupation.hasMany(insurance_applicant, { as: "insurance_applicants", foreignKey: "mas_occupation_id"});
+  insurance_applicant.belongsTo(mas_payer_relation, { as: "mas_payer_relation", foreignKey: "mas_payer_relation_id"});
+  mas_payer_relation.hasMany(insurance_applicant, { as: "insurance_applicants", foreignKey: "mas_payer_relation_id"});
+  insurance_beneficiary.belongsTo(mas_payer_relation, { as: "mas_payer_relation", foreignKey: "mas_payer_relation_id"});
+  mas_payer_relation.hasMany(insurance_beneficiary, { as: "insurance_beneficiaries", foreignKey: "mas_payer_relation_id"});
+  insurance_applicant.belongsTo(mas_province, { as: "mas_province", foreignKey: "mas_province_id"});
+  mas_province.hasMany(insurance_applicant, { as: "insurance_applicants", foreignKey: "mas_province_id"});
   mas_district.belongsTo(mas_province, { as: "province", foreignKey: "province_id"});
   mas_province.hasMany(mas_district, { as: "mas_districts", foreignKey: "province_id"});
+  insurance_applicant.belongsTo(mas_sub_district, { as: "mas_sub_district", foreignKey: "mas_sub_district_id"});
+  mas_sub_district.hasMany(insurance_applicant, { as: "insurance_applicants", foreignKey: "mas_sub_district_id"});
+  insurance_applicant.belongsTo(mas_title_name, { as: "mas_title_name", foreignKey: "mas_title_name_id"});
+  mas_title_name.hasMany(insurance_applicant, { as: "insurance_applicants", foreignKey: "mas_title_name_id"});
+  insurance_beneficiary.belongsTo(mas_title_name, { as: "mas_title_name", foreignKey: "mas_title_name_id"});
+  mas_title_name.hasMany(insurance_beneficiary, { as: "insurance_beneficiaries", foreignKey: "mas_title_name_id"});
 
   return {
     SequelizeMeta: SequelizeMeta,
     insurance: insurance,
+    insurance_applicant: insurance_applicant,
+    insurance_beneficiary: insurance_beneficiary,
     insurance_mas_plan: insurance_mas_plan,
     insurance_mas_protection: insurance_mas_protection,
     insurance_price: insurance_price,

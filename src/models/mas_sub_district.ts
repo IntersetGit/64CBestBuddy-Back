@@ -1,5 +1,6 @@
 import * as Sequelize from 'sequelize';
 import { DataTypes, Model, Optional } from 'sequelize';
+import type { insurance_applicant, insurance_applicantId } from './insurance_applicant';
 import type { mas_district, mas_districtId } from './mas_district';
 
 export interface mas_sub_districtAttributes {
@@ -24,6 +25,18 @@ export class mas_sub_district extends Model<mas_sub_districtAttributes, mas_sub_
   getDistrict!: Sequelize.BelongsToGetAssociationMixin<mas_district>;
   setDistrict!: Sequelize.BelongsToSetAssociationMixin<mas_district, mas_districtId>;
   createDistrict!: Sequelize.BelongsToCreateAssociationMixin<mas_district>;
+  // mas_sub_district hasMany insurance_applicant via mas_sub_district_id
+  insurance_applicants!: insurance_applicant[];
+  getInsurance_applicants!: Sequelize.HasManyGetAssociationsMixin<insurance_applicant>;
+  setInsurance_applicants!: Sequelize.HasManySetAssociationsMixin<insurance_applicant, insurance_applicantId>;
+  addInsurance_applicant!: Sequelize.HasManyAddAssociationMixin<insurance_applicant, insurance_applicantId>;
+  addInsurance_applicants!: Sequelize.HasManyAddAssociationsMixin<insurance_applicant, insurance_applicantId>;
+  createInsurance_applicant!: Sequelize.HasManyCreateAssociationMixin<insurance_applicant>;
+  removeInsurance_applicant!: Sequelize.HasManyRemoveAssociationMixin<insurance_applicant, insurance_applicantId>;
+  removeInsurance_applicants!: Sequelize.HasManyRemoveAssociationsMixin<insurance_applicant, insurance_applicantId>;
+  hasInsurance_applicant!: Sequelize.HasManyHasAssociationMixin<insurance_applicant, insurance_applicantId>;
+  hasInsurance_applicants!: Sequelize.HasManyHasAssociationsMixin<insurance_applicant, insurance_applicantId>;
+  countInsurance_applicants!: Sequelize.HasManyCountAssociationsMixin;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof mas_sub_district {
     mas_sub_district.init({

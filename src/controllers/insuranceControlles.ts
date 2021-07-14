@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { result } from '../util/index';
 import { addInsuranceService, editInsuranceService, getAllInsuranceService, getByIdInsuranceService, delInsuranceService, createInsuranceService, getImagesHeaderInsuranceService } from '../service/insurance';
-import { insuranceinterface, installmentInterface } from '../interface/insuranceinterface';
+import { insuranceinterface, installmentInterface, insuranceApplicantInterfaceAndBeneficiaryInterface, insuranceBeneficiaryInterface } from '../interface/insuranceinterface';
 import path from 'path';
 import config from "../config";
 import fs from 'fs';
@@ -11,6 +11,8 @@ import { bulkCreateinsuranceMasProtectionService, getByInsuranceIdInsuranceMasPr
 import { bulkCreateMatchProtectionPlanService, getDataByProtectionIdService } from '../service/match_protection_plan';
 import { bulkCreateInsurancePriceService, getPriceInsuranceService } from '../service/insurance_price';
 import { getInstallmentByIdInsuranceService } from '../service/mas_installment';
+import { createInsuranceApplicantService } from '../service/insurance_applicant';
+import { createInsuranceBeneficiaryService } from '../service/insurance_beneficiary';
 import messages from '../messages';
 
 export const mangeInsurance = async (req: Request, res: Response, next: NextFunction) => {
@@ -179,6 +181,29 @@ export const getImagesHeaderInsurance = async (req: Request, res: Response, next
 }
 
 
+/** สร้างข้อมูลผู้ขอประกัน */
+export const createInsuranceApplicant = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const model: insuranceApplicantInterfaceAndBeneficiaryInterface = req.body
+
+        const applicant_id = await createInsuranceApplicantService(model)
+        if (!applicant_id) {
+            const err = new Error('ไม่พบข้อมูล applicant_id')
+            throw err
+        }
+        const beneficiary_id = await createInsuranceBeneficiaryService(model, applicant_id)
+
+        result(res, {
+            applicant_id,
+            beneficiary_id
+        });
+
+    } catch (error) {
+        next(error);
+    }
+}
+
+
 
 export default {
     mangeInsurance,
@@ -188,4 +213,5 @@ export default {
     delInsurance,
     addInsurance,
     getImagesHeaderInsurance,
+    createInsuranceApplicant
 }

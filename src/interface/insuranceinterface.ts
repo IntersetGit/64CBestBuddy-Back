@@ -34,3 +34,39 @@ export interface installmentInterface {
     name?: string
     sort: number
 }
+
+
+export interface insuranceApplicantInterfaceAndBeneficiaryInterface {
+    id: string
+    insurance_id: string
+    mas_title_name_id: number
+    mas_marital_status_id?: number
+    mas_occupation_id?: number
+    id_number?: string
+    first_name?: string
+    last_name?: string
+    birthday?: string
+    age?: number
+    hight?: number
+    weight?: number
+    address?: string
+    additional_address?: string
+    nationality?: string
+    email?: string
+    phone?: string
+    mas_province_id?: string
+    mas_district_id?: string
+    mas_sub_district_id?: string
+    mas_payer_relation_id?: string
+    insurance_applicant_id?: string
+}
+
+
+export interface insuranceBeneficiaryInterface {
+    id: string
+    mas_title_name_id: number
+    mas_payer_relation_id?: string
+    insurance_applicant_id?: string
+    first_name?: string
+    last_name?: string
+}

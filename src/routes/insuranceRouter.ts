@@ -19,5 +19,7 @@ router.get('/getByIdInsurance/:id', insuranceControlles.getByIdInsurance);
 router.post('/getPriceInsurance', insuranceControlles.getPriceInsurance);
 
 router.get('/getImagesHeaderInsurance', insuranceControlles.getImagesHeaderInsurance);
+/**เพิ่มข้อมูล ผู้ขอประกัน */
+router.post('/createInsuranceApplicant', insuranceControlles.createInsuranceApplicant)
 
 export default router;

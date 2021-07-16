@@ -85,11 +85,13 @@ export const getByIdInsuranceService = async (id: string) => {
     ,(SELECT min(mar.age_start)
     FROM mas_age_range AS mar
     INNER JOIN insurance_price AS ip ON mar.id = ip.mas_age_range_id
-    INNER JOIN insurance AS i ON i.id = ip.insurance_id) as age_start
+    INNER JOIN insurance AS i ON i.id = ip.insurance_id
+    WHERE ip.insurance_id = $1) as age_start
     ,(SELECT max(mar.age_end)
     FROM mas_age_range AS mar
     INNER JOIN insurance_price AS ip ON mar.id = ip.mas_age_range_id
-    INNER JOIN insurance AS i ON i.id = ip.insurance_id) as age_end
+    INNER JOIN insurance AS i ON i.id = ip.insurance_id
+    WHERE ip.insurance_id = $1) as age_end
 
     FROM insurance AS a
     WHERE a.id = $1`

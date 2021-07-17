@@ -133,6 +133,42 @@ export const createInsuranceService = async (model: any, transaction: any) => {
     return model.id
 }
 
+/** เลือกซื้อแผนประกัน */
+export const getByInsuranceAndInstallmentService = async (model: any) => {
+    let sql = `SELECT ir.id
+    , ir.name AS insurance_name
+    , mit.name AS insurance_type
+
+    , (SELECT imp.name 
+    FROM insurance_mas_plan imp 
+    INNER JOIN insurance irr ON irr.id = imp.insurance_id
+    WHERE imp.id = $2) AS plan_name
+
+    , (SELECT mpp.value
+    FROM insurance_mas_plan imp
+    INNER JOIN insurance irr ON irr.id = imp.insurance_id
+    INNER JOIN match_protection_plan mpp ON imp.id = mpp.mas_plan_id
+    WHERE mpp.id = $3) AS value
+
+    , (SELECT ip.price_normal
+    FROM insurance_mas_plan imp
+    INNER JOIN insurance irr ON irr.id = imp.insurance_id
+    INNER JOIN insurance_price ip ON imp.id = ip.mas_plan_id
+    INNER JOIN mas_installment mi ON ip.mas_installment_id = mi.id
+    INNER JOIN mas_age_range mar ON ip.mas_age_range_id = mar.id
+    WHERE irr.id = $1
+    AND imp.id = $2
+    AND mi.id = $4
+    AND mar.id = $5) AS price
+
+    FROM insurance ir
+    INNER JOIN mas_insurance_type mit ON ir.mas_insurance_type_id = mit.id
+    WHERE ir.id = $1
+    `
+    return await sequelizeStringFindOne(sql, [model.id, model.mas_plan_id, model.match_id, model.mas_installment_id, model.mas_age_range_id])
+
+}
+
 
 export default {
     addInsuranceService,
@@ -140,5 +176,6 @@ export default {
     getByIdInsuranceService,
     delInsuranceService,
     createInsuranceService,
-    getImagesHeaderInsuranceService
+    getImagesHeaderInsuranceService,
+    getByInsuranceAndInstallmentService
 }

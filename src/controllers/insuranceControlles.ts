@@ -1,6 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import { result } from '../util/index';
-import { addInsuranceService, editInsuranceService, getAllInsuranceService, getByIdInsuranceService, delInsuranceService, createInsuranceService, getImagesHeaderInsuranceService } from '../service/insurance';
+import {
+    addInsuranceService, editInsuranceService, getAllInsuranceService, getByIdInsuranceService, delInsuranceService, createInsuranceService,
+    getImagesHeaderInsuranceService, getByInsuranceAndInstallmentService
+} from '../service/insurance';
 import { insuranceinterface, installmentInterface, insuranceApplicantInterfaceAndBeneficiaryInterface, insuranceBeneficiaryInterface } from '../interface/insuranceinterface';
 import path from 'path';
 import config from "../config";
@@ -186,23 +189,28 @@ export const createInsuranceApplicant = async (req: Request, res: Response, next
     try {
         const model: insuranceApplicantInterfaceAndBeneficiaryInterface = req.body
 
-        const applicant_id = await createInsuranceApplicantService(model)
-        if (!applicant_id) {
-            const err = new Error('ไม่พบข้อมูล applicant_id')
-            throw err
-        }
-        const beneficiary_id = await createInsuranceBeneficiaryService(model, applicant_id)
+        if (!model.insurance_id) throw new Error('ต้องการ ไอดี insurance_id')
 
-        result(res, {
-            applicant_id,
-            beneficiary_id
-        });
+        result(res, await createInsuranceApplicantService(model));
 
     } catch (error) {
         next(error);
     }
 }
 
+
+/** เลือกซื้อแผนประกัน */
+export const getByInsuranceAndInstallment = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+
+        const model: any = req.body
+
+        result(res, await getByInsuranceAndInstallmentService(model))
+
+    } catch (error) {
+        next(error);
+    }
+}
 
 
 export default {
@@ -213,5 +221,6 @@ export default {
     delInsurance,
     addInsurance,
     getImagesHeaderInsurance,
-    createInsuranceApplicant
+    createInsuranceApplicant,
+    getByInsuranceAndInstallment
 }

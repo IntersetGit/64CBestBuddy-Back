@@ -10,7 +10,7 @@ export const bulkCreateInsurancePriceService = async (model: any, transaction: a
 
 export const getPriceInsuranceService = async (model: any) => {
 
-    let sql = `SELECT
+    let sql = `SELECT b.age_range,
     (IF(d.status = 1, a.price_sale , a.price_normal)) AS price
     FROM insurance_price AS a
     INNER JOIN mas_age_range AS b ON a.mas_age_range_id = b.id
@@ -22,7 +22,8 @@ export const getPriceInsuranceService = async (model: any) => {
     AND a.mas_plan_id = $4
     AND a.mas_installment_id = $5 `
     const data: any = await sequelizeStringFindOne(sql, [model.insurance_id, model.age, model.gender, model.mas_plan_id, model.mas_installment_id])
-    return data ? data.price : "-"
+    data.price = data.price ?? "-"
+    return data
 }
 
 

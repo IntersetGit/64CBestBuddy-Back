@@ -7,6 +7,7 @@ const config = {
     PORT: process.env.PORT,
     JWT_SECRET: process.env.JWT_SECRET,
     JWT_SECRET_REFRESH: process.env.JWT_SECRET_REFRESH,
+    SECRET_KEY_CODE: process.env.SECRET_KEY_CODE,
     HOST_SWAGGER: process.env.HOST_SWAGGER,
     SERVICE_HOST: process.env.SERVICE_HOST,
     STATUS_CODE_ERROR: Number(process.env.STATUS_CODE_ERROR) || 500,

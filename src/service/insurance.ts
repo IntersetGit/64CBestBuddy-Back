@@ -165,8 +165,9 @@ export const getByInsuranceAndInstallmentService = async (model: any) => {
     INNER JOIN mas_insurance_type mit ON ir.mas_insurance_type_id = mit.id
     WHERE ir.id = $1
     `
-    return await sequelizeStringFindOne(sql, [model.id, model.mas_plan_id, model.match_id, model.mas_installment_id, model.mas_age_range_id])
-
+    const result_sql: any = await sequelizeStringFindOne(sql, [model.id, model.mas_plan_id, model.match_id, model.mas_installment_id, model.mas_age_range_id])
+    result_sql.price = result_sql.price ?? '-'
+    return result_sql
 }
 
 

@@ -14,6 +14,7 @@ import errorHandler from './middleware/errorHandler'
 import indexRouter from './routes'
 import masterdataRouter from './routes/masterDataRouter'
 import insuranceRouter from './routes/insuranceRouter'
+import systemUserRouter from './routes/systemUserRouter'
 
 
 /* config app */
@@ -38,6 +39,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/masterData', masterdataRouter);
 app.use('/insurance', insuranceRouter);
+app.use('/system', systemUserRouter);
 
 
 app.use((req, res, next) => {

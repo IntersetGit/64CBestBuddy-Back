@@ -2,6 +2,7 @@ import * as Sequelize from 'sequelize';
 import { DataTypes, Model, Optional } from 'sequelize';
 import type { insurance_applicant, insurance_applicantId } from './insurance_applicant';
 import type { insurance_beneficiary, insurance_beneficiaryId } from './insurance_beneficiary';
+import type { person, personId } from './person';
 
 export interface mas_title_nameAttributes {
   id: number;
@@ -42,6 +43,18 @@ export class mas_title_name extends Model<mas_title_nameAttributes, mas_title_na
   hasInsurance_beneficiary!: Sequelize.HasManyHasAssociationMixin<insurance_beneficiary, insurance_beneficiaryId>;
   hasInsurance_beneficiaries!: Sequelize.HasManyHasAssociationsMixin<insurance_beneficiary, insurance_beneficiaryId>;
   countInsurance_beneficiaries!: Sequelize.HasManyCountAssociationsMixin;
+  // mas_title_name hasMany person via mas_title_name_id
+  people!: person[];
+  getPeople!: Sequelize.HasManyGetAssociationsMixin<person>;
+  setPeople!: Sequelize.HasManySetAssociationsMixin<person, personId>;
+  addPerson!: Sequelize.HasManyAddAssociationMixin<person, personId>;
+  addPeople!: Sequelize.HasManyAddAssociationsMixin<person, personId>;
+  createPerson!: Sequelize.HasManyCreateAssociationMixin<person>;
+  removePerson!: Sequelize.HasManyRemoveAssociationMixin<person, personId>;
+  removePeople!: Sequelize.HasManyRemoveAssociationsMixin<person, personId>;
+  hasPerson!: Sequelize.HasManyHasAssociationMixin<person, personId>;
+  hasPeople!: Sequelize.HasManyHasAssociationsMixin<person, personId>;
+  countPeople!: Sequelize.HasManyCountAssociationsMixin;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof mas_title_name {
     mas_title_name.init({

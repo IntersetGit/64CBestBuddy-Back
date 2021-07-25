@@ -39,6 +39,12 @@ import { mas_title_name } from "./mas_title_name";
 import type { mas_title_nameAttributes, mas_title_nameCreationAttributes } from "./mas_title_name";
 import { match_protection_plan } from "./match_protection_plan";
 import type { match_protection_planAttributes, match_protection_planCreationAttributes } from "./match_protection_plan";
+import { person } from "./person";
+import type { personAttributes, personCreationAttributes } from "./person";
+import { sysm_roles } from "./sysm_roles";
+import type { sysm_rolesAttributes, sysm_rolesCreationAttributes } from "./sysm_roles";
+import { sysm_users } from "./sysm_users";
+import type { sysm_usersAttributes, sysm_usersCreationAttributes } from "./sysm_users";
 
 export {
   SequelizeMeta,
@@ -61,6 +67,9 @@ export {
   mas_sub_district,
   mas_title_name,
   match_protection_plan,
+  person,
+  sysm_roles,
+  sysm_users,
 };
 
 export type {
@@ -104,6 +113,12 @@ export type {
   mas_title_nameCreationAttributes,
   match_protection_planAttributes,
   match_protection_planCreationAttributes,
+  personAttributes,
+  personCreationAttributes,
+  sysm_rolesAttributes,
+  sysm_rolesCreationAttributes,
+  sysm_usersAttributes,
+  sysm_usersCreationAttributes,
 };
 
 export function initModels(sequelize: Sequelize) {
@@ -127,6 +142,9 @@ export function initModels(sequelize: Sequelize) {
   mas_sub_district.initModel(sequelize);
   mas_title_name.initModel(sequelize);
   match_protection_plan.initModel(sequelize);
+  person.initModel(sequelize);
+  sysm_roles.initModel(sequelize);
+  sysm_users.initModel(sequelize);
 
   insurance_applicant.belongsTo(insurance, { as: "insurance", foreignKey: "insurance_id"});
   insurance.hasMany(insurance_applicant, { as: "insurance_applicants", foreignKey: "insurance_id"});
@@ -168,6 +186,16 @@ export function initModels(sequelize: Sequelize) {
   mas_title_name.hasMany(insurance_applicant, { as: "insurance_applicants", foreignKey: "mas_title_name_id"});
   insurance_beneficiary.belongsTo(mas_title_name, { as: "mas_title_name", foreignKey: "mas_title_name_id"});
   mas_title_name.hasMany(insurance_beneficiary, { as: "insurance_beneficiaries", foreignKey: "mas_title_name_id"});
+  person.belongsTo(mas_title_name, { as: "mas_title_name", foreignKey: "mas_title_name_id"});
+  mas_title_name.hasMany(person, { as: "people", foreignKey: "mas_title_name_id"});
+  sysm_users.belongsTo(sysm_roles, { as: "role", foreignKey: "roles_id"});
+  sysm_roles.hasMany(sysm_users, { as: "sysm_users", foreignKey: "roles_id"});
+  person.belongsTo(sysm_users, { as: "user", foreignKey: "user_id"});
+  sysm_users.hasMany(person, { as: "people", foreignKey: "user_id"});
+  person.belongsTo(sysm_users, { as: "created_by_sysm_user", foreignKey: "created_by"});
+  sysm_users.hasMany(person, { as: "created_by_people", foreignKey: "created_by"});
+  person.belongsTo(sysm_users, { as: "updated_by_sysm_user", foreignKey: "updated_by"});
+  sysm_users.hasMany(person, { as: "updated_by_people", foreignKey: "updated_by"});
 
   return {
     SequelizeMeta: SequelizeMeta,
@@ -190,5 +218,8 @@ export function initModels(sequelize: Sequelize) {
     mas_sub_district: mas_sub_district,
     mas_title_name: mas_title_name,
     match_protection_plan: match_protection_plan,
+    person: person,
+    sysm_roles: sysm_roles,
+    sysm_users: sysm_users,
   };
 }

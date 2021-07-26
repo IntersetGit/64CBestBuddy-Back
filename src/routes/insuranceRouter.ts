@@ -1,16 +1,17 @@
 import express from 'express';
 const router = express.Router();
 import insuranceControlles from '../controllers/insuranceControlles';
+import authenticateToken from '../middleware/authenticateToken'
 
 /** เพิ่มแก้ไข ประกัน */
-router.post('/mangeInsurance', insuranceControlles.mangeInsurance);
+router.post('/mangeInsurance', [authenticateToken], insuranceControlles.mangeInsurance);
 /** เรียกข้อมูลประกันทั้งหมด */
 router.post('/getAllInsurance', insuranceControlles.getAllInsurance);
 
 /** ลบข้อมูลประกัน */
-router.post('/delInsurance/:id', insuranceControlles.delInsurance);
+router.post('/delInsurance/:id', [authenticateToken], insuranceControlles.delInsurance);
 
-router.post('/addInsurance', insuranceControlles.addInsurance);
+router.post('/addInsurance', [authenticateToken], insuranceControlles.addInsurance);
 
 /** getbyid ประกัน */
 router.get('/getByIdInsurance/:id', insuranceControlles.getByIdInsurance);

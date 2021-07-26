@@ -131,5 +131,6 @@ const generateAccessToken = async (model: any) => {
 export default {
     loginControllers,
     registerControllers,
-    logoutControllers
+    logoutControllers,
+    refreshTokenControllers
 }

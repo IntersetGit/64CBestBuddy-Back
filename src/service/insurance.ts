@@ -13,9 +13,12 @@ export const addInsuranceService = async (model: insuranceinterface) => {
 
     await insurance.create({
         id,
+        product_code: model.product_code,
         name: model.name,
-        status: 1,
+        status: 0,
         isuse: 1,
+        created_by: model.user_id,
+        created_date: new Date()
     })
     return id
 }

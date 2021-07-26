@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { result } from '../util/index';
+import { result, decodeToken } from '../util/index';
 import {
     addInsuranceService, editInsuranceService, getAllInsuranceService, getByIdInsuranceService, delInsuranceService, createInsuranceService,
     getImagesHeaderInsuranceService, getByInsuranceAndInstallmentService
@@ -20,14 +20,17 @@ import messages from '../messages';
 
 export const mangeInsurance = async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const decode: any = await decodeToken(req.headers['authorization'])
         const model: insuranceinterface = req.body;
+        model.user_id = decode.user_id
 
-        if (model.id) {
-            result(res, await editInsuranceService(model), 201);
-        } else {
-            result(res, await addInsuranceService(model), 201);
+        if (decode.roles_id == "d150a1a7-0c8f-47b8-8e5b-f37322a63896" || "25349e72-c9d3-46cb-b367-cd532e541886") {
+            if (model.id) {
+                result(res, await editInsuranceService(model), 201);
+            } else {
+                result(res, await addInsuranceService(model), 201);
+            }
         }
-
 
     } catch (error) {
         next(error);

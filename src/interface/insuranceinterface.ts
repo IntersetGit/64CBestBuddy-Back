@@ -6,6 +6,7 @@ export interface positionInterface {
 
 export interface insuranceinterface {
     id: string
+    user_id: string
     product_code?: string
     name?: string
     img_header?: string
@@ -18,6 +19,10 @@ export interface insuranceinterface {
     sort?: number
     is_one_price?: number
     mas_insurance_type_id?: string
+    created_by?: string
+    created_date?: Date
+    updated_by?: string
+    updated_date?: Date
 }
 
 export interface insurance_typeInterface {

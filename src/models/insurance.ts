@@ -21,6 +21,10 @@ export interface insuranceAttributes {
   mas_insurance_type_id?: string;
   haed_highlight?: string;
   number_visitors?: number;
+  created_by?: string;
+  created_date?: Date;
+  updated_by?: string;
+  updated_date?: Date;
 }
 
 export type insurancePk = "id";
@@ -43,6 +47,10 @@ export class insurance extends Model<insuranceAttributes, insuranceCreationAttri
   mas_insurance_type_id?: string;
   haed_highlight?: string;
   number_visitors?: number;
+  created_by?: string;
+  created_date?: Date;
+  updated_by?: string;
+  updated_date?: Date;
 
   // insurance hasMany insurance_applicant via insurance_id
   insurance_applicants!: insurance_applicant[];
@@ -168,6 +176,22 @@ export class insurance extends Model<insuranceAttributes, insuranceCreationAttri
       allowNull: true,
       defaultValue: 0,
       comment: "จำนวนผู้เข้าชม"
+    },
+    created_by: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+    created_date: {
+      type: DataTypes.DATE,
+      allowNull: true
+    },
+    updated_by: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+    updated_date: {
+      type: DataTypes.DATE,
+      allowNull: true
     }
   }, {
     sequelize,

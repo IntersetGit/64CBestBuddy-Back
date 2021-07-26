@@ -8,6 +8,7 @@ const messages = {
     errorCancelUser: "ชื่อผู้ใช้ของคุณถูกยกเลิก กรุณาติดต่อเจ้าหน้าที่",
     errorPasswordUser: "รหัสผ่านไม่ถูกต้อง",
     errorIsLogin: "กรุณาเข้าสู่ระบบ หรือติดต่อเจ้าหน้าที่",
+    errorUnauthorized: "ผู้ใช้งานนี้ไม่ได้รับอนุญาติ"
 }
 
 export default messages

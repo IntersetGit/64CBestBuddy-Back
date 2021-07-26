@@ -1,5 +1,12 @@
 import { Request, Response, NextFunction } from 'express'
-import { registerService, updateService, filterUsernameUsersService, delUserService } from '../service/sysm_users';
+import {
+    registerService,
+    updateService,
+    filterUsernameUsersService,
+    delUserService,
+    getByidUserService
+} from '../service/sysm_users';
+import { addRoleService } from '../service/sysm_roles'
 import { createDatPersonService, editDatPersonService, delDatPersonService } from '../service/person';
 import { result, decodeToken, encryptPassword } from '../util/index'
 import { UsersInterface } from '../interface/loginInterface'
@@ -8,7 +15,7 @@ import { sequelize } from "../models";
 import config from '../config'
 
 
-export const mangeUsersAccount = async (req: Request, res: Response, next: NextFunction) => {
+export const mangeUsersAccountControlles = async (req: Request, res: Response, next: NextFunction) => {
     const transaction = await sequelize.transaction();
     try {
         const decode: any = await decodeToken(req.headers['authorization'])
@@ -50,7 +57,7 @@ export const mangeUsersAccount = async (req: Request, res: Response, next: NextF
 
 }
 
-export const delUserAccount = async (req: Request, res: Response, next: NextFunction) => {
+export const delUserAccountControlles = async (req: Request, res: Response, next: NextFunction) => {
     // const transaction = await sequelize.transaction();
     try {
         const decode: any = await decodeToken(req.headers['authorization'])
@@ -77,7 +84,39 @@ export const delUserAccount = async (req: Request, res: Response, next: NextFunc
     }
 }
 
+export const getByidUserAccountControlles = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const decode: any = await decodeToken(req.headers['authorization'])
+        const { id } = req.params
+
+        result(res, await getByidUserService(id))
+    } catch (error) {
+        next(error);
+    }
+}
+
+
+export const addRoleControlles = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const decode: any = await decodeToken(req.headers['authorization'])
+        const { roles_name } = req.body
+
+        if (decode.roles_id != "d150a1a7-0c8f-47b8-8e5b-f37322a63896") {
+            const error: any = new Error(messages.errorUnauthorized);
+            error.statusCode = 401;
+            throw error;
+        }
+
+        result(res, await addRoleService(roles_name))
+
+    } catch (error) {
+        next(error);
+    }
+}
+
 export default {
-    mangeUsersAccount,
-    delUserAccount
+    mangeUsersAccountControlles,
+    delUserAccountControlles,
+    getByidUserAccountControlles,
+    addRoleControlles
 }

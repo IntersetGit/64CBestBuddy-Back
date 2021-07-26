@@ -57,9 +57,26 @@ export const delUserService = async (id: string) => {
     })
 }
 
+export const getByidUserService = async (id: string) => {
+    return await sequelizeStringFindOne(`
+        SELECT su.id
+        ,su.username
+        ,su.email
+        ,(SELECT title_name FROM mas_title_name WHERE id = ps.mas_title_name_id ) AS title_name
+        ,ps.last_name_th
+        ,ps.last_name_en
+        ,(SELECT id FROM sysm_roles WHERE id = su.roles_id) AS role_id
+        ,(SELECT roles_name FROM sysm_roles WHERE id = su.roles_id) AS role
+
+        FROM sysm_users su
+        INNER JOIN person ps ON su.id = ps.user_id
+        WHERE su.isuse = 1 AND su.id = $1`, [id])
+}
+
 export default {
     registerService,
     filterUsernameUsersService,
     updateStatusUsersService,
-    delUserService
+    delUserService,
+    getByidUserService
 }

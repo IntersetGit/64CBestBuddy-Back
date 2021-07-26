@@ -25,7 +25,11 @@ export const addInsuranceService = async (model: insuranceinterface) => {
 
 export const editInsuranceService = async (model: insuranceinterface) => {
     await insurance.update({
-        name: model.name
+        product_code: model.product_code,
+        name: model.name,
+        isuse: model.isuse ?? undefined,
+        updated_by: model.user_id,
+        updated_date: new Date()
     }, { where: { id: model.id } })
 
     return model.id

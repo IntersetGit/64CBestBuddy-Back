@@ -13,10 +13,10 @@ export const registerService = async (model: UsersInterface, transaction: any = 
         username: model.username,
         password: model.password,
         email: model.email,
-        roles_id: model.roles_id,
+        roles_id: "25349e72-c9d3-46cb-b367-cd532e541886",
         isuse: 1,
         status_login: 0,
-        created_by: model.user_id ?? id,
+        created_by: model.user_id ? model.user_id : id,
         created_date: new Date(),
     }, { transaction })
     return id
@@ -43,9 +43,10 @@ export const updateService = async (model: UsersInterface, transaction: any = un
     }, { where: { id: model.id } })
 }
 
-export const updateStatusUsersService = async (id: string) => {
+export const updateStatusUsersService = async (id: string, refresh_token: string) => {
     await sysm_users.update({
         status_login: 1,
+        refresh_token: refresh_token,
         updated_by: id,
         updated_date: new Date()
     }, { where: { id } })
@@ -73,10 +74,15 @@ export const getByidUserService = async (id: string) => {
         WHERE su.isuse = 1 AND su.id = $1`, [id])
 }
 
+export const getByiduserService_ = async (id: string) => {
+    return await sysm_users.findByPk(id)
+}
+
 export default {
     registerService,
     filterUsernameUsersService,
     updateStatusUsersService,
     delUserService,
-    getByidUserService
+    getByidUserService,
+    getByiduserService_
 }

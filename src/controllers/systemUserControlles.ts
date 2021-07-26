@@ -4,7 +4,8 @@ import {
     updateService,
     filterUsernameUsersService,
     delUserService,
-    getByidUserService
+    getByidUserService,
+    getByiduserService_
 } from '../service/sysm_users';
 import { addRoleService } from '../service/sysm_roles'
 import { createDatPersonService, editDatPersonService, delDatPersonService } from '../service/person';
@@ -13,6 +14,7 @@ import { UsersInterface } from '../interface/loginInterface'
 import messages from '../messages/index'
 import { sequelize } from "../models";
 import config from '../config'
+import { checkToken } from '../middleware/refreshToken'
 
 
 export const mangeUsersAccountControlles = async (req: Request, res: Response, next: NextFunction) => {
@@ -27,6 +29,9 @@ export const mangeUsersAccountControlles = async (req: Request, res: Response, n
             error.statusCode = 401;
             throw error;
         }
+        //ดึงข้อมูล user
+        const refresh_token_: any = await getByiduserService_(model.user_id)
+        const token_: any = await checkToken(refresh_token_.refresh_token, decode)
 
         const _res: any = await filterUsernameUsersService(model.username);
 

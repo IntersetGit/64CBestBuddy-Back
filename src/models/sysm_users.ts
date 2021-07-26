@@ -15,6 +15,7 @@ export interface sysm_usersAttributes {
   updated_by?: string;
   updated_date?: Date;
   status_login?: number;
+  refresh_token?: string;
 }
 
 export type sysm_usersPk = "id";
@@ -33,6 +34,7 @@ export class sysm_users extends Model<sysm_usersAttributes, sysm_usersCreationAt
   updated_by?: string;
   updated_date?: Date;
   status_login?: number;
+  refresh_token?: string;
 
   // sysm_users belongsTo sysm_roles via roles_id
   role!: sysm_roles;
@@ -137,6 +139,10 @@ export class sysm_users extends Model<sysm_usersAttributes, sysm_usersCreationAt
       type: DataTypes.SMALLINT,
       allowNull: true,
       comment: "สถานะเข้าระบบ 0 = ยังไม่ได้เข้าระบบ 1 = ใช้งานใในระบบ"
+    },
+    refresh_token: {
+      type: DataTypes.TEXT,
+      allowNull: true
     }
   }, {
     sequelize,

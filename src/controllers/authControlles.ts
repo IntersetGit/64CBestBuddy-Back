@@ -7,6 +7,7 @@ import { filterUsernameUsersService, registerService, updateStatusUsersService }
 import jwt from 'jsonwebtoken'
 import { sequelize } from "../models";
 import { createDatPersonService } from "../service/person";
+import { checkToken } from '../middleware/refreshToken'
 
 let refreshTokens: any = []
 
@@ -46,7 +47,7 @@ export const loginControllers = async (req: Request, res: Response, next: NextFu
         //สร้าง token
         const token = await generateAccessToken(model)
         const refreshToken = await jwt.sign(model, config.JWT_SECRET_REFRESH ?? "");
-        await updateStatusUsersService(model.user_id)
+        await updateStatusUsersService(model.user_id, refreshToken)
         refreshTokens.push(refreshToken)
         result(res, {
             token,
@@ -127,6 +128,7 @@ const generateAccessToken = async (model: any) => {
         expiresIn: "30m"
     });
 }
+
 
 export default {
     loginControllers,

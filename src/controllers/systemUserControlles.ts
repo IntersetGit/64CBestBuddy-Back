@@ -94,7 +94,7 @@ export const delUserAccountControlles = async (req: Request, res: Response, next
 export const getByidUserAccountControlles = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const decode: any = await decodeToken(req.headers['authorization'])
-        const { id } = req.query
+        const { id } = req.params
 
         result(res, await getByidUserService(id))
     } catch (error) {

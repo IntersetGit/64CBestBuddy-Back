@@ -11,6 +11,7 @@ import { GetRefPolicyRelDataService } from '../service/mas_ref_policy_rel';
 import { GetMasInsuranceTypeService } from '../service/mas_insurance_type';
 import { GetMasAgeRangeDataService } from '../service/mas_age_range';
 import { GetMasInstallmentDataService } from '../service/mas_installment';
+import { getAllSysmRolesService } from '../service/sysm_roles'
 import { result } from '../util/index';
 
 /** เรียกข้อมูล คำนำหน้าชื่อ */
@@ -188,6 +189,17 @@ export const GetMasterInsurance = async (req: Request, res: Response, next: Next
 }
 
 
+export const GetSysmRoles = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+
+        result(res, await getAllSysmRolesService())
+
+    } catch (error) {
+        next(error);
+    }
+}
+
+
 export default {
     GetNameTiteData,
     GetProvinceData,
@@ -202,5 +214,6 @@ export default {
     GetMasInsuranceTypeData,
     GetMasAgeRangeData,
     GetMasInstallmentData,
-    GetMasterInsurance
+    GetMasterInsurance,
+    GetSysmRoles
 }

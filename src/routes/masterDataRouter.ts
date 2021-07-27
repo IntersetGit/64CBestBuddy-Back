@@ -29,5 +29,9 @@ router.get('/GetAllApiMasterData', masterDataControlles.GetAllApiMasterData)
 router.get('/GetMasterInsurance', masterDataControlles.GetMasterInsurance)
 
 
+/** ----------- จัดการผู้ใช้งาน-------------- */
+router.get('/GetSysmRoles', masterDataControlles.GetSysmRoles)
+
+
 
 export default router;

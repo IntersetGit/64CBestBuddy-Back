@@ -5,7 +5,8 @@ import {
     filterUsernameUsersService,
     delUserService,
     getByidUserService,
-    getByiduserService_
+    getByiduserService_,
+    getAllusersService
 } from '../service/sysm_users';
 import { addRoleService } from '../service/sysm_roles'
 import { createDatPersonService, editDatPersonService, delDatPersonService } from '../service/person';
@@ -15,8 +16,9 @@ import messages from '../messages/index'
 import { sequelize } from "../models";
 import config from '../config'
 import { checkToken } from '../middleware/refreshToken'
+import paginate from 'express-paginate'
 
-
+/**--------------------จัดการผู้ใช้งานระบบ----------------------------- */
 export const mangeUsersAccountControlles = async (req: Request, res: Response, next: NextFunction) => {
     const transaction = await sequelize.transaction();
     try {
@@ -75,7 +77,7 @@ export const delUserAccountControlles = async (req: Request, res: Response, next
         }
 
         if (id) {
-            await delDatPersonService(id)
+            // await delDatPersonService(id)
             await delUserService(id)
 
             // await transaction.commit();
@@ -92,9 +94,31 @@ export const delUserAccountControlles = async (req: Request, res: Response, next
 export const getByidUserAccountControlles = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const decode: any = await decodeToken(req.headers['authorization'])
-        const { id } = req.params
+        const { id } = req.query
 
         result(res, await getByidUserService(id))
+    } catch (error) {
+        next(error);
+    }
+}
+
+
+export const getAllUsersControlles = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const decode: any = await decodeToken(req.headers['authorization'])
+        const { search, limit = 10, page = 1 }: any = req.query
+
+        const getAllusers: any = await getAllusersService(search, limit);
+        const itemcount = getAllusers.count;
+        const pagecount = Math.ceil(itemcount / limit);
+
+        result(res, {
+            result: getAllusers.data,
+            itemcount,
+            pagecount,
+            page: paginate.getArrayPages(req)(pagecount, pagecount, page)
+        })
+
     } catch (error) {
         next(error);
     }
@@ -118,6 +142,11 @@ export const addRoleControlles = async (req: Request, res: Response, next: NextF
         next(error);
     }
 }
+
+
+
+
+/** ------------------- จัดการกลุ่มผู้ใช้งาน  --------------------- */
 
 export default {
     mangeUsersAccountControlles,

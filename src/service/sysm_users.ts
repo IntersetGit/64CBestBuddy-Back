@@ -13,7 +13,7 @@ export const registerService = async (model: UsersInterface, transaction: any = 
         username: model.username,
         password: model.password,
         email: model.email,
-        roles_id: "25349e72-c9d3-46cb-b367-cd532e541886",
+        roles_id: model.roles_id,
         isuse: 1,
         status_login: 0,
         created_by: model.user_id ? model.user_id : id,
@@ -46,19 +46,19 @@ export const updateService = async (model: UsersInterface, transaction: any = un
 export const updateStatusUsersService = async (id: string, refresh_token: string) => {
     await sysm_users.update({
         status_login: 1,
-        refresh_token: refresh_token,
+        refresh_token: undefined,
         updated_by: id,
         updated_date: new Date()
     }, { where: { id } })
 }
 
 export const delUserService = async (id: string) => {
-    await sysm_users.destroy({
-        where: { id }
-    })
+    await sysm_users.update({
+        isuse: 2
+    }, { where: { id } })
 }
 
-export const getByidUserService = async (id: string) => {
+export const getByidUserService = async (id: any) => {
     return await sequelizeStringFindOne(`
         SELECT su.id
         ,su.username
@@ -74,6 +74,54 @@ export const getByidUserService = async (id: string) => {
         WHERE su.isuse = 1 AND su.id = $1`, [id])
 }
 
+
+export const getAllusersService = async (search: any, limit: any) => {
+    let sql = `
+        SELECT su.id
+        ,su.username
+        ,su.email
+        ,(SELECT title_name FROM mas_title_name WHERE id = ps.mas_title_name_id ) AS title_name
+        ,ps.last_name_th
+        ,ps.last_name_en
+        ,(SELECT id FROM sysm_roles WHERE id = su.roles_id) AS role_id
+        ,(SELECT roles_name FROM sysm_roles WHERE id = su.roles_id) AS role
+
+        FROM sysm_users su
+        INNER JOIN person ps ON su.id = ps.user_id
+        WHERE su.isuse = 1`
+
+    let sql_count = `
+    SELECT COUNT(su.id) AS count
+
+        FROM sysm_users su
+        INNER JOIN person ps ON su.id = ps.user_id
+        WHERE su.isuse = 1`
+
+    if (search) {
+        sql += ` AND su.username LIKE '%${search}%'
+        OR su.email LIKE '%${search}%'
+        OR ps.last_name_th LIKE '%${search}%'
+        OR ps.last_name_en LIKE '%${search}%' 
+        OR (SELECT roles_name FROM sysm_roles WHERE id = su.roles_id) LIKE '%${search}%' `
+
+        sql_count += ` AND su.username LIKE '%${search}%'
+        OR su.email LIKE '%${search}%'
+        OR ps.last_name_th LIKE '%${search}%'
+        OR ps.last_name_en LIKE '%${search}%' 
+        OR (SELECT roles_name FROM sysm_roles WHERE id = su.roles_id) LIKE '%${search}%'`
+    }
+
+    sql += ` LIMIT ${limit} `
+
+    const result_count: any = await sequelizeString(sql_count)
+    const count: number = result_count.length > 0 ? Number(result_count[0].count) : 0
+    return {
+        data: await sequelizeString(sql),
+        count
+    }
+
+}
+
 export const getByiduserService_ = async (id: string) => {
     return await sysm_users.findByPk(id)
 }
@@ -84,5 +132,6 @@ export default {
     updateStatusUsersService,
     delUserService,
     getByidUserService,
-    getByiduserService_
+    getByiduserService_,
+    getAllusersService
 }

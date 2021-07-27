@@ -35,14 +35,6 @@ export const mangeUsersAccountControlles = async (req: Request, res: Response, n
         // const refresh_token_: any = await getByiduserService_(model.user_id)
         // const token_: any = await checkToken(refresh_token_.refresh_token, decode)
 
-        const _res: any = await filterUsernameUsersService(model.username);
-
-        if (_res) {
-            const error: any = new Error(messages.errorRegister);
-            error.statusCode = config.STATUS_CODE_ERROR;
-            throw error;
-        }
-
         if (model.id) {
             await updateService(model)
             await editDatPersonService(model)

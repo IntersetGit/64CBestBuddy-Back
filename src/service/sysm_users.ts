@@ -35,11 +35,9 @@ export const filterUsernameUsersService = async (username: string) => {
 export const updateService = async (model: UsersInterface, transaction: any = undefined) => {
     await sysm_users.update({
         username: model.username,
-        password: model.password,
         email: model.email,
         roles_id: model.roles_id,
         isuse: 1,
-        status_login: 1,
     }, { where: { id: model.id } })
 }
 

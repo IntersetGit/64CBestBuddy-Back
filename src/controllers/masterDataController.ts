@@ -12,6 +12,7 @@ import { GetMasInsuranceTypeService } from '../service/mas_insurance_type';
 import { GetMasAgeRangeDataService } from '../service/mas_age_range';
 import { GetMasInstallmentDataService } from '../service/mas_installment';
 import { getAllSysmRolesService } from '../service/sysm_roles'
+import { decodeToken } from '../util/index'
 import { result } from '../util/index';
 
 /** เรียกข้อมูล คำนำหน้าชื่อ */
@@ -191,7 +192,7 @@ export const GetMasterInsurance = async (req: Request, res: Response, next: Next
 
 export const GetSysmRoles = async (req: Request, res: Response, next: NextFunction) => {
     try {
-
+        const decode: any = await decodeToken(req.headers['authorization'])
         result(res, await getAllSysmRolesService())
 
     } catch (error) {

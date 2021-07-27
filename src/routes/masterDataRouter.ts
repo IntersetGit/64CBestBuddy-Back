@@ -1,6 +1,7 @@
 import express from 'express';
 const router = express.Router();
 import masterDataControlles from '../controllers/masterDataController';
+import authenticateToken from '../middleware/authenticateToken'
 
 /** เรียกจังหวัด */
 router.get('/GetProvinceData', masterDataControlles.GetProvinceData);
@@ -30,7 +31,7 @@ router.get('/GetMasterInsurance', masterDataControlles.GetMasterInsurance)
 
 
 /** ----------- จัดการผู้ใช้งาน-------------- */
-router.get('/GetSysmRoles', masterDataControlles.GetSysmRoles)
+router.get('/GetSysmRoles', [authenticateToken], masterDataControlles.GetSysmRoles)
 
 
 

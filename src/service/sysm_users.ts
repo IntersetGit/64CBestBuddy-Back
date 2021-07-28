@@ -64,6 +64,9 @@ export const getByidUserService = async (id: any) => {
         ,(SELECT title_name FROM mas_title_name WHERE id = ps.mas_title_name_id ) AS title_name
         ,ps.first_name_th
         ,ps.last_name_th
+        ,ps.tel
+        ,ps.id_card
+        ,ps.birthday
         ,(SELECT id FROM sysm_roles WHERE id = su.roles_id) AS role_id
         ,(SELECT roles_name FROM sysm_roles WHERE id = su.roles_id) AS role
 
@@ -81,6 +84,9 @@ export const getAllusersService = async (search: any, limit: any) => {
         ,(SELECT title_name FROM mas_title_name WHERE id = ps.mas_title_name_id ) AS title_name
         ,ps.first_name_th
         ,ps.last_name_th
+        ,ps.tel
+        ,ps.id_card
+        ,ps.birthday
         ,(SELECT id FROM sysm_roles WHERE id = su.roles_id) AS role_id
         ,(SELECT roles_name FROM sysm_roles WHERE id = su.roles_id) AS role
 
@@ -106,7 +112,7 @@ export const getAllusersService = async (search: any, limit: any) => {
         OR su.email LIKE '%${search}%'
         OR ps.first_name_th LIKE '%${search}%'
         OR ps.last_name_th LIKE '%${search}%' 
-        OR (SELECT roles_name FROM sysm_roles WHERE id = su.roles_id) LIKE '%${search}%'`
+        OR (SELECT roles_name FROM sysm_roles WHERE id = su.roles_id) LIKE '%${search}%' `
     }
 
     sql += ` LIMIT ${limit} `

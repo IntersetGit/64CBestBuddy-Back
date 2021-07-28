@@ -44,6 +44,7 @@ export interface UsersInterface {
     gender?: number,
     birthday?: string,
     id_card?: string,
+    tel?: string;
     passport_number?: string,
     insurance_code?: string,
     created_by: string,

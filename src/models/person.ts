@@ -13,10 +13,11 @@ export interface personAttributes {
   last_name_en?: string;
   nick_name_th?: string;
   nick_name_en?: string;
+  birthday?: string;
   email?: string;
   gender?: number;
-  birthday?: string;
   id_card?: string;
+  tel?: string;
   passport_number?: string;
   insurance_code?: string;
   created_by: string;
@@ -39,10 +40,11 @@ export class person extends Model<personAttributes, personCreationAttributes> im
   last_name_en?: string;
   nick_name_th?: string;
   nick_name_en?: string;
+  birthday?: string;
   email?: string;
   gender?: number;
-  birthday?: string;
   id_card?: string;
+  tel?: string;
   passport_number?: string;
   insurance_code?: string;
   created_by!: string;
@@ -127,6 +129,11 @@ export class person extends Model<personAttributes, personCreationAttributes> im
       allowNull: true,
       comment: "ชื่อเล่น (อังกฤษ)"
     },
+    birthday: {
+      type: DataTypes.DATEONLY,
+      allowNull: true,
+      comment: "วันเกิด"
+    },
     email: {
       type: DataTypes.STRING(100),
       allowNull: true
@@ -136,15 +143,15 @@ export class person extends Model<personAttributes, personCreationAttributes> im
       allowNull: true,
       comment: "เพศ : 1 = ชาย , 2 = หญิง , null = ไม่ระบุ"
     },
-    birthday: {
-      type: DataTypes.DATEONLY,
-      allowNull: true,
-      comment: "วันเกิด"
-    },
     id_card: {
       type: DataTypes.STRING(100),
       allowNull: true,
       comment: "เลขบัตรประชาชน"
+    },
+    tel: {
+      type: DataTypes.STRING(100),
+      allowNull: true,
+      comment: "เบอร์ติดต่อ"
     },
     passport_number: {
       type: DataTypes.STRING(100),

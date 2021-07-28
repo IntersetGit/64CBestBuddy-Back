@@ -57,7 +57,6 @@ export const mangeUsersAccountControlles = async (req: Request, res: Response, n
 }
 
 export const delUserAccountControlles = async (req: Request, res: Response, next: NextFunction) => {
-    // const transaction = await sequelize.transaction();
     try {
         const decode: any = await decodeToken(req.headers['authorization'])
         const { id } = req.params
@@ -69,16 +68,12 @@ export const delUserAccountControlles = async (req: Request, res: Response, next
         }
 
         if (id) {
-            // await delDatPersonService(id)
             await delUserService(id)
-
-            // await transaction.commit();
             result(res, id)
         }
 
 
     } catch (error) {
-        // if (transaction) await transaction.rollback();
         next(error);
     }
 }
@@ -116,6 +111,7 @@ export const getAllUsersControlles = async (req: Request, res: Response, next: N
     }
 }
 
+/** ------------------- จัดการกลุ่มผู้ใช้งาน  --------------------- */
 
 export const addRoleControlles = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -134,11 +130,6 @@ export const addRoleControlles = async (req: Request, res: Response, next: NextF
         next(error);
     }
 }
-
-
-
-
-/** ------------------- จัดการกลุ่มผู้ใช้งาน  --------------------- */
 
 export default {
     mangeUsersAccountControlles,

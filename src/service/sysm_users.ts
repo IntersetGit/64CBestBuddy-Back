@@ -89,7 +89,7 @@ export const getAllusersService = async (search: any, limit: any) => {
         WHERE su.isuse = 1`
 
     let sql_count = `
-    SELECT COUNT(su.id) AS count
+        SELECT COUNT(su.id) AS count
 
         FROM sysm_users su
         INNER JOIN person ps ON su.id = ps.user_id

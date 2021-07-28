@@ -79,8 +79,8 @@ export const getAllusersService = async (search: any, limit: any) => {
         ,su.username
         ,su.email
         ,(SELECT title_name FROM mas_title_name WHERE id = ps.mas_title_name_id ) AS title_name
+        ,ps.first_name_th
         ,ps.last_name_th
-        ,ps.last_name_en
         ,(SELECT id FROM sysm_roles WHERE id = su.roles_id) AS role_id
         ,(SELECT roles_name FROM sysm_roles WHERE id = su.roles_id) AS role
 
@@ -98,14 +98,14 @@ export const getAllusersService = async (search: any, limit: any) => {
     if (search) {
         sql += ` AND su.username LIKE '%${search}%'
         OR su.email LIKE '%${search}%'
-        OR ps.last_name_th LIKE '%${search}%'
-        OR ps.last_name_en LIKE '%${search}%' 
+        OR ps.first_name_th LIKE '%${search}%'
+        OR ps.last_name_th LIKE '%${search}%' 
         OR (SELECT roles_name FROM sysm_roles WHERE id = su.roles_id) LIKE '%${search}%' `
 
         sql_count += ` AND su.username LIKE '%${search}%'
         OR su.email LIKE '%${search}%'
-        OR ps.last_name_th LIKE '%${search}%'
-        OR ps.last_name_en LIKE '%${search}%' 
+        OR ps.first_name_th LIKE '%${search}%'
+        OR ps.last_name_th LIKE '%${search}%' 
         OR (SELECT roles_name FROM sysm_roles WHERE id = su.roles_id) LIKE '%${search}%'`
     }
 

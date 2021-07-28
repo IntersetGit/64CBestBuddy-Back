@@ -100,7 +100,8 @@ export const refreshTokenControllers = async (req: Request, res: Response, next:
     try {
         const { token } = req.body
         if (!token) res.sendStatus(401)
-        if (!refreshTokens.includes(token)) res.sendStatus(403)
+
+        if (config.NODE_ENV == "production") if (!refreshTokens.includes(token)) res.sendStatus(403)
         jwt.verify(token, config.JWT_SECRET_REFRESH ?? "", async (err: any, _res: any) => {
             if (err) res.sendStatus(403)
             const _model = {

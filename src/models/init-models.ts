@@ -190,6 +190,8 @@ export function initModels(sequelize: Sequelize) {
   mas_title_name.hasMany(person, { as: "people", foreignKey: "mas_title_name_id"});
   sysm_users.belongsTo(sysm_roles, { as: "role", foreignKey: "roles_id"});
   sysm_roles.hasMany(sysm_users, { as: "sysm_users", foreignKey: "roles_id"});
+  insurance.belongsTo(sysm_users, { as: "user", foreignKey: "user_id"});
+  sysm_users.hasMany(insurance, { as: "insurances", foreignKey: "user_id"});
   person.belongsTo(sysm_users, { as: "user", foreignKey: "user_id"});
   sysm_users.hasMany(person, { as: "people", foreignKey: "user_id"});
   person.belongsTo(sysm_users, { as: "created_by_sysm_user", foreignKey: "created_by"});

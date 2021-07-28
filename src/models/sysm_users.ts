@@ -1,5 +1,6 @@
 import * as Sequelize from 'sequelize';
 import { DataTypes, Model, Optional } from 'sequelize';
+import type { insurance, insuranceId } from './insurance';
 import type { person, personId } from './person';
 import type { sysm_roles, sysm_rolesId } from './sysm_roles';
 
@@ -41,6 +42,18 @@ export class sysm_users extends Model<sysm_usersAttributes, sysm_usersCreationAt
   getRole!: Sequelize.BelongsToGetAssociationMixin<sysm_roles>;
   setRole!: Sequelize.BelongsToSetAssociationMixin<sysm_roles, sysm_rolesId>;
   createRole!: Sequelize.BelongsToCreateAssociationMixin<sysm_roles>;
+  // sysm_users hasMany insurance via user_id
+  insurances!: insurance[];
+  getInsurances!: Sequelize.HasManyGetAssociationsMixin<insurance>;
+  setInsurances!: Sequelize.HasManySetAssociationsMixin<insurance, insuranceId>;
+  addInsurance!: Sequelize.HasManyAddAssociationMixin<insurance, insuranceId>;
+  addInsurances!: Sequelize.HasManyAddAssociationsMixin<insurance, insuranceId>;
+  createInsurance!: Sequelize.HasManyCreateAssociationMixin<insurance>;
+  removeInsurance!: Sequelize.HasManyRemoveAssociationMixin<insurance, insuranceId>;
+  removeInsurances!: Sequelize.HasManyRemoveAssociationsMixin<insurance, insuranceId>;
+  hasInsurance!: Sequelize.HasManyHasAssociationMixin<insurance, insuranceId>;
+  hasInsurances!: Sequelize.HasManyHasAssociationsMixin<insurance, insuranceId>;
+  countInsurances!: Sequelize.HasManyCountAssociationsMixin;
   // sysm_users hasMany person via user_id
   people!: person[];
   getPeople!: Sequelize.HasManyGetAssociationsMixin<person>;

@@ -4,6 +4,7 @@ import type { insurance_applicant, insurance_applicantId } from './insurance_app
 import type { insurance_mas_plan, insurance_mas_planId } from './insurance_mas_plan';
 import type { insurance_mas_protection, insurance_mas_protectionId } from './insurance_mas_protection';
 import type { mas_insurance_type, mas_insurance_typeId } from './mas_insurance_type';
+import type { sysm_users, sysm_usersId } from './sysm_users';
 
 export interface insuranceAttributes {
   id: string;
@@ -21,6 +22,7 @@ export interface insuranceAttributes {
   mas_insurance_type_id?: string;
   haed_highlight?: string;
   number_visitors?: number;
+  user_id?: string;
   created_by?: string;
   created_date?: Date;
   updated_by?: string;
@@ -47,6 +49,7 @@ export class insurance extends Model<insuranceAttributes, insuranceCreationAttri
   mas_insurance_type_id?: string;
   haed_highlight?: string;
   number_visitors?: number;
+  user_id?: string;
   created_by?: string;
   created_date?: Date;
   updated_by?: string;
@@ -93,6 +96,11 @@ export class insurance extends Model<insuranceAttributes, insuranceCreationAttri
   getMas_insurance_type!: Sequelize.BelongsToGetAssociationMixin<mas_insurance_type>;
   setMas_insurance_type!: Sequelize.BelongsToSetAssociationMixin<mas_insurance_type, mas_insurance_typeId>;
   createMas_insurance_type!: Sequelize.BelongsToCreateAssociationMixin<mas_insurance_type>;
+  // insurance belongsTo sysm_users via user_id
+  user!: sysm_users;
+  getUser!: Sequelize.BelongsToGetAssociationMixin<sysm_users>;
+  setUser!: Sequelize.BelongsToSetAssociationMixin<sysm_users, sysm_usersId>;
+  createUser!: Sequelize.BelongsToCreateAssociationMixin<sysm_users>;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof insurance {
     insurance.init({
@@ -177,6 +185,15 @@ export class insurance extends Model<insuranceAttributes, insuranceCreationAttri
       defaultValue: 0,
       comment: "จำนวนผู้เข้าชม"
     },
+    user_id: {
+      type: DataTypes.STRING(100),
+      allowNull: true,
+      comment: "รหัสผู้สร้างประกัน",
+      references: {
+        model: 'sysm_users',
+        key: 'id'
+      }
+    },
     created_by: {
       type: DataTypes.STRING(100),
       allowNull: true
@@ -219,6 +236,13 @@ export class insurance extends Model<insuranceAttributes, insuranceCreationAttri
         using: "BTREE",
         fields: [
           { name: "mas_insurance_type_id" },
+        ]
+      },
+      {
+        name: "sysm_users_ibfk_2",
+        using: "BTREE",
+        fields: [
+          { name: "user_id" },
         ]
       },
     ]

@@ -62,7 +62,7 @@ export const getByidUserService = async (id: any) => {
         ,su.username
         ,su.email
         ,(SELECT title_name FROM mas_title_name WHERE id = ps.mas_title_name_id ) AS title_name
-        ,ps.last_name_th
+        ,ps.first_name_th
         ,ps.last_name_en
         ,(SELECT id FROM sysm_roles WHERE id = su.roles_id) AS role_id
         ,(SELECT roles_name FROM sysm_roles WHERE id = su.roles_id) AS role

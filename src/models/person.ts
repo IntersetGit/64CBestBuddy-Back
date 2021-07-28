@@ -13,6 +13,7 @@ export interface personAttributes {
   last_name_en?: string;
   nick_name_th?: string;
   nick_name_en?: string;
+  email?: string;
   gender?: number;
   birthday?: string;
   id_card?: string;
@@ -38,6 +39,7 @@ export class person extends Model<personAttributes, personCreationAttributes> im
   last_name_en?: string;
   nick_name_th?: string;
   nick_name_en?: string;
+  email?: string;
   gender?: number;
   birthday?: string;
   id_card?: string;
@@ -124,6 +126,10 @@ export class person extends Model<personAttributes, personCreationAttributes> im
       type: DataTypes.STRING(100),
       allowNull: true,
       comment: "ชื่อเล่น (อังกฤษ)"
+    },
+    email: {
+      type: DataTypes.STRING(100),
+      allowNull: true
     },
     gender: {
       type: DataTypes.SMALLINT,

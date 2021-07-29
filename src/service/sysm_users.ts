@@ -74,6 +74,10 @@ export const getByidUserService = async (id: any) => {
         ,ps.insurance_code
         ,(SELECT id FROM sysm_roles WHERE id = su.roles_id) AS role_id
         ,(SELECT roles_name FROM sysm_roles WHERE id = su.roles_id) AS role
+        ,su.created_by
+        ,su.created_date
+        ,su.updated_by
+        ,su.updated_date
 
         FROM sysm_users su
         INNER JOIN person ps ON su.id = ps.user_id

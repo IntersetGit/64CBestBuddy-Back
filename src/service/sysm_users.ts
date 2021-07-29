@@ -61,12 +61,17 @@ export const getByidUserService = async (id: any) => {
         SELECT su.id
         ,su.username
         ,su.email
+        ,su.isuse
         ,(SELECT title_name FROM mas_title_name WHERE id = ps.mas_title_name_id ) AS title_name
         ,ps.first_name_th
         ,ps.last_name_th
+        ,ps.nick_name_th
         ,ps.tel
         ,ps.id_card
         ,ps.birthday
+        ,ps.gender
+        ,ps.passport_number
+        ,ps.insurance_code
         ,(SELECT id FROM sysm_roles WHERE id = su.roles_id) AS role_id
         ,(SELECT roles_name FROM sysm_roles WHERE id = su.roles_id) AS role
 
@@ -81,12 +86,17 @@ export const getAllusersService = async (search: any, limit: any) => {
         SELECT su.id
         ,su.username
         ,su.email
+        ,su.isuse
         ,(SELECT title_name FROM mas_title_name WHERE id = ps.mas_title_name_id ) AS title_name
         ,ps.first_name_th
         ,ps.last_name_th
+        ,ps.nick_name_th
         ,ps.tel
         ,ps.id_card
         ,ps.birthday
+        ,ps.gender
+        ,ps.passport_number
+        ,ps.insurance_code
         ,(SELECT id FROM sysm_roles WHERE id = su.roles_id) AS role_id
         ,(SELECT roles_name FROM sysm_roles WHERE id = su.roles_id) AS role
 

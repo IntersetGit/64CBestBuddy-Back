@@ -26,11 +26,6 @@ export const mangeUsersAccountControlles = async (req: Request, res: Response, n
         const model: UsersInterface = req.body
         model.user_id = decode.user_id
 
-        if (decode.roles_id != "d150a1a7-0c8f-47b8-8e5b-f37322a63896") {
-            const error: any = new Error(messages.errorUnauthorized);
-            error.statusCode = 401;
-            throw error;
-        }
         //ดึงข้อมูล user
         // const refresh_token_: any = await getByiduserService_(model.user_id)
         // const token_: any = await checkToken(refresh_token_.refresh_token, decode)

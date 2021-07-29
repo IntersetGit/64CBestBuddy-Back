@@ -33,11 +33,15 @@ export const filterUsernameUsersService = async (username: string) => {
 }
 
 export const updateService = async (model: UsersInterface, transaction: any = undefined) => {
+    const getAllusers: any = await sysm_users.findOne({ where: { id: model.user_id } })
+
     await sysm_users.update({
-        username: model.username,
-        email: model.email,
-        roles_id: model.roles_id,
+        username: model.username == null && "" ? getAllusers.username : model.username,
+        email: model.email == null && "" ? getAllusers.email : model.email,
+        roles_id: model.roles_id == null && "" ? getAllusers.email : model.email,
         isuse: 1,
+        updated_by: model.user_id,
+        updated_date: new Date()
     }, { where: { id: model.id } })
 }
 

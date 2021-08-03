@@ -8,6 +8,7 @@ import type { sysm_users, sysm_usersId } from './sysm_users';
 
 export interface insuranceAttributes {
   id: string;
+  code_id?: string;
   product_code?: string;
   name?: string;
   img_header?: string;
@@ -19,6 +20,7 @@ export interface insuranceAttributes {
   isuse?: number;
   sort?: number;
   is_one_price?: number;
+  insurance_category_id?: any;
   mas_insurance_type_id?: string;
   haed_highlight?: string;
   number_visitors?: number;
@@ -35,6 +37,7 @@ export type insuranceCreationAttributes = Optional<insuranceAttributes, insuranc
 
 export class insurance extends Model<insuranceAttributes, insuranceCreationAttributes> implements insuranceAttributes {
   id!: string;
+  code_id?: string;
   product_code?: string;
   name?: string;
   img_header?: string;
@@ -46,6 +49,7 @@ export class insurance extends Model<insuranceAttributes, insuranceCreationAttri
   isuse?: number;
   sort?: number;
   is_one_price?: number;
+  insurance_category_id?: any;
   mas_insurance_type_id?: string;
   haed_highlight?: string;
   number_visitors?: number;
@@ -109,6 +113,11 @@ export class insurance extends Model<insuranceAttributes, insuranceCreationAttri
       allowNull: false,
       primaryKey: true
     },
+    code_id: {
+      type: DataTypes.STRING(100),
+      allowNull: true,
+      comment: "รหัสประกันของ cigna, falcon"
+    },
     product_code: {
       type: DataTypes.STRING(100),
       allowNull: true,
@@ -164,6 +173,11 @@ export class insurance extends Model<insuranceAttributes, insuranceCreationAttri
       type: DataTypes.BOOLEAN,
       allowNull: true,
       comment: "เช็คการส่ง true = gender 0 false = gender 1 or 2"
+    },
+    insurance_category_id: {
+      type: DataTypes.BLOB,
+      allowNull: true,
+      comment: "รหัสหมวดหมู่ประกัน"
     },
     mas_insurance_type_id: {
       type: DataTypes.STRING(100),

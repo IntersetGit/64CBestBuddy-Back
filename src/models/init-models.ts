@@ -7,6 +7,8 @@ import { insurance_applicant } from "./insurance_applicant";
 import type { insurance_applicantAttributes, insurance_applicantCreationAttributes } from "./insurance_applicant";
 import { insurance_beneficiary } from "./insurance_beneficiary";
 import type { insurance_beneficiaryAttributes, insurance_beneficiaryCreationAttributes } from "./insurance_beneficiary";
+import { insurance_category } from "./insurance_category";
+import type { insurance_categoryAttributes, insurance_categoryCreationAttributes } from "./insurance_category";
 import { insurance_mas_plan } from "./insurance_mas_plan";
 import type { insurance_mas_planAttributes, insurance_mas_planCreationAttributes } from "./insurance_mas_plan";
 import { insurance_mas_protection } from "./insurance_mas_protection";
@@ -51,6 +53,7 @@ export {
   insurance,
   insurance_applicant,
   insurance_beneficiary,
+  insurance_category,
   insurance_mas_plan,
   insurance_mas_protection,
   insurance_price,
@@ -81,6 +84,8 @@ export type {
   insurance_applicantCreationAttributes,
   insurance_beneficiaryAttributes,
   insurance_beneficiaryCreationAttributes,
+  insurance_categoryAttributes,
+  insurance_categoryCreationAttributes,
   insurance_mas_planAttributes,
   insurance_mas_planCreationAttributes,
   insurance_mas_protectionAttributes,
@@ -126,6 +131,7 @@ export function initModels(sequelize: Sequelize) {
   insurance.initModel(sequelize);
   insurance_applicant.initModel(sequelize);
   insurance_beneficiary.initModel(sequelize);
+  insurance_category.initModel(sequelize);
   insurance_mas_plan.initModel(sequelize);
   insurance_mas_protection.initModel(sequelize);
   insurance_price.initModel(sequelize);
@@ -204,6 +210,7 @@ export function initModels(sequelize: Sequelize) {
     insurance: insurance,
     insurance_applicant: insurance_applicant,
     insurance_beneficiary: insurance_beneficiary,
+    insurance_category: insurance_category,
     insurance_mas_plan: insurance_mas_plan,
     insurance_mas_protection: insurance_mas_protection,
     insurance_price: insurance_price,

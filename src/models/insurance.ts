@@ -7,6 +7,7 @@ import type { mas_insurance_type, mas_insurance_typeId } from './mas_insurance_t
 import type { sysm_users, sysm_usersId } from './sysm_users';
 
 export interface insuranceAttributes {
+  id_auto: number;
   id: string;
   code_id?: string;
   product_code?: string;
@@ -31,11 +32,12 @@ export interface insuranceAttributes {
   updated_date?: Date;
 }
 
-export type insurancePk = "id";
+export type insurancePk = "id_auto";
 export type insuranceId = insurance[insurancePk];
 export type insuranceCreationAttributes = Optional<insuranceAttributes, insurancePk>;
 
 export class insurance extends Model<insuranceAttributes, insuranceCreationAttributes> implements insuranceAttributes {
+  id_auto!: number;
   id!: string;
   code_id?: string;
   product_code?: string;
@@ -108,10 +110,15 @@ export class insurance extends Model<insuranceAttributes, insuranceCreationAttri
 
   static initModel(sequelize: Sequelize.Sequelize): typeof insurance {
     insurance.init({
-    id: {
-      type: DataTypes.STRING(100),
+    id_auto: {
+      autoIncrement: true,
+      type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
+    },
+    id: {
+      type: DataTypes.STRING(100),
+      allowNull: false
     },
     code_id: {
       type: DataTypes.STRING(100),
@@ -234,7 +241,7 @@ export class insurance extends Model<insuranceAttributes, insuranceCreationAttri
         unique: true,
         using: "BTREE",
         fields: [
-          { name: "id" },
+          { name: "id_auto" },
         ]
       },
       {
@@ -257,6 +264,13 @@ export class insurance extends Model<insuranceAttributes, insuranceCreationAttri
         using: "BTREE",
         fields: [
           { name: "user_id" },
+        ]
+      },
+      {
+        name: "id",
+        using: "BTREE",
+        fields: [
+          { name: "id" },
         ]
       },
     ]

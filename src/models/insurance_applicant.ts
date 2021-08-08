@@ -268,13 +268,6 @@ export class insurance_applicant extends Model<insurance_applicantAttributes, in
         ]
       },
       {
-        name: "insurance_id",
-        using: "BTREE",
-        fields: [
-          { name: "insurance_id" },
-        ]
-      },
-      {
         name: "mas_title_name_id",
         using: "BTREE",
         fields: [
@@ -321,6 +314,13 @@ export class insurance_applicant extends Model<insurance_applicantAttributes, in
         using: "BTREE",
         fields: [
           { name: "mas_payer_relation_id" },
+        ]
+      },
+      {
+        name: "insurance_applicant_ibfk_1",
+        using: "BTREE",
+        fields: [
+          { name: "insurance_id" },
         ]
       },
     ]

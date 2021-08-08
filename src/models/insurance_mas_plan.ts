@@ -79,7 +79,7 @@ export class insurance_mas_plan extends Model<insurance_mas_planAttributes, insu
         ]
       },
       {
-        name: "insurance_id",
+        name: "insurance_mas_plan_ibfk_1",
         using: "BTREE",
         fields: [
           { name: "insurance_id" },

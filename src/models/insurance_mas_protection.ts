@@ -79,7 +79,7 @@ export class insurance_mas_protection extends Model<insurance_mas_protectionAttr
         ]
       },
       {
-        name: "insurance_id",
+        name: "insurance_mas_protection_ibfk_1",
         using: "BTREE",
         fields: [
           { name: "insurance_id" },

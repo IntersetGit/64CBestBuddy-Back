@@ -57,6 +57,8 @@ export const getAllInsuranceService = async (model: any) => {
         sql += `AND a.mas_insurance_type_id = '${model.mas_insurance_type_id}' `
     }
 
+    //if(model.)
+
     if (model.order_by == "asc") sql += ` ORDER BY price ASC `
     else if (model.order_by == "desc") sql += ` ORDER BY price DESC `
     else sql += ` ORDER BY a.sort `

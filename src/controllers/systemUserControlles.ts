@@ -23,7 +23,7 @@ export const mangeUsersAccountControlles = async (req: Request, res: Response, n
     const transaction = await sequelize.transaction();
     try {
         const decode: any = await decodeToken(req.headers['authorization'])
-        const model: UsersInterface = req.body
+        const model: any = req.body
         model.user_id = decode.user_id
 
         //ดึงข้อมูล user
@@ -37,7 +37,7 @@ export const mangeUsersAccountControlles = async (req: Request, res: Response, n
 
         } else {
             model.password = await encryptPassword(model.password);
-            model.user_id = await registerService(model, transaction);
+            model.id_user = await registerService(model, transaction);
             await createDatPersonService(model, transaction);
 
             await transaction.commit();

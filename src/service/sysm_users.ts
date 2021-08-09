@@ -33,16 +33,17 @@ export const filterUsernameUsersService = async (username: string) => {
 }
 
 export const updateService = async (model: UsersInterface, transaction: any = undefined) => {
-    const getAllusers: any = await sysm_users.findOne({ where: { id: model.user_id } })
 
-    await sysm_users.update({
-        username: model.username == null && "" ? getAllusers.username : model.username,
-        email: model.email == null && "" ? getAllusers.email : model.email,
-        roles_id: model.roles_id == null && "" ? getAllusers.email : model.email,
+    const _model: any = {
         isuse: 1,
         updated_by: model.user_id,
         updated_date: new Date()
-    }, { where: { id: model.id } })
+    }
+    if (model.username) _model.username = model.username
+    if (model.email) _model.email = model.email
+    if (model.roles_id) _model.roles_id = model.roles_id
+
+    await sysm_users.update(_model, { where: { id: model.id }, transaction })
 }
 
 export const updateStatusUsersService = async (id: string, refresh_token: string) => {
@@ -56,7 +57,7 @@ export const updateStatusUsersService = async (id: string, refresh_token: string
 
 export const delUserService = async (id: string) => {
     await sysm_users.update({
-        isuse: 2
+        isuse: 0
     }, { where: { id } })
 }
 
@@ -66,6 +67,7 @@ export const getByidUserService = async (id: any) => {
         ,su.username
         ,su.email
         ,su.isuse
+        ,ps.mas_title_name_id
         ,(SELECT title_name FROM mas_title_name WHERE id = ps.mas_title_name_id ) AS title_name
         ,ps.first_name_th
         ,ps.last_name_th

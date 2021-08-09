@@ -105,7 +105,7 @@ export const refreshTokenControllers = async (req: Request, res: Response, next:
         jwt.verify(token, config.JWT_SECRET_REFRESH ?? "", async (err: any, _res: any) => {
             if (err) res.sendStatus(403)
             const _model = {
-                user_id: _res.id,
+                user_id: _res.user_id,
                 username: _res.username,
                 roles_id: _res.roles_id,
                 roles_name: _res.roles_name,

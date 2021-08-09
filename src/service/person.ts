@@ -6,11 +6,11 @@ import { v4 as uuid4 } from 'uuid'
 
 initModels(sequelize);
 
-export const createDatPersonService = async (model: UsersInterface, transaction: any = undefined) => {
+export const createDatPersonService = async (model: any, transaction: any = undefined) => {
     const id = uuid4();
     await person.create({
         id,
-        user_id: model.user_id,
+        user_id: model.id_user,
         mas_title_name_id: model.mas_title_name_id,
         first_name_th: model.first_name_th,
         first_name_en: model.first_name_en ?? undefined,
@@ -31,27 +31,28 @@ export const createDatPersonService = async (model: UsersInterface, transaction:
 }
 
 
-export const editDatPersonService = async (model: UsersInterface, transaction: any = undefined) => {
-    const getAllusers: any = await person.findOne({ where: { user_id: model.user_id } })
-
-    await person.update({
-        mas_title_name_id: model.mas_title_name_id,
-        first_name_th: model.first_name_th == null && "" ? getAllusers.first_name_th : model.first_name_th,
-        first_name_en: model.first_name_en == null && "" ? getAllusers.first_name_en : model.first_name_en,
-        last_name_th: model.last_name_th == null && "" ? getAllusers.last_name_th : model.last_name_th,
-        last_name_en: model.last_name_en == null && "" ? getAllusers.last_name_en : model.last_name_en,
-        nick_name_th: model.nick_name_th == null && "" ? getAllusers.nick_name_th : model.nick_name_th,
-        nick_name_en: model.nick_name_en == null && "" ? getAllusers.nick_name_en : model.nick_name_en,
-        gender: model.gender == null && "" ? getAllusers.gender : model.gender,
-        birthday: model.birthday == null && "" ? getAllusers.birthday : model.birthday,
-        email: model.email == null && "" ? getAllusers.email : model.email,
-        id_card: model.id_card == null && "" ? getAllusers.id_card : model.id_card,
-        tel: model.tel == null && "" ? getAllusers.tel : model.tel,
-        passport_number: model.passport_number == null && "" ? getAllusers.passport_number : model.passport_number,
-        insurance_code: model.insurance_code == null && "" ? getAllusers.insurance_code : model.insurance_code,
+export const editDatPersonService = async (model: any, transaction: any = undefined) => {
+    const _model: any = {
         updated_by: model.user_id,
         updated_date: new Date
-    }, { where: { user_id: model.id } })
+    }
+
+    if (model.mas_title_name_id) _model.mas_title_name_id = model.mas_title_name_id
+    if (model.first_name_th) _model.first_name_th = model.first_name_th
+    if (model.first_name_en) _model.first_name_en = model.first_name_en
+    if (model.last_name_th) _model.last_name_th = model.last_name_th
+    if (model.last_name_en) _model.last_name_en = model.last_name_en
+    if (model.nick_name_th) _model.nick_name_th = model.nick_name_th
+    if (model.nick_name_en) _model.nick_name_en = model.nick_name_en
+    if (model.gender) _model.gender = model.gender
+    if (model.birthday) _model.birthday = model.birthday
+    if (model.email) _model.email = model.email
+    if (model.id_card) _model.id_card = model.id_card
+    if (model.tel) _model.tel = model.tel
+    if (model.passport_number) _model.passport_number = model.passport_number
+    if (model.insurance_code) _model.insurance_code = model.insurance_code
+
+    await person.update(_model, { where: { user_id: model.id }, transaction })
 }
 
 export const delDatPersonService = async (id: string) => {

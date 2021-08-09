@@ -57,7 +57,7 @@ export const updateStatusUsersService = async (id: string, refresh_token: string
 
 export const delUserService = async (id: string) => {
     await sysm_users.update({
-        isuse: 2
+        isuse: 0
     }, { where: { id } })
 }
 

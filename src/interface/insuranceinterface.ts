@@ -36,6 +36,7 @@ export interface insurance_typeInterface {
 export interface installmentInterface {
     insurance_type_id: string
     installment_id: string
+    insurance_category_id: string
     name?: string
     sort: number
 }

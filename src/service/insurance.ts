@@ -50,21 +50,22 @@ export const getAllInsuranceService = async (model: any) => {
     AND is_show_price = 1
     LIMIT 1) AS installment_name
     FROM insurance AS a
+    INNER JOIN insurance_category AS irc ON irc.id = a.insurance_category_id
     WHERE a.isuse = 1
     `
 
     if (model.mas_insurance_type_id) {
-        sql += `AND a.mas_insurance_type_id = '${model.mas_insurance_type_id}' `
+        sql += `AND a.mas_insurance_type_id = $2 `
     }
 
-    //if(model.)
+    if (model.insurance_category_id) sql += `AND irc.id = $1`
 
     if (model.order_by == "asc") sql += ` ORDER BY price ASC `
     else if (model.order_by == "desc") sql += ` ORDER BY price DESC `
     else sql += ` ORDER BY a.sort `
 
 
-    return await sequelizeString(sql);
+    return await sequelizeString(sql, [model.insurance_category_id, model.mas_insurance_type_id]);
 }
 
 export const getImagesHeaderInsuranceService = async () => {

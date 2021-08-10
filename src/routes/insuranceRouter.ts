@@ -11,7 +11,7 @@ router.post('/getAllInsurance', insuranceControlles.getAllInsurance);
 /** ลบข้อมูลประกัน */
 router.post('/delInsurance/:id', [authenticateToken], insuranceControlles.delInsurance);
 
-router.post('/addInsurance', [authenticateToken], insuranceControlles.addInsurance);
+router.post('/addInsurance', insuranceControlles.addInsurance);
 
 /** getbyid ประกัน */
 router.get('/getByIdInsurance/:id', insuranceControlles.getByIdInsurance);

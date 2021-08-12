@@ -14,6 +14,8 @@ import { GetMasInstallmentDataService } from '../service/mas_installment';
 import { getAllSysmRolesService } from '../service/sysm_roles'
 import { decodeToken } from '../util/index'
 import { result } from '../util/index';
+import { getAllProvinceService } from '../service/mas_address_province';
+
 
 /** เรียกข้อมูล คำนำหน้าชื่อ */
 export const GetNameTiteData = async (req: Request, res: Response, next: NextFunction) => {
@@ -26,7 +28,7 @@ export const GetNameTiteData = async (req: Request, res: Response, next: NextFun
     }
 }
 
-/** เรีกยข้อมูล จังหวัด */
+/** เรียกข้อมูล จังหวัด */
 export const GetProvinceData = async (req: Request, res: Response, next: NextFunction) => {
     try {
 
@@ -200,6 +202,14 @@ export const GetSysmRoles = async (req: Request, res: Response, next: NextFuncti
     }
 }
 
+/**API ชุดใหม่ */
+export const GetAllProvince = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        result(res, await getAllProvinceService())
+    } catch (error) {
+        next(error);
+    }
+}
 
 export default {
     GetNameTiteData,
@@ -216,5 +226,6 @@ export default {
     GetMasAgeRangeData,
     GetMasInstallmentData,
     GetMasterInsurance,
-    GetSysmRoles
+    GetSysmRoles,
+    GetAllProvince
 }

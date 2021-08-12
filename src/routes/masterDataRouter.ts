@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-import masterDataControlles from '../controllers/masterDataController';
+import masterDataControlles, { GetAllProvince } from '../controllers/masterDataController';
 import authenticateToken from '../middleware/authenticateToken'
 
 /** เรียกจังหวัด */
@@ -33,6 +33,9 @@ router.get('/GetMasterInsurance', masterDataControlles.GetMasterInsurance)
 /** ----------- จัดการผู้ใช้งาน-------------- */
 router.get('/GetSysmRoles', [authenticateToken], masterDataControlles.GetSysmRoles)
 
+/** ----------- ตั้งแต่ตรงนี้ จะเป็น API masterData ชุดใหม่ -------------- */
+/**เรียกใช้จังหวัด */
+router.get('/GetMasterAddress', masterDataControlles.GetAllProvince)
 
 
 export default router;

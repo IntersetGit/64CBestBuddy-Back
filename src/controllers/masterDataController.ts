@@ -203,7 +203,7 @@ export const GetSysmRoles = async (req: Request, res: Response, next: NextFuncti
 }
 
 /**API ชุดใหม่ */
-export const GetAllProvince = async (req: Request, res: Response, next: NextFunction) => {
+export const GetAllAddress = async (req: Request, res: Response, next: NextFunction) => {
     try {
         result(res, await getAllProvinceService())
     } catch (error) {
@@ -227,5 +227,5 @@ export default {
     GetMasInstallmentData,
     GetMasterInsurance,
     GetSysmRoles,
-    GetAllProvince
+    GetAllAddress
 }

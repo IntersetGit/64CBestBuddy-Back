@@ -15,7 +15,6 @@ import { bulkCreateMatchProtectionPlanService, getDataByProtectionIdService } fr
 import { bulkCreateInsurancePriceService, getPriceInsuranceService } from '../service/insurance_price';
 import { getInstallmentByIdInsuranceService } from '../service/mas_installment';
 import { createInsuranceApplicantService } from '../service/insurance_applicant';
-import { createInsuranceBeneficiaryService } from '../service/insurance_beneficiary';
 import messages from '../messages';
 
 export const mangeInsurance = async (req: Request, res: Response, next: NextFunction) => {

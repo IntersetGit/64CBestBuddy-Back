@@ -1,7 +1,6 @@
 import * as Sequelize from 'sequelize';
 import { DataTypes, Model, Optional } from 'sequelize';
 import type { insurance, insuranceId } from './insurance';
-import type { person, personId } from './person';
 import type { sysm_roles, sysm_rolesId } from './sysm_roles';
 
 export interface sysm_usersAttributes {
@@ -10,6 +9,16 @@ export interface sysm_usersAttributes {
   username: string;
   password: string;
   email?: string;
+  mas_prefix_id?: string;
+  first_name?: string;
+  last_name?: string;
+  nick_name?: string;
+  birthday?: string;
+  gender?: number;
+  id_card?: string;
+  tel?: string;
+  passport_number?: string;
+  insurance_code?: string;
   isuse: number;
   created_by?: string;
   created_date?: Date;
@@ -29,6 +38,16 @@ export class sysm_users extends Model<sysm_usersAttributes, sysm_usersCreationAt
   username!: string;
   password!: string;
   email?: string;
+  mas_prefix_id?: string;
+  first_name?: string;
+  last_name?: string;
+  nick_name?: string;
+  birthday?: string;
+  gender?: number;
+  id_card?: string;
+  tel?: string;
+  passport_number?: string;
+  insurance_code?: string;
   isuse!: number;
   created_by?: string;
   created_date?: Date;
@@ -54,42 +73,6 @@ export class sysm_users extends Model<sysm_usersAttributes, sysm_usersCreationAt
   hasInsurance!: Sequelize.HasManyHasAssociationMixin<insurance, insuranceId>;
   hasInsurances!: Sequelize.HasManyHasAssociationsMixin<insurance, insuranceId>;
   countInsurances!: Sequelize.HasManyCountAssociationsMixin;
-  // sysm_users hasMany person via user_id
-  people!: person[];
-  getPeople!: Sequelize.HasManyGetAssociationsMixin<person>;
-  setPeople!: Sequelize.HasManySetAssociationsMixin<person, personId>;
-  addPerson!: Sequelize.HasManyAddAssociationMixin<person, personId>;
-  addPeople!: Sequelize.HasManyAddAssociationsMixin<person, personId>;
-  createPerson!: Sequelize.HasManyCreateAssociationMixin<person>;
-  removePerson!: Sequelize.HasManyRemoveAssociationMixin<person, personId>;
-  removePeople!: Sequelize.HasManyRemoveAssociationsMixin<person, personId>;
-  hasPerson!: Sequelize.HasManyHasAssociationMixin<person, personId>;
-  hasPeople!: Sequelize.HasManyHasAssociationsMixin<person, personId>;
-  countPeople!: Sequelize.HasManyCountAssociationsMixin;
-  // sysm_users hasMany person via created_by
-  created_by_people!: person[];
-  getCreated_by_people!: Sequelize.HasManyGetAssociationsMixin<person>;
-  setCreated_by_people!: Sequelize.HasManySetAssociationsMixin<person, personId>;
-  addCreated_by_person!: Sequelize.HasManyAddAssociationMixin<person, personId>;
-  addCreated_by_people!: Sequelize.HasManyAddAssociationsMixin<person, personId>;
-  createCreated_by_person!: Sequelize.HasManyCreateAssociationMixin<person>;
-  removeCreated_by_person!: Sequelize.HasManyRemoveAssociationMixin<person, personId>;
-  removeCreated_by_people!: Sequelize.HasManyRemoveAssociationsMixin<person, personId>;
-  hasCreated_by_person!: Sequelize.HasManyHasAssociationMixin<person, personId>;
-  hasCreated_by_people!: Sequelize.HasManyHasAssociationsMixin<person, personId>;
-  countCreated_by_people!: Sequelize.HasManyCountAssociationsMixin;
-  // sysm_users hasMany person via updated_by
-  updated_by_people!: person[];
-  getUpdated_by_people!: Sequelize.HasManyGetAssociationsMixin<person>;
-  setUpdated_by_people!: Sequelize.HasManySetAssociationsMixin<person, personId>;
-  addUpdated_by_person!: Sequelize.HasManyAddAssociationMixin<person, personId>;
-  addUpdated_by_people!: Sequelize.HasManyAddAssociationsMixin<person, personId>;
-  createUpdated_by_person!: Sequelize.HasManyCreateAssociationMixin<person>;
-  removeUpdated_by_person!: Sequelize.HasManyRemoveAssociationMixin<person, personId>;
-  removeUpdated_by_people!: Sequelize.HasManyRemoveAssociationsMixin<person, personId>;
-  hasUpdated_by_person!: Sequelize.HasManyHasAssociationMixin<person, personId>;
-  hasUpdated_by_people!: Sequelize.HasManyHasAssociationsMixin<person, personId>;
-  countUpdated_by_people!: Sequelize.HasManyCountAssociationsMixin;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof sysm_users {
     sysm_users.init({
@@ -122,6 +105,56 @@ export class sysm_users extends Model<sysm_usersAttributes, sysm_usersCreationAt
       type: DataTypes.STRING(100),
       allowNull: true,
       comment: "อีเมล"
+    },
+    mas_prefix_id: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      comment: "รหัสคำนำหน้าชื่อ"
+    },
+    first_name: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      comment: "ชื่อจริง"
+    },
+    last_name: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      comment: "นามสกุล "
+    },
+    nick_name: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      comment: "ชื่อเล่น"
+    },
+    birthday: {
+      type: DataTypes.DATEONLY,
+      allowNull: true,
+      comment: "วันเกิด"
+    },
+    gender: {
+      type: DataTypes.SMALLINT,
+      allowNull: true,
+      comment: "เพศ : 1 = ชาย , 2 = หญิง , null = ไม่ระบุ"
+    },
+    id_card: {
+      type: DataTypes.STRING(100),
+      allowNull: true,
+      comment: "เลขบัตรประชาชน"
+    },
+    tel: {
+      type: DataTypes.STRING(100),
+      allowNull: true,
+      comment: "เบอร์ติดต่อ"
+    },
+    passport_number: {
+      type: DataTypes.STRING(100),
+      allowNull: true,
+      comment: "เลขหนังสือเดินทาง"
+    },
+    insurance_code: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      comment: "รหัสตัวแทนประกัน"
     },
     isuse: {
       type: DataTypes.SMALLINT,

@@ -1,6 +1,5 @@
 import * as Sequelize from 'sequelize';
 import { DataTypes, Model, Optional } from 'sequelize';
-import type { insurance_applicant, insurance_applicantId } from './insurance_applicant';
 import type { insurance_mas_plan, insurance_mas_planId } from './insurance_mas_plan';
 import type { insurance_mas_protection, insurance_mas_protectionId } from './insurance_mas_protection';
 import type { mas_insurance_type, mas_insurance_typeId } from './mas_insurance_type';
@@ -61,18 +60,6 @@ export class insurance extends Model<insuranceAttributes, insuranceCreationAttri
   updated_by?: string;
   updated_date?: Date;
 
-  // insurance hasMany insurance_applicant via insurance_id
-  insurance_applicants!: insurance_applicant[];
-  getInsurance_applicants!: Sequelize.HasManyGetAssociationsMixin<insurance_applicant>;
-  setInsurance_applicants!: Sequelize.HasManySetAssociationsMixin<insurance_applicant, insurance_applicantId>;
-  addInsurance_applicant!: Sequelize.HasManyAddAssociationMixin<insurance_applicant, insurance_applicantId>;
-  addInsurance_applicants!: Sequelize.HasManyAddAssociationsMixin<insurance_applicant, insurance_applicantId>;
-  createInsurance_applicant!: Sequelize.HasManyCreateAssociationMixin<insurance_applicant>;
-  removeInsurance_applicant!: Sequelize.HasManyRemoveAssociationMixin<insurance_applicant, insurance_applicantId>;
-  removeInsurance_applicants!: Sequelize.HasManyRemoveAssociationsMixin<insurance_applicant, insurance_applicantId>;
-  hasInsurance_applicant!: Sequelize.HasManyHasAssociationMixin<insurance_applicant, insurance_applicantId>;
-  hasInsurance_applicants!: Sequelize.HasManyHasAssociationsMixin<insurance_applicant, insurance_applicantId>;
-  countInsurance_applicants!: Sequelize.HasManyCountAssociationsMixin;
   // insurance hasMany insurance_mas_plan via insurance_id
   insurance_mas_plans!: insurance_mas_plan[];
   getInsurance_mas_plans!: Sequelize.HasManyGetAssociationsMixin<insurance_mas_plan>;

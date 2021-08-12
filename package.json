@@ -7,7 +7,7 @@
     "dev": "nodemon ./bin/server.ts",
     "build": "rm -rf build && sucrase ./src -d ./build --transforms typescript,imports",
     "start:dev": "npm run build && nodemon ./build/bin/server.js",
-    "up-models": "sequelize-auto -o './src/models' -d diabetes_bestbuddy -h diabetescru.com -u diabetes_bestbuddy -p 3306 -x kk5OujlZtA -e mysql -l ts"
+    "up-models": "sequelize-auto -o './src/models' -d diabetes_insurance -h diabetescru.com -u diabetes_bestbuddy -p 3306 -x kk5OujlZtA -e mysql -l ts"
   },
   "author": "",
   "license": "ISC",

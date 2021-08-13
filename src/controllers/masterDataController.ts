@@ -3,7 +3,7 @@ import { GetNameTitleDataService } from '../service/mas_name_title';
 import { GetProviceDataService } from '../service/mas_province';
 import { GetDistrictDataService } from '../service/mas_district';
 import { GetSubDistrictDataService } from '../service/mas_sub_district';
-import { GetBeneficiaryRelationDataService } from '../service/mas_beneficiary_relation';
+import { GetBeneficiaryRelationDataService } from '../service/mas_beneficiary_relationship';
 import { GetMaritalStatusDataService } from '../service/mas_marital_status';
 import { GetOccupationDataService } from '../service/mas_occupation';
 import { GetPayerRelationDataService } from '../service/mas_payer_relation';
@@ -16,7 +16,10 @@ import { decodeToken } from '../util/index'
 import { result } from '../util/index';
 import { GetAllProvinceService } from '../service/mas_address_province';
 import { GetAllDistrictService } from '../service/mas_address_district';
-import { GetAllSubDistrictService } from '../service/mas_address_sub_district'
+import { GetAllSubDistrictService } from '../service/mas_address_sub_district';
+import { GetmasterPrefixService } from '../service/mas_prefix';
+import { GetTaxdeductionDataService } from '../service/mas_taxdeduction';
+import { GetTypeCardNumberDataService } from '../service/mas_type_card_number';
 
 
 /** เรียกข้อมูล คำนำหน้าชื่อ */
@@ -221,6 +224,27 @@ export const GetAllAddress = async (req: Request, res: Response, next: NextFunct
     }
 }
 
+/**API DATA ชุดใหม่ */
+export const GetAllData = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const GetAllPrefix = await GetmasterPrefixService()
+        const GetAllOccupation = await GetOccupationDataService()
+        const GetAllBeneficiaryRelationship = await GetBeneficiaryRelationDataService()
+        const GetAllTaxdeduction = await GetAllSubDistrictService()
+        const GetAllTypeCardNumber = await GetTaxdeductionDataService()
+
+        result(res, {
+            GetAllPrefix,
+            GetAllOccupation,
+            GetAllBeneficiaryRelationship,
+            GetAllTaxdeduction,
+            GetAllTypeCardNumber,
+        })
+    } catch (error) {
+        next(error);
+    }
+}
+
 export default {
     GetNameTiteData,
     GetProvinceData,
@@ -237,5 +261,6 @@ export default {
     GetMasInstallmentData,
     GetMasterInsurance,
     GetSysmRoles,
-    GetAllAddress
+    GetAllAddress,
+    GetAllData
 }

@@ -1,10 +1,10 @@
 import * as Sequelize from 'sequelize';
 import { DataTypes, Model, Optional } from 'sequelize';
+import type { mas_address_district, mas_address_districtId } from './mas_address_district';
 
 export interface mas_address_sub_districtAttributes {
   id: number;
-  sub_district_id: string;
-  district_id: string;
+  district_id: number;
   sub_district_name_en: string;
   sub_district_name_th: string;
   postal_code: string;
@@ -18,14 +18,18 @@ export type mas_address_sub_districtCreationAttributes = Optional<mas_address_su
 
 export class mas_address_sub_district extends Model<mas_address_sub_districtAttributes, mas_address_sub_districtCreationAttributes> implements mas_address_sub_districtAttributes {
   id!: number;
-  sub_district_id!: string;
-  district_id!: string;
+  district_id!: number;
   sub_district_name_en!: string;
   sub_district_name_th!: string;
   postal_code!: string;
   code_cigna?: string;
   code_falcon?: string;
 
+  // mas_address_sub_district belongsTo mas_address_district via district_id
+  district!: mas_address_district;
+  getDistrict!: Sequelize.BelongsToGetAssociationMixin<mas_address_district>;
+  setDistrict!: Sequelize.BelongsToSetAssociationMixin<mas_address_district, mas_address_districtId>;
+  createDistrict!: Sequelize.BelongsToCreateAssociationMixin<mas_address_district>;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof mas_address_sub_district {
     mas_address_sub_district.init({
@@ -35,15 +39,14 @@ export class mas_address_sub_district extends Model<mas_address_sub_districtAttr
       allowNull: false,
       primaryKey: true
     },
-    sub_district_id: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-      comment: "รหัสหลักตำบล"
-    },
     district_id: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.INTEGER,
       allowNull: false,
-      comment: "ไอดี อำเภอ\/เขต"
+      comment: "ไอดี อำเภอ\/เขต",
+      references: {
+        model: 'mas_address_district',
+        key: 'id'
+      }
     },
     sub_district_name_en: {
       type: DataTypes.STRING(255),
@@ -81,6 +84,13 @@ export class mas_address_sub_district extends Model<mas_address_sub_districtAttr
         using: "BTREE",
         fields: [
           { name: "id" },
+        ]
+      },
+      {
+        name: "district_id",
+        using: "BTREE",
+        fields: [
+          { name: "district_id" },
         ]
       },
     ]

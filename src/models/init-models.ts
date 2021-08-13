@@ -140,6 +140,8 @@ export function initModels(sequelize: Sequelize) {
   insurance_mas_plan.hasMany(match_protection_plan, { as: "match_protection_plans", foreignKey: "mas_plan_id"});
   match_protection_plan.belongsTo(insurance_mas_protection, { as: "mas_protection", foreignKey: "mas_protection_id"});
   insurance_mas_protection.hasMany(match_protection_plan, { as: "match_protection_plans", foreignKey: "mas_protection_id"});
+  mas_address_sub_district.belongsTo(mas_address_district, { as: "district", foreignKey: "district_id"});
+  mas_address_district.hasMany(mas_address_sub_district, { as: "mas_address_sub_districts", foreignKey: "district_id"});
   mas_address_district.belongsTo(mas_address_province, { as: "provicne", foreignKey: "provicne_id"});
   mas_address_province.hasMany(mas_address_district, { as: "mas_address_districts", foreignKey: "provicne_id"});
   insurance_price.belongsTo(mas_age_range, { as: "mas_age_range", foreignKey: "mas_age_range_id"});

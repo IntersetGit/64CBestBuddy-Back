@@ -4,8 +4,6 @@ import type { mas_address_district, mas_address_districtId } from './mas_address
 
 export interface mas_address_provinceAttributes {
   id: number;
-  add_id?: string;
-  provicne_code?: string;
   provicne_name_en: string;
   provicne_name_th: string;
   code_cigna?: string;
@@ -18,8 +16,6 @@ export type mas_address_provinceCreationAttributes = Optional<mas_address_provin
 
 export class mas_address_province extends Model<mas_address_provinceAttributes, mas_address_provinceCreationAttributes> implements mas_address_provinceAttributes {
   id!: number;
-  add_id?: string;
-  provicne_code?: string;
   provicne_name_en!: string;
   provicne_name_th!: string;
   code_cigna?: string;
@@ -45,16 +41,6 @@ export class mas_address_province extends Model<mas_address_provinceAttributes, 
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
-    },
-    add_id: {
-      type: DataTypes.STRING(255),
-      allowNull: true,
-      comment: "รหัสหลักจังหวัด"
-    },
-    provicne_code: {
-      type: DataTypes.STRING(255),
-      allowNull: true,
-      comment: "ชื้อจังหวัด ภาษาไทย"
     },
     provicne_name_en: {
       type: DataTypes.STRING(255),
@@ -87,13 +73,6 @@ export class mas_address_province extends Model<mas_address_provinceAttributes, 
         using: "BTREE",
         fields: [
           { name: "id" },
-        ]
-      },
-      {
-        name: "provicne_code",
-        using: "BTREE",
-        fields: [
-          { name: "provicne_code" },
         ]
       },
     ]

@@ -1,4 +1,6 @@
 import type { Sequelize, Model } from "sequelize";
+import { SequelizeMeta } from "./SequelizeMeta";
+import type { SequelizeMetaAttributes, SequelizeMetaCreationAttributes } from "./SequelizeMeta";
 import { insurance } from "./insurance";
 import type { insuranceAttributes, insuranceCreationAttributes } from "./insurance";
 import { insurance_category } from "./insurance_category";
@@ -39,6 +41,7 @@ import { sysm_users } from "./sysm_users";
 import type { sysm_usersAttributes, sysm_usersCreationAttributes } from "./sysm_users";
 
 export {
+  SequelizeMeta,
   insurance,
   insurance_category,
   insurance_mas_plan,
@@ -61,6 +64,8 @@ export {
 };
 
 export type {
+  SequelizeMetaAttributes,
+  SequelizeMetaCreationAttributes,
   insuranceAttributes,
   insuranceCreationAttributes,
   insurance_categoryAttributes,
@@ -102,6 +107,7 @@ export type {
 };
 
 export function initModels(sequelize: Sequelize) {
+  SequelizeMeta.initModel(sequelize);
   insurance.initModel(sequelize);
   insurance_category.initModel(sequelize);
   insurance_mas_plan.initModel(sequelize);
@@ -134,6 +140,8 @@ export function initModels(sequelize: Sequelize) {
   insurance_mas_plan.hasMany(match_protection_plan, { as: "match_protection_plans", foreignKey: "mas_plan_id"});
   match_protection_plan.belongsTo(insurance_mas_protection, { as: "mas_protection", foreignKey: "mas_protection_id"});
   insurance_mas_protection.hasMany(match_protection_plan, { as: "match_protection_plans", foreignKey: "mas_protection_id"});
+  mas_address_district.belongsTo(mas_address_province, { as: "provicne", foreignKey: "provicne_id"});
+  mas_address_province.hasMany(mas_address_district, { as: "mas_address_districts", foreignKey: "provicne_id"});
   insurance_price.belongsTo(mas_age_range, { as: "mas_age_range", foreignKey: "mas_age_range_id"});
   mas_age_range.hasMany(insurance_price, { as: "insurance_prices", foreignKey: "mas_age_range_id"});
   insurance_price.belongsTo(mas_installment, { as: "mas_installment", foreignKey: "mas_installment_id"});
@@ -146,6 +154,7 @@ export function initModels(sequelize: Sequelize) {
   sysm_users.hasMany(insurance, { as: "insurances", foreignKey: "user_id"});
 
   return {
+    SequelizeMeta: SequelizeMeta,
     insurance: insurance,
     insurance_category: insurance_category,
     insurance_mas_plan: insurance_mas_plan,

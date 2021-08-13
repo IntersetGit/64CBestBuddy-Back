@@ -3,8 +3,8 @@ import { DataTypes, Model, Optional } from 'sequelize';
 
 export interface mas_address_sub_districtAttributes {
   id: number;
-  sub_district_id?: string;
-  district_id: number;
+  sub_district_id: string;
+  district_id: string;
   sub_district_name_en: string;
   sub_district_name_th: string;
   postal_code: string;
@@ -18,8 +18,8 @@ export type mas_address_sub_districtCreationAttributes = Optional<mas_address_su
 
 export class mas_address_sub_district extends Model<mas_address_sub_districtAttributes, mas_address_sub_districtCreationAttributes> implements mas_address_sub_districtAttributes {
   id!: number;
-  sub_district_id?: string;
-  district_id!: number;
+  sub_district_id!: string;
+  district_id!: string;
   sub_district_name_en!: string;
   sub_district_name_th!: string;
   postal_code!: string;
@@ -37,18 +37,18 @@ export class mas_address_sub_district extends Model<mas_address_sub_districtAttr
     },
     sub_district_id: {
       type: DataTypes.STRING(255),
-      allowNull: true,
+      allowNull: false,
       comment: "รหัสหลักตำบล"
     },
     district_id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING(255),
       allowNull: false,
       comment: "ไอดี อำเภอ\/เขต"
     },
     sub_district_name_en: {
       type: DataTypes.STRING(255),
       allowNull: false,
-      comment: "ชื้อตาราง ตำบล\/แขวง ภาษาอังกฤษ\t"
+      comment: "ชื้อตาราง ตำบล\/แขวง ภาษาอังกฤษ"
     },
     sub_district_name_th: {
       type: DataTypes.STRING(255),
@@ -81,13 +81,6 @@ export class mas_address_sub_district extends Model<mas_address_sub_districtAttr
         using: "BTREE",
         fields: [
           { name: "id" },
-        ]
-      },
-      {
-        name: "district_id_ibfk_1",
-        using: "BTREE",
-        fields: [
-          { name: "district_id" },
         ]
       },
     ]

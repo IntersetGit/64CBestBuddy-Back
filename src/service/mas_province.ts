@@ -1,4 +1,4 @@
-import { initModels, mas_province } from "../models/init-models";
+import { initModels } from "../models/init-models";
 import { sequelize } from '../models';
 import config from '../config'
 import { sequelizeString, sequelizeStringFindOne } from '../util';
@@ -7,8 +7,9 @@ import { v4 as uuidv4 } from 'uuid';
 
 initModels(sequelize);
 
-export const GetProviceDataService = async() => {
-    return await mas_province.findAll();
+export const GetProviceDataService = async () => {
+    // return await mas_province.findAll();
+    return []
 }
 
 export default {

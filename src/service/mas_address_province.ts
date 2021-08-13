@@ -8,12 +8,12 @@ import { insuranceinterface, insurance_typeInterface, installmentInterface } fro
 
 initModels(sequelize);
 
-export const getAllProvinceService = async () => {
+export const GetAllProvinceService = async () => {
     return await mas_address_province.findAll()
 }
 
 export default {
-    getAllProvinceService
+    GetAllProvinceService
 }
 
 

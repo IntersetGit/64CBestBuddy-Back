@@ -36,6 +36,8 @@ router.get('/GetSysmRoles', [authenticateToken], masterDataControlles.GetSysmRol
 /** ----------- ตั้งแต่ตรงนี้ จะเป็น API masterData ชุดใหม่ -------------- */
 /**เรียกใช้จังหวัด */
 router.get('/GetMasterAddress', masterDataControlles.GetAllAddress)
+router.get('/GetMasterAllData', masterDataControlles.GetAllData)
+
 
 
 export default router;

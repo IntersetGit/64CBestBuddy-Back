@@ -38,4 +38,5 @@ router.get('/GetSysmRoles', [authenticateToken], masterDataControlles.GetSysmRol
 router.get('/GetMasterAddress', masterDataControlles.GetAllAddress)
 
 
+
 export default router;

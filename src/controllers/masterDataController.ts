@@ -14,7 +14,9 @@ import { GetMasInstallmentDataService } from '../service/mas_installment';
 import { getAllSysmRolesService } from '../service/sysm_roles'
 import { decodeToken } from '../util/index'
 import { result } from '../util/index';
-import { getAllProvinceService } from '../service/mas_address_province';
+import { GetAllProvinceService } from '../service/mas_address_province';
+import { GetAllDistrictService } from '../service/mas_address_district';
+import { GetAllSubDistrictService } from '../service/mas_address_sub_district'
 
 
 /** เรียกข้อมูล คำนำหน้าชื่อ */
@@ -205,7 +207,15 @@ export const GetSysmRoles = async (req: Request, res: Response, next: NextFuncti
 /**API ชุดใหม่ */
 export const GetAllAddress = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        result(res, await getAllProvinceService())
+        const GetAllProvince = await GetAllProvinceService()
+        const GetAllDistrict = await GetAllDistrictService()
+        const GetAllSubDistrict = await GetAllSubDistrictService()
+
+        result(res, {
+            GetAllProvince,
+            GetAllDistrict,
+            GetAllSubDistrict,
+        })
     } catch (error) {
         next(error);
     }

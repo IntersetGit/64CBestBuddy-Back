@@ -7,6 +7,7 @@ export interface mas_prefixAttributes {
   name: string;
   code_cigna?: string;
   code_falcon?: string;
+  isuse?: number;
 }
 
 export type mas_prefixPk = "id";
@@ -19,6 +20,7 @@ export class mas_prefix extends Model<mas_prefixAttributes, mas_prefixCreationAt
   name!: string;
   code_cigna?: string;
   code_falcon?: string;
+  isuse?: number;
 
 
   static initModel(sequelize: Sequelize.Sequelize): typeof mas_prefix {
@@ -46,6 +48,10 @@ export class mas_prefix extends Model<mas_prefixAttributes, mas_prefixCreationAt
       type: DataTypes.STRING(255),
       allowNull: true,
       comment: "รหัส ของ falcon"
+    },
+    isuse: {
+      type: DataTypes.SMALLINT,
+      allowNull: true
     }
   }, {
     sequelize,

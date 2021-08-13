@@ -2,41 +2,46 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    return queryInterface.createTable("mas_address_province", {
+    return queryInterface.createTable("mas_address_sub_district", {
       id: {
         type: Sequelize.INTEGER(11),
         allowNull: false,
         primaryKey: true,
         autoIncrement: true,
       },
-      add_id: {
-        type: Sequelize.STRING(255),
-        allowNull: true,
-        comment: "รหัสหลักจังหวัด"
-      },
-      provicne_code: {
-        type: Sequelize.STRING(255),
-        allowNull: true,
-        comment: "ชื้อจังหวัด ภาษาไทย"
-      },
-      provicne_name_en: {
+      sub_district_id: {
         type: Sequelize.STRING(255),
         allowNull: false,
-        comment: "ชื้อจังหวัด ภาษาอังกฤษ"
+        comment: "รหัสหลักตำบล"
       },
-      provicne_name_th: {
+      district_id: {
         type: Sequelize.STRING(255),
         allowNull: false,
-        comment: "โค้ดจังหวัด"
+        comment: "ไอดี อำเภอ/เขต",
+      },
+      sub_district_name_en: {
+        type: Sequelize.STRING(255),
+        allowNull: false,
+        comment: "ชื้อตาราง ตำบล/แขวง ภาษาอังกฤษ"
+      },
+      sub_district_name_th: {
+        type: Sequelize.STRING(255),
+        allowNull: false,
+        comment: "ชื้อตาราง ตำบล/แขวง ภาษาไทย"
+      },
+      postal_code: {
+        type: Sequelize.STRING(20),
+        allowNull: false,
+        comment: "รหัสไปรษณีย์"
       },
       code_cigna: {
         type: Sequelize.STRING(255),
-        allowNull: false,
+        allowNull: true,
         comment: "รหัส ของ cigna"
       },
       code_falcon: {
         type: Sequelize.STRING(255),
-        allowNull: false,
+        allowNull: true,
         comment: "รหัส ของ falcon"
       },
     })
@@ -44,7 +49,7 @@ module.exports = {
 
   down: async (queryInterface, Sequelize) => {
     return queryInterface.dropTable({
-      tableName: "mas_address_province",
+      tableName: "mas_address_sub_district",
     })
   }
 };

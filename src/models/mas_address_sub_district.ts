@@ -1,6 +1,5 @@
 import * as Sequelize from 'sequelize';
 import { DataTypes, Model, Optional } from 'sequelize';
-import type { mas_address_district, mas_address_districtId } from './mas_address_district';
 
 export interface mas_address_sub_districtAttributes {
   id: number;
@@ -27,11 +26,6 @@ export class mas_address_sub_district extends Model<mas_address_sub_districtAttr
   code_cigna?: string;
   code_falcon?: string;
 
-  // mas_address_sub_district belongsTo mas_address_district via district_id
-  district!: mas_address_district;
-  getDistrict!: Sequelize.BelongsToGetAssociationMixin<mas_address_district>;
-  setDistrict!: Sequelize.BelongsToSetAssociationMixin<mas_address_district, mas_address_districtId>;
-  createDistrict!: Sequelize.BelongsToCreateAssociationMixin<mas_address_district>;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof mas_address_sub_district {
     mas_address_sub_district.init({
@@ -49,11 +43,7 @@ export class mas_address_sub_district extends Model<mas_address_sub_districtAttr
     district_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      comment: "ไอดี อำเภอ\/เขต",
-      references: {
-        model: 'mas_address_district',
-        key: 'district_id'
-      }
+      comment: "ไอดี อำเภอ\/เขต"
     },
     sub_district_name_en: {
       type: DataTypes.STRING(255),

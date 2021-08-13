@@ -126,14 +126,14 @@ export function initModels(sequelize: Sequelize) {
   insurance.hasMany(insurance_mas_plan, { as: "insurance_mas_plans", foreignKey: "insurance_id"});
   insurance_mas_protection.belongsTo(insurance, { as: "insurance", foreignKey: "insurance_id"});
   insurance.hasMany(insurance_mas_protection, { as: "insurance_mas_protections", foreignKey: "insurance_id"});
+  insurance_price.belongsTo(insurance, { as: "insurance", foreignKey: "insurance_id"});
+  insurance.hasMany(insurance_price, { as: "insurance_prices", foreignKey: "insurance_id"});
+  insurance.belongsTo(insurance_category, { as: "insurance_category", foreignKey: "insurance_category_id"});
+  insurance_category.hasMany(insurance, { as: "insurances", foreignKey: "insurance_category_id"});
   match_protection_plan.belongsTo(insurance_mas_plan, { as: "mas_plan", foreignKey: "mas_plan_id"});
   insurance_mas_plan.hasMany(match_protection_plan, { as: "match_protection_plans", foreignKey: "mas_plan_id"});
   match_protection_plan.belongsTo(insurance_mas_protection, { as: "mas_protection", foreignKey: "mas_protection_id"});
   insurance_mas_protection.hasMany(match_protection_plan, { as: "match_protection_plans", foreignKey: "mas_protection_id"});
-  mas_address_sub_district.belongsTo(mas_address_district, { as: "district", foreignKey: "district_id"});
-  mas_address_district.hasMany(mas_address_sub_district, { as: "mas_address_sub_districts", foreignKey: "district_id"});
-  mas_address_district.belongsTo(mas_address_province, { as: "provicne", foreignKey: "provicne_id"});
-  mas_address_province.hasMany(mas_address_district, { as: "mas_address_districts", foreignKey: "provicne_id"});
   insurance_price.belongsTo(mas_age_range, { as: "mas_age_range", foreignKey: "mas_age_range_id"});
   mas_age_range.hasMany(insurance_price, { as: "insurance_prices", foreignKey: "mas_age_range_id"});
   insurance_price.belongsTo(mas_installment, { as: "mas_installment", foreignKey: "mas_installment_id"});

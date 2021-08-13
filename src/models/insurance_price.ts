@@ -1,5 +1,6 @@
 import * as Sequelize from 'sequelize';
 import { DataTypes, Model, Optional } from 'sequelize';
+import type { insurance, insuranceId } from './insurance';
 import type { mas_age_range, mas_age_rangeId } from './mas_age_range';
 import type { mas_installment, mas_installmentId } from './mas_installment';
 
@@ -30,6 +31,11 @@ export class insurance_price extends Model<insurance_priceAttributes, insurance_
   mas_plan_id?: string;
   is_show_price?: number;
 
+  // insurance_price belongsTo insurance via insurance_id
+  insurance!: insurance;
+  getInsurance!: Sequelize.BelongsToGetAssociationMixin<insurance>;
+  setInsurance!: Sequelize.BelongsToSetAssociationMixin<insurance, insuranceId>;
+  createInsurance!: Sequelize.BelongsToCreateAssociationMixin<insurance>;
   // insurance_price belongsTo mas_age_range via mas_age_range_id
   mas_age_range!: mas_age_range;
   getMas_age_range!: Sequelize.BelongsToGetAssociationMixin<mas_age_range>;
@@ -52,7 +58,11 @@ export class insurance_price extends Model<insurance_priceAttributes, insurance_
     insurance_id: {
       type: DataTypes.STRING(100),
       allowNull: true,
-      comment: "รหัสประกัน"
+      comment: "รหัสประกัน",
+      references: {
+        model: 'insurance',
+        key: 'id'
+      }
     },
     mas_installment_id: {
       type: DataTypes.STRING(100),
@@ -123,6 +133,13 @@ export class insurance_price extends Model<insurance_priceAttributes, insurance_
         using: "BTREE",
         fields: [
           { name: "mas_age_range_id" },
+        ]
+      },
+      {
+        name: "insurance_price_ibfk_3",
+        using: "BTREE",
+        fields: [
+          { name: "insurance_id" },
         ]
       },
     ]

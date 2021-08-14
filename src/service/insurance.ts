@@ -36,7 +36,7 @@ export const editInsuranceService = async (model: insuranceinterface) => {
 }
 
 export const getAllInsuranceService = async (model: any) => {
-    let sql = `SELECT a.id , a.name ,  a.img_cover, a.img_header , a.details  , a.mas_insurance_type_id
+    let sql = `SELECT a.id , a.name , a.img_cover, a.img_header , a.details  , a.mas_insurance_type_id
     ,(SELECT name FROM mas_insurance_type WHERE id = a.mas_insurance_type_id) AS mas_insurance_type_name
 
     ,(SELECT IF(a.status = 1, price_sale, price_normal) FROM insurance_price
@@ -76,8 +76,11 @@ export const getImagesHeaderInsuranceService = async () => {
 export const getByIdInsuranceService = async (id: string) => {
     /** เอาอายุที่น้อย และมาก ที่สุดของแต่ละประกันใน subqurey */
     let sql = `
+   
     SELECT 
     a.id
+    ,a.insurance_category_id as category_id 
+    ,irc.name as category_name
     ,a.product_code
     ,a.name
     ,a.img_header
@@ -104,6 +107,7 @@ export const getByIdInsuranceService = async (id: string) => {
     WHERE ip.insurance_id = $1) as age_end
 
     FROM insurance AS a
+    INNER JOIN insurance_category AS irc ON irc.id = a.insurance_category_id
     WHERE a.id = $1`
 
     const result_sql: any = await sequelizeStringFindOne(sql, [id])

@@ -1,7 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import { result } from '../util/index';
 import address from '../data/falcon/address'
-import { initModels, mas_address_province, mas_address_district, mas_address_sub_district } from "../models/init-models";
+import prefixList from '../data/falcon/prefix'
+import occupationList from '../data/falcon/occupation'
+import { initModels, mas_address_province, mas_address_district, mas_address_sub_district, mas_prefix, mas_occupation } from "../models/init-models";
 import { sequelize } from '../models';
 initModels(sequelize);
 import { v4 as uuidv4 } from 'uuid';
@@ -79,6 +81,47 @@ export const demo = async (req: Request, res: Response, next: NextFunction) => {
         next(error);
     }
 }
+
+export const demoPrefix = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+
+        const prefix: any = prefixList.map((e, i) => {
+            return {
+                id: i + 1,
+                name: e.text,
+                code_cigna: null,
+                code_falcon: e.id,
+                isuse: 1,
+            }
+        })
+        // await mas_prefix.bulkCreate(prefix)
+        result(res, { prefix })
+    } catch (error) {
+        next(error);
+    }
+}
+
+export const demoOccupation = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+
+        const occupation: any = occupationList.map((e, i) => {
+            return {
+                id: i + 1,
+                name: e.text,
+                risk_class_falcon: e.riskClass,
+                original_text_falcon: e.originalText,
+                code_cigna: null,
+                code_falcon: e.id,
+            }
+        })
+        // await mas_occupation.bulkCreate(occupation)
+        result(res, { occupation })
+    } catch (error) {
+        next(error);
+    }
+}
 export default {
     demo,
+    demoPrefix,
+    demoOccupation,
 }

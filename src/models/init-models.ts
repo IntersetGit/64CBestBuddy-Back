@@ -150,6 +150,8 @@ export function initModels(sequelize: Sequelize) {
   mas_installment.hasMany(insurance_price, { as: "insurance_prices", foreignKey: "mas_installment_id"});
   insurance.belongsTo(mas_insurance_type, { as: "mas_insurance_type", foreignKey: "mas_insurance_type_id"});
   mas_insurance_type.hasMany(insurance, { as: "insurances", foreignKey: "mas_insurance_type_id"});
+  sysm_users.belongsTo(mas_prefix, { as: "mas_prefix", foreignKey: "mas_prefix_id"});
+  mas_prefix.hasMany(sysm_users, { as: "sysm_users", foreignKey: "mas_prefix_id"});
   sysm_users.belongsTo(sysm_roles, { as: "role", foreignKey: "roles_id"});
   sysm_roles.hasMany(sysm_users, { as: "sysm_users", foreignKey: "roles_id"});
   insurance.belongsTo(sysm_users, { as: "user", foreignKey: "user_id"});

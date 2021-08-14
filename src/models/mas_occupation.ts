@@ -49,12 +49,14 @@ export class mas_occupation extends Model<mas_occupationAttributes, mas_occupati
     code_cigna: {
       type: DataTypes.STRING(255),
       allowNull: true,
-      comment: "รหัส ของ cigna"
+      comment: "รหัส ของ cigna",
+      unique: "code_cigna"
     },
     code_falcon: {
       type: DataTypes.STRING(255),
       allowNull: true,
-      comment: "รหัส ของ falcon"
+      comment: "รหัส ของ falcon",
+      unique: "code_falcon"
     }
   }, {
     sequelize,
@@ -67,6 +69,22 @@ export class mas_occupation extends Model<mas_occupationAttributes, mas_occupati
         using: "BTREE",
         fields: [
           { name: "id" },
+        ]
+      },
+      {
+        name: "code_cigna",
+        unique: true,
+        using: "BTREE",
+        fields: [
+          { name: "code_cigna" },
+        ]
+      },
+      {
+        name: "code_falcon",
+        unique: true,
+        using: "BTREE",
+        fields: [
+          { name: "code_falcon" },
         ]
       },
     ]

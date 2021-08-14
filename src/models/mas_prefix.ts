@@ -1,9 +1,9 @@
 import * as Sequelize from 'sequelize';
 import { DataTypes, Model, Optional } from 'sequelize';
+import type { sysm_users, sysm_usersId } from './sysm_users';
 
 export interface mas_prefixAttributes {
   id: number;
-  prefix_id?: string;
   name: string;
   code_cigna?: string;
   code_falcon?: string;
@@ -16,12 +16,23 @@ export type mas_prefixCreationAttributes = Optional<mas_prefixAttributes, mas_pr
 
 export class mas_prefix extends Model<mas_prefixAttributes, mas_prefixCreationAttributes> implements mas_prefixAttributes {
   id!: number;
-  prefix_id?: string;
   name!: string;
   code_cigna?: string;
   code_falcon?: string;
   isuse?: number;
 
+  // mas_prefix hasMany sysm_users via mas_prefix_id
+  sysm_users!: sysm_users[];
+  getSysm_users!: Sequelize.HasManyGetAssociationsMixin<sysm_users>;
+  setSysm_users!: Sequelize.HasManySetAssociationsMixin<sysm_users, sysm_usersId>;
+  addSysm_user!: Sequelize.HasManyAddAssociationMixin<sysm_users, sysm_usersId>;
+  addSysm_users!: Sequelize.HasManyAddAssociationsMixin<sysm_users, sysm_usersId>;
+  createSysm_user!: Sequelize.HasManyCreateAssociationMixin<sysm_users>;
+  removeSysm_user!: Sequelize.HasManyRemoveAssociationMixin<sysm_users, sysm_usersId>;
+  removeSysm_users!: Sequelize.HasManyRemoveAssociationsMixin<sysm_users, sysm_usersId>;
+  hasSysm_user!: Sequelize.HasManyHasAssociationMixin<sysm_users, sysm_usersId>;
+  hasSysm_users!: Sequelize.HasManyHasAssociationsMixin<sysm_users, sysm_usersId>;
+  countSysm_users!: Sequelize.HasManyCountAssociationsMixin;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof mas_prefix {
     mas_prefix.init({
@@ -31,10 +42,6 @@ export class mas_prefix extends Model<mas_prefixAttributes, mas_prefixCreationAt
       allowNull: false,
       primaryKey: true
     },
-    prefix_id: {
-      type: DataTypes.STRING(255),
-      allowNull: true
-    },
     name: {
       type: DataTypes.STRING(255),
       allowNull: false
@@ -42,12 +49,14 @@ export class mas_prefix extends Model<mas_prefixAttributes, mas_prefixCreationAt
     code_cigna: {
       type: DataTypes.STRING(255),
       allowNull: true,
-      comment: "รหัส ของ cigna"
+      comment: "รหัส ของ cigna",
+      unique: "code_cigna"
     },
     code_falcon: {
       type: DataTypes.STRING(255),
       allowNull: true,
-      comment: "รหัส ของ falcon"
+      comment: "รหัส ของ falcon",
+      unique: "code_falcon"
     },
     isuse: {
       type: DataTypes.SMALLINT,
@@ -64,6 +73,22 @@ export class mas_prefix extends Model<mas_prefixAttributes, mas_prefixCreationAt
         using: "BTREE",
         fields: [
           { name: "id" },
+        ]
+      },
+      {
+        name: "code_cigna",
+        unique: true,
+        using: "BTREE",
+        fields: [
+          { name: "code_cigna" },
+        ]
+      },
+      {
+        name: "code_falcon",
+        unique: true,
+        using: "BTREE",
+        fields: [
+          { name: "code_falcon" },
         ]
       },
     ]

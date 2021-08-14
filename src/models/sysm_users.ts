@@ -1,6 +1,7 @@
 import * as Sequelize from 'sequelize';
 import { DataTypes, Model, Optional } from 'sequelize';
 import type { insurance, insuranceId } from './insurance';
+import type { mas_prefix, mas_prefixId } from './mas_prefix';
 import type { sysm_roles, sysm_rolesId } from './sysm_roles';
 
 export interface sysm_usersAttributes {
@@ -9,7 +10,7 @@ export interface sysm_usersAttributes {
   username: string;
   password: string;
   email?: string;
-  mas_prefix_id?: string;
+  mas_prefix_id?: number;
   first_name?: string;
   last_name?: string;
   nick_name?: string;
@@ -38,7 +39,7 @@ export class sysm_users extends Model<sysm_usersAttributes, sysm_usersCreationAt
   username!: string;
   password!: string;
   email?: string;
-  mas_prefix_id?: string;
+  mas_prefix_id?: number;
   first_name?: string;
   last_name?: string;
   nick_name?: string;
@@ -56,6 +57,11 @@ export class sysm_users extends Model<sysm_usersAttributes, sysm_usersCreationAt
   status_login?: number;
   refresh_token?: string;
 
+  // sysm_users belongsTo mas_prefix via mas_prefix_id
+  mas_prefix!: mas_prefix;
+  getMas_prefix!: Sequelize.BelongsToGetAssociationMixin<mas_prefix>;
+  setMas_prefix!: Sequelize.BelongsToSetAssociationMixin<mas_prefix, mas_prefixId>;
+  createMas_prefix!: Sequelize.BelongsToCreateAssociationMixin<mas_prefix>;
   // sysm_users belongsTo sysm_roles via roles_id
   role!: sysm_roles;
   getRole!: Sequelize.BelongsToGetAssociationMixin<sysm_roles>;
@@ -107,9 +113,13 @@ export class sysm_users extends Model<sysm_usersAttributes, sysm_usersCreationAt
       comment: "อีเมล"
     },
     mas_prefix_id: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.INTEGER,
       allowNull: true,
-      comment: "รหัสคำนำหน้าชื่อ"
+      comment: "รหัสคำนำหน้าชื่อ",
+      references: {
+        model: 'mas_prefix',
+        key: 'id'
+      }
     },
     first_name: {
       type: DataTypes.STRING(255),
@@ -208,6 +218,13 @@ export class sysm_users extends Model<sysm_usersAttributes, sysm_usersCreationAt
         using: "BTREE",
         fields: [
           { name: "roles_id" },
+        ]
+      },
+      {
+        name: "mas_prefix_id_ibfk_2",
+        using: "BTREE",
+        fields: [
+          { name: "mas_prefix_id" },
         ]
       },
     ]

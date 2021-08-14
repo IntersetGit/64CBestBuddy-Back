@@ -7,6 +7,7 @@ import { initModels, mas_address_province, mas_address_district, mas_address_sub
 import { sequelize } from '../models';
 initModels(sequelize);
 import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios';
 
 export const demo = async (req: Request, res: Response, next: NextFunction) => {
     const transaction = await sequelize.transaction();
@@ -120,8 +121,108 @@ export const demoOccupation = async (req: Request, res: Response, next: NextFunc
         next(error);
     }
 }
+
+
+/** -------------------- Falcon api ---------------------------- */
+const gateway_accesstoken: any = {}
+
+export const gatewayToken = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+
+        const { username, password } = req.body
+        const model = {
+            username: "FALCON_TH.admin",
+            password: "Thai!0987"
+        }
+
+        const res_: any = await axios.post('https://sandbox.thai.ebaocloud.com/cas/ebao/v2/json/tickets', {
+            username: model.username,
+            password: model.password
+        })
+
+        gateway_accesstoken.access_token = res_.data.access_token
+
+        console.log(`res_=====>`, res_.data)
+
+        result(res, res_.data)
+    } catch (error) {
+        next(error);
+    }
+}
+
+
+export const grandCode = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+
+        const { username, password } = req.body
+        const model = {
+            username: "1400017",
+            password: "eBao1234"
+        }
+
+        if (!gateway_accesstoken.access_token) {
+            const error: any = new Error('ต้องมี access_token');
+            error.statusCode = 500;
+            throw error;
+        }
+
+        const res__: any = await axios.post('https://sandbox.gw.thai.ebaocloud.com/eBaoTHAI/1.0.0/api/pub/std/utils/grantCode', {
+            username: model.username,
+            password: model.password
+        }, {
+            headers: {
+                Authorization: 'Bearer ' + gateway_accesstoken.access_token
+            }
+        })
+
+        gateway_accesstoken.grand_code = res__.data.data
+
+        console.log(`res__=====>`, res__.data)
+
+        result(res, res__.data)
+    } catch (error) {
+        next(error);
+    }
+}
+
+
+export const createQuotation = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+
+        const model: any = req.body
+        console.log(model);
+
+        const model_: any = {
+            insurerTenantCode: "FALCON_TH",
+
+        }
+
+        const res__: any = await axios.post('https://sandbox.gw.thai.ebaocloud.com/eBaoTHAI/1.0.0/api/pub/std/quotation/create', {
+            username: model.username,
+            password: model.password
+        }, {
+            headers: {
+                Authorization: 'Bearer' + gateway_accesstoken.access_token,
+                grantCode: gateway_accesstoken.grand_code
+            }
+        })
+
+        gateway_accesstoken.grand_code = res__.data.data
+
+        console.log(`res__=====>`, res__.data)
+
+
+        result(res, res__.data)
+    } catch (error) {
+        next(error);
+    }
+}
+
 export default {
     demo,
     demoPrefix,
     demoOccupation,
+    gatewayToken,
+    grandCode,
+    createQuotation
 }

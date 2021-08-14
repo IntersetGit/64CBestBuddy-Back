@@ -9,4 +9,9 @@ router.get('/demo_prefix', demoControlles.demoPrefix);
 router.get('/demo_occupation', demoControlles.demoOccupation);
 
 
+router.get('/gatewayToken', demoControlles.gatewayToken);
+router.get('/grandCode', demoControlles.grandCode);
+router.get('/createQuotation', demoControlles.createQuotation);
+
+
 export default router;

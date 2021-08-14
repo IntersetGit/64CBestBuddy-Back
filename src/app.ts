@@ -17,6 +17,7 @@ import insuranceRouter from './routes/insuranceRouter'
 import systemUserRouter from './routes/systemUserRouter'
 import authRouter from './routes/authRouter'
 import demoRouter from './routes/demoRouter'
+import falconApiRouter from './routes/falconApiRouter'
 
 
 /* config app */
@@ -44,6 +45,7 @@ app.use('/insurance', insuranceRouter);
 app.use('/system', systemUserRouter);
 app.use('/auth', authRouter);
 app.use('/demo', demoRouter);
+app.use('/falcon', falconApiRouter);
 
 
 app.use((req, res, next) => {

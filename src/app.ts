@@ -16,6 +16,7 @@ import masterdataRouter from './routes/masterDataRouter'
 import insuranceRouter from './routes/insuranceRouter'
 import systemUserRouter from './routes/systemUserRouter'
 import authRouter from './routes/authRouter'
+import demoRouter from './routes/demoRouter'
 
 
 /* config app */
@@ -42,6 +43,7 @@ app.use('/masterData', masterdataRouter);
 app.use('/insurance', insuranceRouter);
 app.use('/system', systemUserRouter);
 app.use('/auth', authRouter);
+app.use('/demo', demoRouter);
 
 
 app.use((req, res, next) => {

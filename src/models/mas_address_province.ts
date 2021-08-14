@@ -37,7 +37,6 @@ export class mas_address_province extends Model<mas_address_provinceAttributes, 
   static initModel(sequelize: Sequelize.Sequelize): typeof mas_address_province {
     mas_address_province.init({
     id: {
-      autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
@@ -55,12 +54,14 @@ export class mas_address_province extends Model<mas_address_provinceAttributes, 
     code_cigna: {
       type: DataTypes.STRING(255),
       allowNull: true,
-      comment: "รหัส ของ cigna"
+      comment: "รหัส ของ cigna",
+      unique: "code_cigna"
     },
     code_falcon: {
       type: DataTypes.STRING(255),
       allowNull: true,
-      comment: "รหัส ของ falcon"
+      comment: "รหัส ของ falcon",
+      unique: "code_falcon"
     }
   }, {
     sequelize,
@@ -73,6 +74,22 @@ export class mas_address_province extends Model<mas_address_provinceAttributes, 
         using: "BTREE",
         fields: [
           { name: "id" },
+        ]
+      },
+      {
+        name: "code_cigna",
+        unique: true,
+        using: "BTREE",
+        fields: [
+          { name: "code_cigna" },
+        ]
+      },
+      {
+        name: "code_falcon",
+        unique: true,
+        using: "BTREE",
+        fields: [
+          { name: "code_falcon" },
         ]
       },
     ]

@@ -1,6 +1,5 @@
 import * as Sequelize from 'sequelize';
 import { DataTypes, Model, Optional } from 'sequelize';
-import type { mas_address_district, mas_address_districtId } from './mas_address_district';
 
 export interface mas_address_sub_districtAttributes {
   id: number;
@@ -25,16 +24,15 @@ export class mas_address_sub_district extends Model<mas_address_sub_districtAttr
   code_cigna?: string;
   code_falcon?: string;
 
-  // mas_address_sub_district belongsTo mas_address_district via district_id
-  district!: mas_address_district;
-  getDistrict!: Sequelize.BelongsToGetAssociationMixin<mas_address_district>;
-  setDistrict!: Sequelize.BelongsToSetAssociationMixin<mas_address_district, mas_address_districtId>;
-  createDistrict!: Sequelize.BelongsToCreateAssociationMixin<mas_address_district>;
+  // mas_address_sub_district belongsTo mas_address_sub_district via district_id
+  district!: mas_address_sub_district;
+  getDistrict!: Sequelize.BelongsToGetAssociationMixin<mas_address_sub_district>;
+  setDistrict!: Sequelize.BelongsToSetAssociationMixin<mas_address_sub_district, mas_address_sub_districtId>;
+  createDistrict!: Sequelize.BelongsToCreateAssociationMixin<mas_address_sub_district>;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof mas_address_sub_district {
     mas_address_sub_district.init({
     id: {
-      autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
@@ -44,7 +42,7 @@ export class mas_address_sub_district extends Model<mas_address_sub_districtAttr
       allowNull: false,
       comment: "ไอดี อำเภอ\/เขต",
       references: {
-        model: 'mas_address_district',
+        model: 'mas_address_sub_district',
         key: 'id'
       }
     },
@@ -66,12 +64,14 @@ export class mas_address_sub_district extends Model<mas_address_sub_districtAttr
     code_cigna: {
       type: DataTypes.STRING(255),
       allowNull: true,
-      comment: "รหัส ของ cigna"
+      comment: "รหัส ของ cigna",
+      unique: "code_cigna"
     },
     code_falcon: {
       type: DataTypes.STRING(255),
       allowNull: true,
-      comment: "รหัส ของ falcon"
+      comment: "รหัส ของ falcon",
+      unique: "code_falcon"
     }
   }, {
     sequelize,
@@ -84,6 +84,22 @@ export class mas_address_sub_district extends Model<mas_address_sub_districtAttr
         using: "BTREE",
         fields: [
           { name: "id" },
+        ]
+      },
+      {
+        name: "code_cigna",
+        unique: true,
+        using: "BTREE",
+        fields: [
+          { name: "code_cigna" },
+        ]
+      },
+      {
+        name: "code_falcon",
+        unique: true,
+        using: "BTREE",
+        fields: [
+          { name: "code_falcon" },
         ]
       },
       {

@@ -69,8 +69,8 @@ export const GetSubDistrictData = async (req: Request, res: Response, next: Next
 
 export const GetBeneficiaryRelationData = async (req: Request, res: Response, next: NextFunction) => {
     try {
-
-        result(res, await GetBeneficiaryRelationDataService());
+        const { search }: any = req.query
+        result(res, await GetBeneficiaryRelationDataService(search));
 
     } catch (error) {
         next(error);
@@ -93,8 +93,8 @@ export const GetMaritalStatusData = async (req: Request, res: Response, next: Ne
 
 export const GetOccupationData = async (req: Request, res: Response, next: NextFunction) => {
     try {
-
-        result(res, await GetOccupationDataService());
+        const { search }: any = req.query
+        result(res, await GetOccupationDataService(search));
 
     } catch (error) {
         next(error);
@@ -161,10 +161,11 @@ export const GetMasInstallmentData = async (req: Request, res: Response, next: N
 
 export const GetAllApiMasterData = async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const { search }: any = req.query
         const GetNameTitle = await GetNameTitleDataService()
-        const BeneficiaryRelation = await GetBeneficiaryRelationDataService()
+        const BeneficiaryRelation = await GetBeneficiaryRelationDataService(search)
         const MaritalStatus = await GetMaritalStatusDataService()
-        const Occupation = await GetOccupationDataService()
+        const Occupation = await GetOccupationDataService(search)
         const PayerRelation = await GetPayerRelationDataService()
         const RefPolicyRel = await GetRefPolicyRelDataService()
 
@@ -210,9 +211,10 @@ export const GetSysmRoles = async (req: Request, res: Response, next: NextFuncti
 /**API ชุดใหม่ */
 export const GetAllAddress = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const GetAllProvince = await GetAllProvinceService()
-        const GetAllDistrict = await GetAllDistrictService()
-        const GetAllSubDistrict = await GetAllSubDistrictService()
+        const { search }: any = req.query
+        const GetAllProvince = await GetAllProvinceService(search)
+        const GetAllDistrict = await GetAllDistrictService(search)
+        const GetAllSubDistrict = await GetAllSubDistrictService(search)
 
         result(res, {
             GetAllProvince,
@@ -227,11 +229,12 @@ export const GetAllAddress = async (req: Request, res: Response, next: NextFunct
 /**API DATA ชุดใหม่ */
 export const GetAllData = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const GetAllPrefix = await GetmasterPrefixService()
-        const GetAllOccupation = await GetOccupationDataService()
-        const GetAllBeneficiaryRelationship = await GetBeneficiaryRelationDataService()
-        const GetAllTaxdeduction = await GetAllSubDistrictService()
-        const GetAllTypeCardNumber = await GetTaxdeductionDataService()
+        const { search }: any = req.query
+        const GetAllPrefix = await GetmasterPrefixService(search)
+        const GetAllOccupation = await GetOccupationDataService(search)
+        const GetAllBeneficiaryRelationship = await GetBeneficiaryRelationDataService(search)
+        const GetAllTaxdeduction = await GetTaxdeductionDataService(search)
+        const GetAllTypeCardNumber = await GetTypeCardNumberDataService(search)
 
         result(res, {
             GetAllPrefix,

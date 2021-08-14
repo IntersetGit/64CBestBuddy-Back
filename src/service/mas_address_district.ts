@@ -8,8 +8,21 @@ import { insuranceinterface, insurance_typeInterface, installmentInterface } fro
 
 initModels(sequelize);
 
-export const GetAllDistrictService = async () => {
-    return await mas_address_district.findAll()
+export const GetAllDistrictService = async (search: any) => {
+    let SQL = `SELECT * FROM mas_address_district
+    WHERE id is NOT NULL `
+
+    if (search) {
+        if (search === 'falcon') {
+            SQL += ` AND code_falcon  is NOT NULL `
+        } else if (search === 'cigna') {
+            SQL += ` AND code_cigna  is NOT NULL `
+        } else {
+            SQL += ` AND id is NULL `
+        }
+    }
+    return await sequelizeString(SQL)
+    // return await mas_address_district.findAll()
 }
 
 export default {

@@ -1,6 +1,4 @@
 import type { Sequelize, Model } from "sequelize";
-import { SequelizeMeta } from "./SequelizeMeta";
-import type { SequelizeMetaAttributes, SequelizeMetaCreationAttributes } from "./SequelizeMeta";
 import { insurance } from "./insurance";
 import type { insuranceAttributes, insuranceCreationAttributes } from "./insurance";
 import { insurance_category } from "./insurance_category";
@@ -41,7 +39,6 @@ import { sysm_users } from "./sysm_users";
 import type { sysm_usersAttributes, sysm_usersCreationAttributes } from "./sysm_users";
 
 export {
-  SequelizeMeta,
   insurance,
   insurance_category,
   insurance_mas_plan,
@@ -64,8 +61,6 @@ export {
 };
 
 export type {
-  SequelizeMetaAttributes,
-  SequelizeMetaCreationAttributes,
   insuranceAttributes,
   insuranceCreationAttributes,
   insurance_categoryAttributes,
@@ -107,7 +102,6 @@ export type {
 };
 
 export function initModels(sequelize: Sequelize) {
-  SequelizeMeta.initModel(sequelize);
   insurance.initModel(sequelize);
   insurance_category.initModel(sequelize);
   insurance_mas_plan.initModel(sequelize);
@@ -132,10 +126,6 @@ export function initModels(sequelize: Sequelize) {
   insurance.hasMany(insurance_mas_plan, { as: "insurance_mas_plans", foreignKey: "insurance_id"});
   insurance_mas_protection.belongsTo(insurance, { as: "insurance", foreignKey: "insurance_id"});
   insurance.hasMany(insurance_mas_protection, { as: "insurance_mas_protections", foreignKey: "insurance_id"});
-  insurance_price.belongsTo(insurance, { as: "insurance", foreignKey: "insurance_id"});
-  insurance.hasMany(insurance_price, { as: "insurance_prices", foreignKey: "insurance_id"});
-  insurance.belongsTo(insurance_category, { as: "insurance_category", foreignKey: "insurance_category_id"});
-  insurance_category.hasMany(insurance, { as: "insurances", foreignKey: "insurance_category_id"});
   match_protection_plan.belongsTo(insurance_mas_plan, { as: "mas_plan", foreignKey: "mas_plan_id"});
   insurance_mas_plan.hasMany(match_protection_plan, { as: "match_protection_plans", foreignKey: "mas_plan_id"});
   match_protection_plan.belongsTo(insurance_mas_protection, { as: "mas_protection", foreignKey: "mas_protection_id"});
@@ -158,7 +148,6 @@ export function initModels(sequelize: Sequelize) {
   sysm_users.hasMany(insurance, { as: "insurances", foreignKey: "user_id"});
 
   return {
-    SequelizeMeta: SequelizeMeta,
     insurance: insurance,
     insurance_category: insurance_category,
     insurance_mas_plan: insurance_mas_plan,

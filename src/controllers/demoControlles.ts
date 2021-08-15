@@ -3,7 +3,7 @@ import { result } from '../util/index';
 import address from '../data/falcon/address'
 import prefixList from '../data/falcon/prefix'
 import occupationList from '../data/falcon/occupation'
-import { initModels, mas_address_province, mas_address_district, mas_address_sub_district, mas_prefix, mas_occupation } from "../models/init-models";
+import { initModels, mas_address_province, mas_address_district, mas_address_sub_district, mas_prefix, mas_occupation } from '../models/init-models';
 import { sequelize } from '../models';
 initModels(sequelize);
 import { v4 as uuidv4 } from 'uuid';
@@ -197,9 +197,68 @@ export const createQuotation = async (req: Request, res: Response, next: NextFun
 
         }
 
+        if (!gateway_accesstoken.grand_code && !gateway_accesstoken.access_token) {
+            const error: any = new Error('ต้องมี access_token และ grand_code');
+            error.statusCode = 500;
+            throw error;
+        }
+
         const res__: any = await axios.post('https://sandbox.gw.thai.ebaocloud.com/eBaoTHAI/1.0.0/api/pub/std/quotation/create', {
-            username: model.username,
-            password: model.password
+            insurerTenantCode: model.insurerTenantCode,
+            prdtCode: model.prdtCode,
+            planCode: model.planCode,
+            proposalDate: model.proposalDate,
+            effDate: model.effDate,
+            expDate: model.expDate,
+            referenceNo: model.referenceNo,
+            insureds: model.insureds,
+            policyholder: {
+                isSameAsInsured: model.policyholder.isSameAsInsured,
+                customer: {
+                    customerType: model.policyholder.customer.customerType,
+                    idType: model.policyholder.customer.idType,
+                    idNo: model.policyholder.customer.idNo,
+                    prefix: model.policyholder.customer.prefix,
+                    firstName: model.policyholder.customer.firstName,
+                    lastName: model.policyholder.customer.lastName,
+                    nationality: model.policyholder.customer.nationality,
+                    mobile: model.policyholder.customer.mobile,
+                    telNo: model.policyholder.customer.telNo,
+                    email: model.policyholder.customer.email,
+                    gender: model.policyholder.customer.gender,
+                    occupation: model.policyholder.customer.occupation,
+                    taxNo: model.policyholder.customer.taxNo,
+                    branch: model.policyholder.customer.branch,
+                    address: {
+                        addressType: model.policyholder.customer.address.addressType,
+                        province: model.policyholder.customer.address.province,
+                        district: model.policyholder.customer.address.district,
+                        subDistrict: model.policyholder.customer.address.subDistrict,
+                        postalCode: model.policyholder.customer.address.postalCode,
+                        addressNo: model.policyholder.customer.address.addressNo,
+                        village: model.policyholder.customer.address.village,
+                        alley: model.policyholder.customer.address.alley,
+                        road: model.policyholder.customer.address.road,
+                        moo: model.policyholder.customer.address.moo
+                    },
+                    extInfo: {
+                        infoType: model.policyholder.customer.extInfo.infoType,
+                        relationship: model.policyholder.customer.extInfo.relationship
+                    }
+                },
+            },
+            extInfo: {
+                questionnaire: {
+                    question2: model.extInfo.questionnaire.question2,
+                    question3: model.extInfo.questionnaire.question3,
+                    question4: model.extInfo.questionnaire.question4,
+                    question5: model.extInfo.questionnaire.question5,
+                    question6: model.extInfo.questionnaire.question6,
+                    question1: model.extInfo.questionnaire.question1
+                },
+                taxDeduction: 1
+            }
+
         }, {
             headers: {
                 Authorization: 'Bearer' + gateway_accesstoken.access_token,

@@ -20,6 +20,8 @@ import { GetAllSubDistrictService } from '../service/mas_address_sub_district';
 import { GetmasterPrefixService } from '../service/mas_prefix';
 import { GetTaxdeductionDataService } from '../service/mas_taxdeduction';
 import { GetTypeCardNumberDataService } from '../service/mas_type_card_number';
+import { GetAllInsuranceCategoryService } from '../service/insurance_category';
+import { combineTableNames } from 'sequelize/types/lib/utils';
 
 
 /** เรียกข้อมูล คำนำหน้าชื่อ */
@@ -248,6 +250,15 @@ export const GetAllData = async (req: Request, res: Response, next: NextFunction
     }
 }
 
+export const GetMasterInsuranceCategory = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        result(res, await GetAllInsuranceCategoryService())
+    } catch (error) {
+        next(error);
+    }
+}
+
+
 export default {
     GetNameTiteData,
     GetProvinceData,
@@ -265,5 +276,6 @@ export default {
     GetMasterInsurance,
     GetSysmRoles,
     GetAllAddress,
-    GetAllData
+    GetAllData,
+    GetMasterInsuranceCategory,
 }

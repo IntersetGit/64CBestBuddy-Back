@@ -37,6 +37,7 @@ router.get('/GetSysmRoles', [authenticateToken], masterDataControlles.GetSysmRol
 /**เรียกใช้จังหวัด */
 router.get('/GetMasterAddress', masterDataControlles.GetAllAddress)
 router.get('/GetMasterAllData', masterDataControlles.GetAllData)
+router.get('/GetMasterInsuranceCategory', masterDataControlles.GetMasterInsuranceCategory)
 
 
 

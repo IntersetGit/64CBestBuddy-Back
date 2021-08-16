@@ -130,8 +130,8 @@ export const GetRefPolicyRelData = async (req: Request, res: Response, next: Nex
 /** เรียกข้อมูล ประเภทประกัน */
 export const GetMasInsuranceTypeData = async (req: Request, res: Response, next: NextFunction) => {
     try {
-
-        result(res, await GetMasInsuranceTypeService())
+        const { mas_insurance_type_id }: any = req.query
+        result(res, await GetMasInsuranceTypeService(mas_insurance_type_id))
 
     } catch (error) {
         next(error);
@@ -188,8 +188,9 @@ export const GetAllApiMasterData = async (req: Request, res: Response, next: Nex
 /*  */
 export const GetMasterInsurance = async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const { insurance_category_id }: any = req.query
         result(res, {
-            Type: await GetMasInsuranceTypeService(),
+            Type: await GetMasInsuranceTypeService(insurance_category_id),
             AgeRang: await GetMasAgeRangeDataService(),
             Installment: await GetMasInstallmentDataService(),
         })

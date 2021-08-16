@@ -12,6 +12,8 @@ const config = {
     SERVICE_HOST: process.env.SERVICE_HOST,
     STATUS_CODE_ERROR: Number(process.env.STATUS_CODE_ERROR) || 500,
     STATUS_CODE: Number(process.env.STATUS_CODE) || 200,
+    USERNAME_FALCON: process.env.USERNAME_FALCON,
+    PASSWORD_FALCON: process.env.PASSWORD_FALCON,
 
     DB_USERNAME_DEV: process.env.DB_USERNAME_DEV,
     DB_PASSWORD_DEV: process.env.DB_PASSWORD_DEV,

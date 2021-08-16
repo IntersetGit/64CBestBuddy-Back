@@ -275,8 +275,8 @@ export const createQuotation = async (req: Request, res: Response, next: NextFun
 
 export const getTokenFalcon = async (req: Request, res: Response, next: NextFunction) => {
     try {
-
-        result(res, await getAccesstokenGrandCodeService())
+        const model: any = req.body
+        result(res, await getAccesstokenGrandCodeService(model))
 
     } catch (error) {
         next(error)

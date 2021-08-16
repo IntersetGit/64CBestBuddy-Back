@@ -1,92 +1,146 @@
 import axios from "axios"
+import config from "../config"
 
-const gateway_accesstoken: any = {}
+export const getAccesstokenGrandCodeService = async (model: any) => {
 
-// get token falcon
-const gatewayToken = async (model: any) => {
-
-    const models = {
-        username: "FALCON_TH.admin",
-        password: "Thai!0987"
+    const models: any = {
+        username: config.USERNAME_FALCON,
+        password: config.PASSWORD_FALCON
     }
 
-    const res_: any = await axios.post('https://sandbox.thai.ebaocloud.com/cas/ebao/v2/json/tickets', {
-        username: models.username,
-        password: models.password
-    })
-
-    gateway_accesstoken.access_token = res_.data.access_token
-
-    console.log(`res_=====>`, res_.data)
-
-    return res_.data.access_token
-}
+    const res_: any = await getewayToken(models)
+    console.log(res_);
 
 
-// get grandcode falcon
-const grandCode = async (model: any) => {
-
-    const models = {
-        username: "1400017",
-        password: "eBao1234"
-    }
-
-    const res__: any = await axios.post('https://sandbox.gw.thai.ebaocloud.com/eBaoTHAI/1.0.0/api/pub/std/utils/grantCode', {
-        username: model.username,
-        password: model.password
-    }, {
-        headers: {
-            Authorization: 'Bearer ' + gateway_accesstoken.access_token
-        }
-    })
-    gateway_accesstoken.grand_code = res__.data.data
-
-    console.log(`res__=====>`, res__.data)
-
-    return res__.data.data
-}
-
-
-export const getAccesstokenGrandCodeService = async () => {
-    const models = {
-        username: "FALCON_TH.admin",
-        password: "Thai!0987"
-    }
-
-    const res_: any = await axios.post('https://sandbox.thai.ebaocloud.com/cas/ebao/v2/json/tickets', {
-        username: models.username,
-        password: models.password
-    })
-
-    if (!res_.data.access_token) {
+    if (!res_.access_token) {
         const error: any = new Error('ต้องมี access_token');
         error.statusCode = 500;
         throw error;
     }
 
-    const models_ = {
+    const models_: any = {
         username: "1400017",
         password: "eBao1234"
     }
 
-    const res__: any = await axios.post('https://sandbox.gw.thai.ebaocloud.com/eBaoTHAI/1.0.0/api/pub/std/utils/grantCode', {
+    const res__ = await getGrandCode(models_, res_.access_token)
+    console.log(res__);
+
+
+    if (!res__.data && !res_.access_token) {
+        const error: any = new Error('ต้องมี access_token และ grand_code');
+        error.statusCode = 500;
+        throw error;
+    }
+
+    const res___ = await createQuotation(model, res_.access_token, res__.data)
+    console.log(res___);
+
+    return {
+        quotation: res___,
+        token: {
+            access_token: res_.access_token,
+            grandCode: res__.data
+        }
+    }
+
+}
+
+const getewayToken = async (models: any) => {
+    const res_geteway: any = await axios.post('https://sandbox.thai.ebaocloud.com/cas/ebao/v2/json/tickets', {
+        username: models.username,
+        password: models.password
+    })
+
+    console.log(res_geteway.data);
+
+    return res_geteway.data
+}
+
+const getGrandCode = async (models_: any, access_token: any) => {
+    const res_grandcode: any = await axios.post('https://sandbox.gw.thai.ebaocloud.com/eBaoTHAI/1.0.0/api/pub/std/utils/grantCode', {
         username: models_.username,
         password: models_.password
     }, {
         headers: {
-            Authorization: 'Bearer ' + res_.data.access_token
+            Authorization: 'Bearer ' + access_token
         }
     })
 
-    return {
-        access_token: res_.data.access_token,
-        grand_code: res__.data.data
-    }
+    console.log(res_grandcode.data);
+
+    return res_grandcode.data
 }
 
+const createQuotation = async (model: any, access_token: any, grand_code: any) => {
+
+    const res_quotation: any = await axios.post('https://sandbox.gw.thai.ebaocloud.com/eBaoTHAI/1.0.0/api/pub/std/quotation/create', {
+        insurerTenantCode: model.insurerTenantCode,
+        prdtCode: model.prdtCode,
+        planCode: model.planCode,
+        proposalDate: model.proposalDate,
+        effDate: model.effDate,
+        expDate: model.expDate,
+        referenceNo: model.referenceNo,
+        insureds: model.insureds,
+        policyholder: {
+            isSameAsInsured: model.policyholder.isSameAsInsured,
+            customer: {
+                customerType: model.policyholder.customer.customerType,
+                idType: model.policyholder.customer.idType,
+                idNo: model.policyholder.customer.idNo,
+                prefix: model.policyholder.customer.prefix,
+                firstName: model.policyholder.customer.firstName,
+                lastName: model.policyholder.customer.lastName,
+                nationality: model.policyholder.customer.nationality,
+                mobile: model.policyholder.customer.mobile,
+                telNo: model.policyholder.customer.telNo,
+                email: model.policyholder.customer.email,
+                gender: model.policyholder.customer.gender,
+                occupation: model.policyholder.customer.occupation,
+                taxNo: model.policyholder.customer.taxNo,
+                branch: model.policyholder.customer.branch,
+                address: {
+                    addressType: model.policyholder.customer.address.addressType,
+                    province: model.policyholder.customer.address.province,
+                    district: model.policyholder.customer.address.district,
+                    subDistrict: model.policyholder.customer.address.subDistrict,
+                    postalCode: model.policyholder.customer.address.postalCode,
+                    addressNo: model.policyholder.customer.address.addressNo,
+                    village: model.policyholder.customer.address.village,
+                    alley: model.policyholder.customer.address.alley,
+                    road: model.policyholder.customer.address.road,
+                    moo: model.policyholder.customer.address.moo
+                },
+                extInfo: {
+                    infoType: model.policyholder.customer.extInfo.infoType,
+                    relationship: model.policyholder.customer.extInfo.relationship
+                }
+            },
+        },
+        extInfo: {
+            questionnaire: {
+                question2: model.extInfo.questionnaire.question2,
+                question3: model.extInfo.questionnaire.question3,
+                question4: model.extInfo.questionnaire.question4,
+                question5: model.extInfo.questionnaire.question5,
+                question6: model.extInfo.questionnaire.question6,
+                question1: model.extInfo.questionnaire.question1
+            },
+            taxDeduction: 1
+        }
+
+    }, {
+        headers: {
+            Authorization: 'Bearer' + access_token,
+            grantCode: grand_code
+        }
+    })
+
+    return res_quotation.data
+
+}
 
 export default {
-    gatewayToken,
-    grandCode,
     getAccesstokenGrandCodeService
 }

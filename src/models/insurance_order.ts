@@ -62,6 +62,8 @@ export interface insurance_orderAttributes {
   province_id_insured?: number;
   district_id_insured?: number;
   sub_district_id_insured?: number;
+  created_date?: Date;
+  update_date?: Date;
 }
 
 export type insurance_orderPk = "id";
@@ -118,6 +120,8 @@ export class insurance_order extends Model<insurance_orderAttributes, insurance_
   province_id_insured?: number;
   district_id_insured?: number;
   sub_district_id_insured?: number;
+  created_date?: Date;
+  update_date?: Date;
 
   // insurance_order belongsTo insurance via insurance_id
   insurance!: insurance;
@@ -513,6 +517,17 @@ export class insurance_order extends Model<insurance_orderAttributes, insurance_
         model: 'mas_address_sub_district',
         key: 'id'
       }
+    },
+    created_date: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: Sequelize.Sequelize.fn('current_timestamp'),
+      comment: "วันเวลาที่สร้าง"
+    },
+    update_date: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      comment: "วันเวลาที่แก้ไข"
     }
   }, {
     sequelize,

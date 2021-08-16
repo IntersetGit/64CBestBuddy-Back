@@ -220,16 +220,48 @@ export const getByInsuranceAndInstallment = async (req: Request, res: Response, 
 
 /**  */
 export const mangeInsuranceOrder = async (req: Request, res: Response, next: NextFunction) => {
+    const transaction = await sequelize.transaction();
     try {
         const model: any = req.body
 
-        result(res, model)
+        if (model.category_name === "falcon") {
+            result(res, await mangeInsuranceFalcon(model, transaction))
+        } else {
+            const error: any = new Error(model.category_name ? "category ไม่ถูกต้อง" : "ส่ง category_name มาด้วย");
+            error.statusCode = 404;
+            throw error;
+        }
 
     } catch (error) {
+        if (transaction) await transaction.rollback();
         next(error);
     }
 }
 
+/* จัดการ ประกัน ของ Falcon */
+const mangeInsuranceFalcon = async (model: any, transaction: any) => {
+    try {
+
+        if (model.id) { //แก้ไข
+
+        } else {
+
+        }
+
+        /* เชื่มต่อ API ของ Falcon */
+        if (model.page == 3) {
+            await connectApiFalcon()
+        }
+
+        return model
+    } catch (error) {
+        if (transaction) await transaction.rollback();
+    }
+}
+
+const connectApiFalcon = async () => {
+
+}
 
 export default {
     mangeInsurance,

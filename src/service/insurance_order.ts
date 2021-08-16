@@ -7,18 +7,22 @@ import { v4 as uuidv4 } from 'uuid';
 
 initModels(sequelize);
 
-export const addInsuranceService = async (model: any) => {
+export const addInsuranceOrderService = async (model: any, transaction: any = null) => {
     const id = uuidv4();
+    const _value: any = {
+        id,
+        protection_date_start: model.protection_date_start,
+        protection_date_end: model.protection_date_end,
+        prefix_id: model.prefix_id,
+        first_name: model.first_name,
+        last_name: model.last_name,
+        mobile_phone: model.mobile_phone,
+        email: model.email,
+    }
 
-    // await insurance_order.create({
-    //     id,
-    //     product_code: model.product_code,
-    //     name: model.name,
-    //     status: 0,
-    //     isuse: 1,
-    //     created_by: model.user_id,
-    //     created_date: new Date()
-    // })
+    if (_value)
+
+        await insurance_order.create(_value, { transaction });
     return id
 }
 
@@ -26,5 +30,5 @@ export const addInsuranceService = async (model: any) => {
 
 
 export default {
-    addInsuranceService,
+    addInsuranceOrderService,
 }

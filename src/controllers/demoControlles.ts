@@ -5,6 +5,7 @@ import prefixList from '../data/falcon/prefix'
 import occupationList from '../data/falcon/occupation'
 import { initModels, mas_address_province, mas_address_district, mas_address_sub_district, mas_prefix, mas_occupation } from '../models/init-models';
 import { sequelize } from '../models';
+import { getAccesstokenGrandCodeService } from '../service/falcon_api'
 initModels(sequelize);
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
@@ -272,11 +273,22 @@ export const createQuotation = async (req: Request, res: Response, next: NextFun
     }
 }
 
+export const getTokenFalcon = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+
+        result(res, await getAccesstokenGrandCodeService())
+
+    } catch (error) {
+        next(error)
+    }
+}
+
 export default {
     demo,
     demoPrefix,
     demoOccupation,
     gatewayToken,
     grandCode,
-    createQuotation
+    createQuotation,
+    getTokenFalcon
 }

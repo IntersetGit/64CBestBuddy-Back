@@ -13,5 +13,7 @@ router.get('/gatewayToken', demoControlles.gatewayToken);
 router.get('/grandCode', demoControlles.grandCode);
 router.get('/createQuotation', demoControlles.createQuotation);
 
+router.get('/getTokenFalcon', demoControlles.getTokenFalcon);
+
 
 export default router;

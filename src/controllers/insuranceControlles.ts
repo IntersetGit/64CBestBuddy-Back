@@ -16,6 +16,8 @@ import { bulkCreateInsurancePriceService, getPriceInsuranceService } from '../se
 import { getInstallmentByIdInsuranceService } from '../service/mas_installment';
 import { createInsuranceApplicantService } from '../service/insurance_applicant';
 import messages from '../messages';
+import { addInsuranceOrderService, updateInsuranceOrderService } from '../service/insurance_order';
+import { addInsuranceBeneficiaryService, destroyInsuranceBeneficiaryService } from '../service/insurance_beneficiary';
 
 export const mangeInsurance = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -241,19 +243,39 @@ export const mangeInsuranceOrder = async (req: Request, res: Response, next: Nex
 /* จัดการ ประกัน ของ Falcon */
 const mangeInsuranceFalcon = async (model: any, transaction: any) => {
     try {
-
+        let id;
         if (model.id) { //แก้ไข
-
+            await updateInsuranceOrderService(model, transaction)
+            id = model.id
         } else {
-
+            id = await addInsuranceOrderService(model, transaction)
         }
 
+        /* ข้อมูลผู้รับผลประโยชน์ */
+        model.insurance_beneficiary = model.insurance_beneficiary ?? []
+        for (const key in model.insurance_beneficiary) {
+            if (Object.prototype.hasOwnProperty.call(model.insurance_beneficiary, key)) {
+                const e: any = model.insurance_beneficiary[key];
+
+                if (e.id) await destroyInsuranceBeneficiaryService(e.id, transaction)
+                await addInsuranceBeneficiaryService({
+                    insurance_order_id: id,
+                    prefix_id: e.prefix_id,
+                    first_name: e.first_name,
+                    last_name: e.last_name,
+                    beneficiary_id: e.beneficiary_id,
+                    ratio: e.ratio,
+                }, transaction)
+
+            }
+        }
+        await transaction.commit();
         /* เชื่มต่อ API ของ Falcon */
         if (model.page == 3) {
             await connectApiFalcon()
         }
 
-        return model
+        return id
     } catch (error) {
         if (transaction) await transaction.rollback();
     }

@@ -1,6 +1,7 @@
 import * as Sequelize from 'sequelize';
 import { DataTypes, Model, Optional } from 'sequelize';
 import type { insurance, insuranceId } from './insurance';
+import type { insurance_order, insurance_orderId } from './insurance_order';
 import type { match_protection_plan, match_protection_planId } from './match_protection_plan';
 
 export interface insurance_mas_planAttributes {
@@ -25,6 +26,18 @@ export class insurance_mas_plan extends Model<insurance_mas_planAttributes, insu
   getInsurance!: Sequelize.BelongsToGetAssociationMixin<insurance>;
   setInsurance!: Sequelize.BelongsToSetAssociationMixin<insurance, insuranceId>;
   createInsurance!: Sequelize.BelongsToCreateAssociationMixin<insurance>;
+  // insurance_mas_plan hasMany insurance_order via insurance_plan_id
+  insurance_orders!: insurance_order[];
+  getInsurance_orders!: Sequelize.HasManyGetAssociationsMixin<insurance_order>;
+  setInsurance_orders!: Sequelize.HasManySetAssociationsMixin<insurance_order, insurance_orderId>;
+  addInsurance_order!: Sequelize.HasManyAddAssociationMixin<insurance_order, insurance_orderId>;
+  addInsurance_orders!: Sequelize.HasManyAddAssociationsMixin<insurance_order, insurance_orderId>;
+  createInsurance_order!: Sequelize.HasManyCreateAssociationMixin<insurance_order>;
+  removeInsurance_order!: Sequelize.HasManyRemoveAssociationMixin<insurance_order, insurance_orderId>;
+  removeInsurance_orders!: Sequelize.HasManyRemoveAssociationsMixin<insurance_order, insurance_orderId>;
+  hasInsurance_order!: Sequelize.HasManyHasAssociationMixin<insurance_order, insurance_orderId>;
+  hasInsurance_orders!: Sequelize.HasManyHasAssociationsMixin<insurance_order, insurance_orderId>;
+  countInsurance_orders!: Sequelize.HasManyCountAssociationsMixin;
   // insurance_mas_plan hasMany match_protection_plan via mas_plan_id
   match_protection_plans!: match_protection_plan[];
   getMatch_protection_plans!: Sequelize.HasManyGetAssociationsMixin<match_protection_plan>;

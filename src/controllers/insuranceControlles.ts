@@ -218,6 +218,18 @@ export const getByInsuranceAndInstallment = async (req: Request, res: Response, 
     }
 }
 
+/**  */
+export const mangeInsuranceOrder = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const model: any = req.body
+
+        result(res, model)
+
+    } catch (error) {
+        next(error);
+    }
+}
+
 
 export default {
     mangeInsurance,
@@ -228,5 +240,6 @@ export default {
     addInsurance,
     getImagesHeaderInsurance,
     createInsuranceApplicant,
-    getByInsuranceAndInstallment
+    getByInsuranceAndInstallment,
+    mangeInsuranceOrder
 }

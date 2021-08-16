@@ -26,4 +26,7 @@ router.post('/createInsuranceApplicant', insuranceControlles.createInsuranceAppl
 /**เลือกซื้อแผนประกัน*/
 router.post('/getByInsuranceAndInstallment', insuranceControlles.getByInsuranceAndInstallment);
 
+/* insurance_order */
+router.post('/mangeInsuranceOrder', insuranceControlles.mangeInsuranceOrder);
+
 export default router;

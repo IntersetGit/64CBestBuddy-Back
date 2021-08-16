@@ -2,28 +2,24 @@ import * as Sequelize from 'sequelize';
 import { DataTypes, Model, Optional } from 'sequelize';
 import type { insurance_order, insurance_orderId } from './insurance_order';
 
-export interface mas_occupationAttributes {
+export interface mas_genderAttributes {
   id: number;
   name: string;
-  risk_class_falcon?: string;
-  original_text_falcon?: string;
   code_cigna?: string;
   code_falcon?: string;
 }
 
-export type mas_occupationPk = "id";
-export type mas_occupationId = mas_occupation[mas_occupationPk];
-export type mas_occupationCreationAttributes = Optional<mas_occupationAttributes, mas_occupationPk>;
+export type mas_genderPk = "id";
+export type mas_genderId = mas_gender[mas_genderPk];
+export type mas_genderCreationAttributes = Optional<mas_genderAttributes, mas_genderPk>;
 
-export class mas_occupation extends Model<mas_occupationAttributes, mas_occupationCreationAttributes> implements mas_occupationAttributes {
+export class mas_gender extends Model<mas_genderAttributes, mas_genderCreationAttributes> implements mas_genderAttributes {
   id!: number;
   name!: string;
-  risk_class_falcon?: string;
-  original_text_falcon?: string;
   code_cigna?: string;
   code_falcon?: string;
 
-  // mas_occupation hasMany insurance_order via occupation_id
+  // mas_gender hasMany insurance_order via gender_id_insured
   insurance_orders!: insurance_order[];
   getInsurance_orders!: Sequelize.HasManyGetAssociationsMixin<insurance_order>;
   setInsurance_orders!: Sequelize.HasManySetAssociationsMixin<insurance_order, insurance_orderId>;
@@ -36,8 +32,8 @@ export class mas_occupation extends Model<mas_occupationAttributes, mas_occupati
   hasInsurance_orders!: Sequelize.HasManyHasAssociationsMixin<insurance_order, insurance_orderId>;
   countInsurance_orders!: Sequelize.HasManyCountAssociationsMixin;
 
-  static initModel(sequelize: Sequelize.Sequelize): typeof mas_occupation {
-    mas_occupation.init({
+  static initModel(sequelize: Sequelize.Sequelize): typeof mas_gender {
+    mas_gender.init({
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
@@ -46,34 +42,21 @@ export class mas_occupation extends Model<mas_occupationAttributes, mas_occupati
     },
     name: {
       type: DataTypes.STRING(255),
-      allowNull: false,
-      comment: "ชื่อ"
-    },
-    risk_class_falcon: {
-      type: DataTypes.STRING(255),
-      allowNull: true,
-      comment: "ระดับความเสี่ยง ของ falcon"
-    },
-    original_text_falcon: {
-      type: DataTypes.STRING(255),
-      allowNull: true,
-      comment: "ข้อความต้นฉบับ ของ falcon"
+      allowNull: false
     },
     code_cigna: {
       type: DataTypes.STRING(255),
       allowNull: true,
-      comment: "รหัส ของ cigna",
-      unique: "code_cigna"
+      comment: "รหัส ของ cigna"
     },
     code_falcon: {
       type: DataTypes.STRING(255),
       allowNull: true,
-      comment: "รหัส ของ falcon",
-      unique: "code_falcon"
+      comment: "รหัส ของ falcon\t"
     }
   }, {
     sequelize,
-    tableName: 'mas_occupation',
+    tableName: 'mas_gender',
     timestamps: false,
     indexes: [
       {
@@ -84,24 +67,8 @@ export class mas_occupation extends Model<mas_occupationAttributes, mas_occupati
           { name: "id" },
         ]
       },
-      {
-        name: "code_cigna",
-        unique: true,
-        using: "BTREE",
-        fields: [
-          { name: "code_cigna" },
-        ]
-      },
-      {
-        name: "code_falcon",
-        unique: true,
-        using: "BTREE",
-        fields: [
-          { name: "code_falcon" },
-        ]
-      },
     ]
   });
-  return mas_occupation;
+  return mas_gender;
   }
 }

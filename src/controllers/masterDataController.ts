@@ -22,6 +22,7 @@ import { GetTaxdeductionDataService } from '../service/mas_taxdeduction';
 import { GetTypeCardNumberDataService } from '../service/mas_type_card_number';
 import { GetAllInsuranceCategoryService } from '../service/insurance_category';
 import { combineTableNames } from 'sequelize/types/lib/utils';
+import { GetGenderDataService } from '../service/mas_gender';
 
 
 /** เรียกข้อมูล คำนำหน้าชื่อ */
@@ -238,6 +239,7 @@ export const GetAllData = async (req: Request, res: Response, next: NextFunction
         const GetAllBeneficiaryRelationship = await GetBeneficiaryRelationDataService(search)
         const GetAllTaxdeduction = await GetTaxdeductionDataService(search)
         const GetAllTypeCardNumber = await GetTypeCardNumberDataService(search)
+        const GetAllGender = await GetGenderDataService(search)
 
         result(res, {
             GetAllPrefix,
@@ -245,6 +247,7 @@ export const GetAllData = async (req: Request, res: Response, next: NextFunction
             GetAllBeneficiaryRelationship,
             GetAllTaxdeduction,
             GetAllTypeCardNumber,
+            GetAllGender
         })
     } catch (error) {
         next(error);

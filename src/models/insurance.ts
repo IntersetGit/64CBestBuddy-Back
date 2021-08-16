@@ -1,7 +1,9 @@
 import * as Sequelize from 'sequelize';
 import { DataTypes, Model, Optional } from 'sequelize';
+import type { insurance_category, insurance_categoryId } from './insurance_category';
 import type { insurance_mas_plan, insurance_mas_planId } from './insurance_mas_plan';
 import type { insurance_mas_protection, insurance_mas_protectionId } from './insurance_mas_protection';
+import type { insurance_order, insurance_orderId } from './insurance_order';
 import type { mas_insurance_type, mas_insurance_typeId } from './mas_insurance_type';
 import type { sysm_users, sysm_usersId } from './sysm_users';
 
@@ -19,7 +21,7 @@ export interface insuranceAttributes {
   isuse?: number;
   sort?: number;
   is_one_price?: number;
-  insurance_category_id?: any;
+  insurance_category_id?: string;
   mas_insurance_type_id?: string;
   haed_highlight?: string;
   number_visitors?: number;
@@ -48,7 +50,7 @@ export class insurance extends Model<insuranceAttributes, insuranceCreationAttri
   isuse?: number;
   sort?: number;
   is_one_price?: number;
-  insurance_category_id?: any;
+  insurance_category_id?: string;
   mas_insurance_type_id?: string;
   haed_highlight?: string;
   number_visitors?: number;
@@ -82,6 +84,23 @@ export class insurance extends Model<insuranceAttributes, insuranceCreationAttri
   hasInsurance_mas_protection!: Sequelize.HasManyHasAssociationMixin<insurance_mas_protection, insurance_mas_protectionId>;
   hasInsurance_mas_protections!: Sequelize.HasManyHasAssociationsMixin<insurance_mas_protection, insurance_mas_protectionId>;
   countInsurance_mas_protections!: Sequelize.HasManyCountAssociationsMixin;
+  // insurance hasMany insurance_order via insurance_id
+  insurance_orders!: insurance_order[];
+  getInsurance_orders!: Sequelize.HasManyGetAssociationsMixin<insurance_order>;
+  setInsurance_orders!: Sequelize.HasManySetAssociationsMixin<insurance_order, insurance_orderId>;
+  addInsurance_order!: Sequelize.HasManyAddAssociationMixin<insurance_order, insurance_orderId>;
+  addInsurance_orders!: Sequelize.HasManyAddAssociationsMixin<insurance_order, insurance_orderId>;
+  createInsurance_order!: Sequelize.HasManyCreateAssociationMixin<insurance_order>;
+  removeInsurance_order!: Sequelize.HasManyRemoveAssociationMixin<insurance_order, insurance_orderId>;
+  removeInsurance_orders!: Sequelize.HasManyRemoveAssociationsMixin<insurance_order, insurance_orderId>;
+  hasInsurance_order!: Sequelize.HasManyHasAssociationMixin<insurance_order, insurance_orderId>;
+  hasInsurance_orders!: Sequelize.HasManyHasAssociationsMixin<insurance_order, insurance_orderId>;
+  countInsurance_orders!: Sequelize.HasManyCountAssociationsMixin;
+  // insurance belongsTo insurance_category via insurance_category_id
+  insurance_category!: insurance_category;
+  getInsurance_category!: Sequelize.BelongsToGetAssociationMixin<insurance_category>;
+  setInsurance_category!: Sequelize.BelongsToSetAssociationMixin<insurance_category, insurance_categoryId>;
+  createInsurance_category!: Sequelize.BelongsToCreateAssociationMixin<insurance_category>;
   // insurance belongsTo mas_insurance_type via mas_insurance_type_id
   mas_insurance_type!: mas_insurance_type;
   getMas_insurance_type!: Sequelize.BelongsToGetAssociationMixin<mas_insurance_type>;
@@ -162,9 +181,13 @@ export class insurance extends Model<insuranceAttributes, insuranceCreationAttri
       comment: "เช็คการส่ง true = gender 0 false = gender 1 or 2"
     },
     insurance_category_id: {
-      type: DataTypes.BLOB,
+      type: DataTypes.STRING(100),
       allowNull: true,
-      comment: "รหัสหมวดหมู่ประกัน"
+      comment: "รหัสหมวดหมู่ประกัน",
+      references: {
+        model: 'insurance_category',
+        key: 'id'
+      }
     },
     mas_insurance_type_id: {
       type: DataTypes.STRING(100),
@@ -251,6 +274,13 @@ export class insurance extends Model<insuranceAttributes, insuranceCreationAttri
         using: "BTREE",
         fields: [
           { name: "id" },
+        ]
+      },
+      {
+        name: "insurance_category_id_ibfk_3",
+        using: "BTREE",
+        fields: [
+          { name: "insurance_category_id" },
         ]
       },
     ]

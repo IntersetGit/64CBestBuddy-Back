@@ -1,5 +1,6 @@
 import * as Sequelize from 'sequelize';
 import { DataTypes, Model, Optional } from 'sequelize';
+import type { insurance_order, insurance_orderId } from './insurance_order';
 
 export interface mas_address_sub_districtAttributes {
   id: number;
@@ -24,6 +25,30 @@ export class mas_address_sub_district extends Model<mas_address_sub_districtAttr
   code_cigna?: string;
   code_falcon?: string;
 
+  // mas_address_sub_district hasMany insurance_order via sub_district_id
+  insurance_orders!: insurance_order[];
+  getInsurance_orders!: Sequelize.HasManyGetAssociationsMixin<insurance_order>;
+  setInsurance_orders!: Sequelize.HasManySetAssociationsMixin<insurance_order, insurance_orderId>;
+  addInsurance_order!: Sequelize.HasManyAddAssociationMixin<insurance_order, insurance_orderId>;
+  addInsurance_orders!: Sequelize.HasManyAddAssociationsMixin<insurance_order, insurance_orderId>;
+  createInsurance_order!: Sequelize.HasManyCreateAssociationMixin<insurance_order>;
+  removeInsurance_order!: Sequelize.HasManyRemoveAssociationMixin<insurance_order, insurance_orderId>;
+  removeInsurance_orders!: Sequelize.HasManyRemoveAssociationsMixin<insurance_order, insurance_orderId>;
+  hasInsurance_order!: Sequelize.HasManyHasAssociationMixin<insurance_order, insurance_orderId>;
+  hasInsurance_orders!: Sequelize.HasManyHasAssociationsMixin<insurance_order, insurance_orderId>;
+  countInsurance_orders!: Sequelize.HasManyCountAssociationsMixin;
+  // mas_address_sub_district hasMany insurance_order via sub_district_id_insured
+  sub_district_id_insured_insurance_orders!: insurance_order[];
+  getSub_district_id_insured_insurance_orders!: Sequelize.HasManyGetAssociationsMixin<insurance_order>;
+  setSub_district_id_insured_insurance_orders!: Sequelize.HasManySetAssociationsMixin<insurance_order, insurance_orderId>;
+  addSub_district_id_insured_insurance_order!: Sequelize.HasManyAddAssociationMixin<insurance_order, insurance_orderId>;
+  addSub_district_id_insured_insurance_orders!: Sequelize.HasManyAddAssociationsMixin<insurance_order, insurance_orderId>;
+  createSub_district_id_insured_insurance_order!: Sequelize.HasManyCreateAssociationMixin<insurance_order>;
+  removeSub_district_id_insured_insurance_order!: Sequelize.HasManyRemoveAssociationMixin<insurance_order, insurance_orderId>;
+  removeSub_district_id_insured_insurance_orders!: Sequelize.HasManyRemoveAssociationsMixin<insurance_order, insurance_orderId>;
+  hasSub_district_id_insured_insurance_order!: Sequelize.HasManyHasAssociationMixin<insurance_order, insurance_orderId>;
+  hasSub_district_id_insured_insurance_orders!: Sequelize.HasManyHasAssociationsMixin<insurance_order, insurance_orderId>;
+  countSub_district_id_insured_insurance_orders!: Sequelize.HasManyCountAssociationsMixin;
   // mas_address_sub_district belongsTo mas_address_sub_district via district_id
   district!: mas_address_sub_district;
   getDistrict!: Sequelize.BelongsToGetAssociationMixin<mas_address_sub_district>;

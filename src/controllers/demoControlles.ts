@@ -192,11 +192,6 @@ export const createQuotation = async (req: Request, res: Response, next: NextFun
         const model: any = req.body
         console.log(model);
 
-        const model_: any = {
-            insurerTenantCode: "FALCON_TH",
-
-        }
-
         if (!gateway_accesstoken.grand_code && !gateway_accesstoken.access_token) {
             const error: any = new Error('ต้องมี access_token และ grand_code');
             error.statusCode = 500;

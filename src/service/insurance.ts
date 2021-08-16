@@ -36,7 +36,7 @@ export const editInsuranceService = async (model: insuranceinterface) => {
 }
 
 export const getAllInsuranceService = async (model: any) => {
-    let sql = `SELECT a.id , a.name , a.img_cover, a.img_header , a.details  , a.mas_insurance_type_id
+    let sql = `SELECT a.id , a.name , a.img_cover, a.img_header , a.details  , a.mas_insurance_type_id , irc.id AS category_id , irc.name AS category_name
     ,(SELECT name FROM mas_insurance_type WHERE id = a.mas_insurance_type_id) AS mas_insurance_type_name
 
     ,(SELECT IF(a.status = 1, price_sale, price_normal) FROM insurance_price

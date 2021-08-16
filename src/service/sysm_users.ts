@@ -24,10 +24,9 @@ export const registerService = async (model: UsersInterface, transaction: any = 
 
 export const filterUsernameUsersService = async (username: string) => {
     return await sequelizeStringFindOne(`
-    SELECT a.* , b.first_name_th ,b.last_name_th , b.first_name_en, b.last_name_en ,
+    SELECT a.* ,
     (SELECT roles_name FROM sysm_roles WHERE id = a.roles_id) AS roles_name
     FROM sysm_users as a
-    INNER JOIN person as b ON b.user_id = a.id
     WHERE UPPER(a.username)  = UPPER($1)
     `, [username]);
 }

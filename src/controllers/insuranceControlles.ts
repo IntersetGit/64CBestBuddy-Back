@@ -16,7 +16,7 @@ import { bulkCreateInsurancePriceService, getPriceInsuranceService } from '../se
 import { getInstallmentByIdInsuranceService } from '../service/mas_installment';
 import { createInsuranceApplicantService } from '../service/insurance_applicant';
 import messages from '../messages';
-import { addInsuranceOrderService, updateInsuranceOrderService } from '../service/insurance_order';
+import { addInsuranceOrderService, getByIdInsuranceOrderService, updateInsuranceOrderService } from '../service/insurance_order';
 import { addInsuranceBeneficiaryService, destroyInsuranceBeneficiaryService } from '../service/insurance_beneficiary';
 
 export const mangeInsurance = async (req: Request, res: Response, next: NextFunction) => {
@@ -99,10 +99,21 @@ export const getByIdInsurance = async (req: Request, res: Response, next: NextFu
         const { id } = req.params;
         const table: any = {
             head: [],
-            data: []
+            data: [],
         };
-        table.head = await getByInsuranceIdInsuranceMasPlanService(id);
-        const protection: any = await getByInsuranceIdInsuranceMasProtectionService(id);
+
+        const form: any = await getByIdInsuranceOrderService(id)
+
+        if (!form) {
+            const error: any = new Error("ไม่พบข้อมูล");
+            error.statusCode = 404;
+            throw error;
+        }
+
+        form.beneficiary = form.beneficiary ? JSON.parse(form.beneficiary) : []
+
+        table.head = await getByInsuranceIdInsuranceMasPlanService(form.insurance_id);
+        const protection: any = await getByInsuranceIdInsuranceMasProtectionService(form.insurance_id);
 
         for (const key in protection) {
             if (Object.prototype.hasOwnProperty.call(protection, key)) {
@@ -118,10 +129,11 @@ export const getByIdInsurance = async (req: Request, res: Response, next: NextFu
         }
 
         result(res, {
-            data: await getByIdInsuranceService(id),
+            data: await getByIdInsuranceService(form.insurance_id),
             table,
+            form,
             master: {
-                installment: await getInstallmentByIdInsuranceService(id)
+                installment: await getInstallmentByIdInsuranceService(form.insurance_id)
             }
         });
 

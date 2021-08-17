@@ -123,6 +123,29 @@ export const updateInsuranceOrderService = async (model: any, transaction: any =
 }
 
 
+export const getByIdInsuranceOrderService = async (id: string) => {
+    let sql = `
+    SELECT
+    *,
+        (SELECT CONCAT('[', GROUP_CONCAT(JSON_OBJECT(
+        'id', aa.id
+        ,'insurance_order_id', aa.insurance_order_id
+        ,'prefix_id', aa.prefix_id
+        ,'prefix_name', bb.name
+        ,'first_name', aa.first_name
+        ,'last_name', aa.last_name
+        ,'beneficiary_id', aa.beneficiary_id
+        ,'ratio', aa.ratio
+
+        )), ']')
+    FROM insurance_beneficiary AS aa
+    INNER JOIN mas_prefix AS bb ON aa.prefix_id = bb.id
+    WHERE a.id = aa.insurance_order_id) AS beneficiary
+
+    FROM insurance_order AS a
+    WHERE a.id = $1 `
+    return sequelizeStringFindOne(sql, [id])
+}
 
 
 

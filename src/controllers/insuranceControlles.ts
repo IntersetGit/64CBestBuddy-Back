@@ -18,6 +18,7 @@ import { createInsuranceApplicantService } from '../service/insurance_applicant'
 import messages from '../messages';
 import { addInsuranceOrderService, getByIdInsuranceOrderService, updateInsuranceOrderService } from '../service/insurance_order';
 import { addInsuranceBeneficiaryService, destroyInsuranceBeneficiaryService } from '../service/insurance_beneficiary';
+import { getewayToken, createQuotation, getGrandCode } from '../service/falcon_api'
 
 export const mangeInsurance = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -295,7 +296,7 @@ const mangeInsuranceFalcon = async (model: any, transaction: any) => {
 
         /* เชื่มต่อ API ของ Falcon */
         if (model.page == 3) {
-            await connectApiFalcon()
+            return await connectApiFalcon(model)
         }
 
         return id
@@ -304,8 +305,48 @@ const mangeInsuranceFalcon = async (model: any, transaction: any) => {
     }
 }
 
-const connectApiFalcon = async () => {
+const connectApiFalcon = async (model: any) => {
 
+    const models: any = {
+        username: config.USERNAME_FALCON,
+        password: config.PASSWORD_FALCON
+    }
+
+    const res_: any = await getewayToken(models)
+    console.log(res_);
+
+
+    if (!res_.access_token) {
+        const error: any = new Error('ต้องมี access_token');
+        error.statusCode = 500;
+        throw error;
+    }
+
+    const models_: any = {
+        username: "1400017",
+        password: "eBao1234"
+    }
+
+    const res__ = await getGrandCode(models_, res_.access_token)
+    console.log(res__);
+
+
+    if (!res__.data && !res_.access_token) {
+        const error: any = new Error('ต้องมี access_token และ grand_code');
+        error.statusCode = 500;
+        throw error;
+    }
+
+    const res___ = await createQuotation(model, res_.access_token, res__.data)
+    console.log(res___);
+
+    return {
+        quotation: res___,
+        token: {
+            access_token: res_.access_token,
+            grandCode: res__.data
+        }
+    }
 }
 
 export default {

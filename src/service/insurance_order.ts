@@ -68,17 +68,15 @@ export const addInsuranceOrderService = async (model: any, transaction: any = nu
 
 export const updateInsuranceOrderService = async (model: any, transaction: any = null) => {
 
-    const _value: any = {
-        insurance_id: model.insurance_id,
-        protection_date_start: model.protection_date_start,
-        protection_date_end: model.protection_date_end,
-        prefix_id: model.prefix_id,
-        first_name: model.first_name,
-        last_name: model.last_name,
-        mobile_phone: model.mobile_phone,
-        email: model.email,
-    }
-
+    const _value: any = {}
+    if (model.insurance_id) _value.insurance_id = model.insurance_id;
+    if (model.protection_date_start) _value.protection_date_start = model.protection_date_start;
+    if (model.protection_date_end) _value.protection_date_end = model.protection_date_end;
+    if (model.prefix_id) _value.prefix_id = model.prefix_id;
+    if (model.first_name) _value.first_name = model.first_name;
+    if (model.last_name) _value.last_name = model.last_name;
+    if (model.mobile_phone) _value.mobile_phone = model.mobile_phone;
+    if (model.email) _value.email = model.email;
     if (model.insurance_code) _value.insurance_code = model.insurance_code;
     if (model.phone) _value.phone = model.phone;
     if (model.birthday) _value.birthday = model.birthday;

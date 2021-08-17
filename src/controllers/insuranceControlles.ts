@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { result, decodeToken } from '../util/index';
+import { result, decodeToken, DecryptCryptoJS, EncryptCryptoJS } from '../util/index';
 import {
     addInsuranceService, editInsuranceService, getAllInsuranceService, getByIdInsuranceService, delInsuranceService, createInsuranceService,
     getImagesHeaderInsuranceService, getByInsuranceAndInstallmentService
@@ -224,7 +224,17 @@ export const getByInsuranceAndInstallment = async (req: Request, res: Response, 
 export const mangeInsuranceOrder = async (req: Request, res: Response, next: NextFunction) => {
     const transaction = await sequelize.transaction();
     try {
-        const model: any = req.body
+        const { postman, token }: any = req.body
+        let model: any;
+
+        if (!postman || token) {
+            const { token }: any = req.body
+            model = DecryptCryptoJS(token)
+        } else {
+            model = req.body
+        }
+
+
 
         if (model.category_name === "falcon") {
             result(res, await mangeInsuranceFalcon(model, transaction))

@@ -5,6 +5,7 @@ import bcrypt from 'bcryptjs'
 import jwt_decode from 'jwt-decode'
 import messages from '../messages';
 import config from '../config';
+import CryptoJS from 'crypto-js'
 
 // import models into sequelize instance
 initModels(sequelize);
@@ -52,11 +53,29 @@ export const result = async (res: Response, data: any, status: number = config.S
     });
 }
 
+/* เข้ารหัส */
+export const EncryptCryptoJS = (code: any) => {
+    const secretKey: any = config.SECRET_KEY_CODE
+    const encJson = CryptoJS.AES.encrypt(JSON.stringify(code), secretKey).toString()
+    const encData = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(encJson))
+    return encData
+}
+
+/* ถอดรหัส */
+export const DecryptCryptoJS = (code: any) => {
+    const secretKey: any = config.SECRET_KEY_CODE
+    const decData = CryptoJS.enc.Base64.parse(code).toString(CryptoJS.enc.Utf8)
+    const bytes = CryptoJS.AES.decrypt(decData, secretKey).toString(CryptoJS.enc.Utf8)
+    return JSON.parse(bytes)
+}
+
 export default {
     sequelizeString,
     sequelizeStringFindOne,
     encryptPassword,
     checkPassword,
     decodeToken,
-    result
+    result,
+    EncryptCryptoJS,
+    DecryptCryptoJS,
 }

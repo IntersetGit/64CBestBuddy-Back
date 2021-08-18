@@ -1,50 +1,50 @@
 import axios from "axios"
 import config from "../config"
 
-// export const getAccesstokenGrandCodeService = async (model: any) => {
+export const getAccesstokenGrandCodeService = async (model: any) => {
 
-//     const models: any = {
-//         username: config.USERNAME_FALCON,
-//         password: config.PASSWORD_FALCON
-//     }
+    const models: any = {
+        username: config.USERNAME_FALCON,
+        password: config.PASSWORD_FALCON
+    }
 
-//     const res_: any = await getewayToken(models)
-//     console.log(res_);
-
-
-//     if (!res_.access_token) {
-//         const error: any = new Error('ต้องมี access_token');
-//         error.statusCode = 500;
-//         throw error;
-//     }
-
-//     const models_: any = {
-//         username: "1400017",
-//         password: "eBao1234"
-//     }
-
-//     const res__ = await getGrandCode(models_, res_.access_token)
-//     console.log(res__);
+    const res_: any = await getewayToken(models)
+    console.log(res_);
 
 
-//     if (!res__.data && !res_.access_token) {
-//         const error: any = new Error('ต้องมี access_token และ grand_code');
-//         error.statusCode = 500;
-//         throw error;
-//     }
+    if (!res_.access_token) {
+        const error: any = new Error('ต้องมี access_token');
+        error.statusCode = 500;
+        throw error;
+    }
 
-//     const res___ = await createQuotation(model, res_.access_token, res__.data)
-//     console.log(res___);
+    const models_: any = {
+        username: "1400017",
+        password: "eBao1234"
+    }
 
-//     return {
-//         quotation: res___,
-//         token: {
-//             access_token: res_.access_token,
-//             grandCode: res__.data
-//         }
-//     }
+    const res__ = await getGrandCode(models_, res_.access_token)
+    console.log(res__);
 
-// }
+
+    if (!res__.data && !res_.access_token) {
+        const error: any = new Error('ต้องมี access_token และ grand_code');
+        error.statusCode = 500;
+        throw error;
+    }
+
+    const res___ = await createQuotation(model, res_.access_token, res__.data)
+    console.log(res___);
+
+    return {
+        quotation: res___,
+        token: {
+            access_token: res_.access_token,
+            grandCode: res__.data
+        }
+    }
+
+}
 
 export const getewayToken = async (models: any) => {
     const res_geteway: any = await axios.post('https://sandbox.thai.ebaocloud.com/cas/ebao/v2/json/tickets', {
@@ -92,16 +92,16 @@ export const createQuotation = async (model: any, access_token: any, grand_code:
                 prefix: model.policyholder.customer.prefix,
                 firstName: model.policyholder.customer.firstName,
                 lastName: model.policyholder.customer.lastName,
-                nationality: model.policyholder.customer.nationality,
+                nationality: "THA",
                 mobile: model.policyholder.customer.mobile,
-                telNo: model.policyholder.customer.telNo,
+                telNo: model.policyholder.customer.telNo ?? "string",
                 email: model.policyholder.customer.email,
                 gender: model.policyholder.customer.gender,
                 occupation: model.policyholder.customer.occupation,
                 taxNo: model.policyholder.customer.taxNo,
                 branch: model.policyholder.customer.branch,
                 address: {
-                    addressType: model.policyholder.customer.address.addressType,
+                    addressType: 2,
                     province: model.policyholder.customer.address.province,
                     district: model.policyholder.customer.address.district,
                     subDistrict: model.policyholder.customer.address.subDistrict,
@@ -118,6 +118,37 @@ export const createQuotation = async (model: any, access_token: any, grand_code:
                 }
             },
         },
+        payer: {
+            payerType: 1,
+            customer: {
+                customerType: 1,
+                idType: model.payer.customer.idType,
+                idNo: model.payer.customer.idNo,
+                prefix: model.payer.customer.prefix,
+                firstName: model.payer.customer.firstName,
+                lastName: model.payer.customer.lastName,
+                nationality: "TH",
+                dob: model.payer.customer.dob,
+                age: model.payer.customer.age,
+                mobile: model.payer.customer.mobile,
+                telNo: model.payer.customer.telNo,
+                email: model.payer.customer.email,
+                gender: model.payer.customer.gender,
+                occupation: model.payer.customer.occupation,
+                taxNo: model.payer.customer.taxNo,
+                branch: model.payer.customer.branch,
+                address: {
+                    addressType: 1,
+                    province: model.payer.customer.province,
+                    district: model.payer.customer.district,
+                    subDistrict: model.payer.customer.subDistrict,
+                    postalCode: model.payer.customer.postalCode,
+                    addressLine1: model.payer.customer.addressLine1 ?? "string",
+                    addressLine2: model.payer.customer.addressLine2 ?? "string"
+                },
+                extInfo: {}
+            }
+        },
         extInfo: {
             questionnaire: {
                 question2: model.extInfo.questionnaire.question2,
@@ -127,8 +158,8 @@ export const createQuotation = async (model: any, access_token: any, grand_code:
                 question6: model.extInfo.questionnaire.question6,
                 question1: model.extInfo.questionnaire.question1
             },
-            taxDeduction: 1
-        }
+            taxDeduction: model.extInfo.taxDeduction
+        },
     }
     const res_quotation: any = await axios.post('https://sandbox.gw.thai.ebaocloud.com/eBaoTHAI/1.0.0/api/pub/std/quotation/create', {
         form_

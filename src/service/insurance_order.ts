@@ -138,9 +138,16 @@ export const getByIdInsuranceOrderService = async (id: string) => {
         ,'ratio', aa.ratio
 
         )), ']')
+        
     FROM insurance_beneficiary AS aa
     INNER JOIN mas_prefix AS bb ON aa.prefix_id = bb.id
     WHERE a.id = aa.insurance_order_id) AS beneficiary
+    
+	,(SELECT postal_code FROM mas_address_sub_district WHERE id = a.sub_district_id) AS postal_code
+	,(SELECT postal_code FROM mas_address_sub_district WHERE id = a.sub_district_id_insured) AS postal_code_insured
+
+	,(SELECT risk_class_falcon FROM mas_occupation WHERE id = a.occupation_id) AS occupation_risk_class
+
 
     FROM insurance_order AS a
     WHERE a.id = $1 `

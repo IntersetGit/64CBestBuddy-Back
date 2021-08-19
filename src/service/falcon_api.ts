@@ -74,7 +74,7 @@ export const getGrandCode = async (models_: any, access_token: any) => {
 
 export const createQuotation = async (model: any, access_token: any, grand_code: any) => {
 
-    const form_: any = {
+    const res_quotation: any = await axios.post('https://sandbox.gw.thai.ebaocloud.com/eBaoTHAI/1.0.0/api/pub/std/quotation/create', {
         insurerTenantCode: model.insurerTenantCode,
         prdtCode: model.prdtCode,
         planCode: model.planCode,
@@ -94,7 +94,7 @@ export const createQuotation = async (model: any, access_token: any, grand_code:
                 lastName: model.policyholder.customer.lastName,
                 nationality: "THA",
                 mobile: model.policyholder.customer.mobile,
-                telNo: model.policyholder.customer.telNo ?? "string",
+                telNo: model.policyholder.customer.telNo ?? "",
                 email: model.policyholder.customer.email,
                 gender: model.policyholder.customer.gender,
                 occupation: model.policyholder.customer.occupation,
@@ -118,6 +118,7 @@ export const createQuotation = async (model: any, access_token: any, grand_code:
                 }
             },
         },
+        beneficiaries: model.beneficiaries ?? [],
         payer: {
             payerType: 1,
             customer: {
@@ -127,7 +128,7 @@ export const createQuotation = async (model: any, access_token: any, grand_code:
                 prefix: model.payer.customer.prefix,
                 firstName: model.payer.customer.firstName,
                 lastName: model.payer.customer.lastName,
-                nationality: "TH",
+                nationality: "THA",
                 dob: model.payer.customer.dob,
                 age: model.payer.customer.age,
                 mobile: model.payer.customer.mobile,
@@ -151,18 +152,15 @@ export const createQuotation = async (model: any, access_token: any, grand_code:
         },
         extInfo: {
             questionnaire: {
-                question2: model.extInfo.questionnaire.question2,
-                question3: model.extInfo.questionnaire.question3,
-                question4: model.extInfo.questionnaire.question4,
-                question5: model.extInfo.questionnaire.question5,
-                question6: model.extInfo.questionnaire.question6,
-                question1: model.extInfo.questionnaire.question1
+                question2: 0,
+                question3: 0,
+                question4: 0,
+                question5: 0,
+                question6: 0,
+                question1: 0
             },
             taxDeduction: model.extInfo.taxDeduction
         },
-    }
-    const res_quotation: any = await axios.post('https://sandbox.gw.thai.ebaocloud.com/eBaoTHAI/1.0.0/api/pub/std/quotation/create', {
-        form_
     }, {
         headers: {
             Authorization: 'Bearer' + access_token,
@@ -175,7 +173,7 @@ export const createQuotation = async (model: any, access_token: any, grand_code:
 }
 
 export default {
-    // getAccesstokenGrandCodeService,
+    getAccesstokenGrandCodeService,
     getewayToken,
     getGrandCode,
     createQuotation

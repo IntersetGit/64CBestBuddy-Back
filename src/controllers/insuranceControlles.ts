@@ -342,7 +342,7 @@ const connectApiFalcon = async (model: any) => {
 
     return {
         quotation: res___,
-        token: {
+        token_falcon: {
             access_token: res_.access_token,
             grandCode: res__.data
         }

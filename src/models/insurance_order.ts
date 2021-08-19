@@ -64,6 +64,7 @@ export interface insurance_orderAttributes {
   sub_district_id_insured?: number;
   created_date?: Date;
   update_date?: Date;
+  status?: '1' | '2' | '3';
 }
 
 export type insurance_orderPk = "id";
@@ -122,6 +123,7 @@ export class insurance_order extends Model<insurance_orderAttributes, insurance_
   sub_district_id_insured?: number;
   created_date?: Date;
   update_date?: Date;
+  status?: '1' | '2' | '3';
 
   // insurance_order belongsTo insurance via insurance_id
   insurance!: insurance;
@@ -528,6 +530,12 @@ export class insurance_order extends Model<insurance_orderAttributes, insurance_
       type: DataTypes.DATE,
       allowNull: true,
       comment: "วันเวลาที่แก้ไข"
+    },
+    status: {
+      type: DataTypes.ENUM('1','2','3'),
+      allowNull: false,
+      defaultValue: "1",
+      comment: "1 = ยังไม่ได้กรอกคำถามสุขภาพ\r\n2 = ยังไม่ได้ชำระเงิน\r\n3 = เสร็จสิ้น"
     }
   }, {
     sequelize,

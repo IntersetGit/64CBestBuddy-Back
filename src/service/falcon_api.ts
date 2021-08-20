@@ -74,13 +74,13 @@ export const getGrandCode = async (models_: any, access_token: any) => {
 
 export const createQuotation = async (model: any, access_token: any, grand_code: any) => {
 
-    const from_ = {
+    const from_: any = {
         insurerTenantCode: model.insurerTenantCode,
         prdtCode: model.prdtCode,
         planCode: model.planCode,
-        proposalDate: model.proposalDate,
-        effDate: model.effDate,
-        expDate: model.expDate,
+        proposalDate: model.protection_date_start,
+        effDate: model.protection_date_start,
+        expDate: model.protection_date_end,
         referenceNo: model.referenceNo,
         insureds: model.insureds,
         policyholder: {
@@ -90,10 +90,10 @@ export const createQuotation = async (model: any, access_token: any, grand_code:
                 idType: model.policyholder.customer.idType,
                 idNo: model.policyholder.customer.idNo,
                 prefix: model.policyholder.customer.prefix,
-                firstName: model.policyholder.customer.firstName,
-                lastName: model.policyholder.customer.lastName,
+                firstName: model.first_name,
+                lastName: model.last_name,
                 nationality: "THA",
-                mobile: model.policyholder.customer.mobile,
+                mobile: model.mobile_phone,
                 telNo: model.policyholder.customer.telNo ?? "",
                 email: model.policyholder.customer.email,
                 gender: model.policyholder.customer.gender,
@@ -164,6 +164,14 @@ export const createQuotation = async (model: any, access_token: any, grand_code:
     }
 
     const res_quotation: any = await axios.post('https://sandbox.gw.thai.ebaocloud.com/eBaoTHAI/1.0.0/api/pub/std/quotation/create', from_, {
+        headers: {
+            Authorization: 'Bearer' + access_token,
+            grantCode: grand_code
+        }
+    })
+    from_.policyId = res_quotation.data.policyId
+
+    const res_bindquotaion: any = await axios.post('https://sandbox.gw.thai.ebaocloud.com/eBaoTHAI/1.0.0/api/pub/std/quotation/bind', from_, {
         headers: {
             Authorization: 'Bearer' + access_token,
             grantCode: grand_code

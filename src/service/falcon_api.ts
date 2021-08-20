@@ -74,7 +74,7 @@ export const getGrandCode = async (models_: any, access_token: any) => {
 
 export const createQuotation = async (model: any, access_token: any, grand_code: any) => {
 
-    const res_quotation: any = await axios.post('https://sandbox.gw.thai.ebaocloud.com/eBaoTHAI/1.0.0/api/pub/std/quotation/create', {
+    const from_ = {
         insurerTenantCode: model.insurerTenantCode,
         prdtCode: model.prdtCode,
         planCode: model.planCode,
@@ -144,8 +144,8 @@ export const createQuotation = async (model: any, access_token: any, grand_code:
                     district: model.payer.customer.district,
                     subDistrict: model.payer.customer.subDistrict,
                     postalCode: model.payer.customer.postalCode,
-                    addressLine1: model.payer.customer.addressLine1 ?? "string",
-                    addressLine2: model.payer.customer.addressLine2 ?? "string"
+                    addressLine1: model.payer.customer.addressLine1 ?? "",
+                    addressLine2: model.payer.customer.addressLine2 ?? ""
                 },
                 extInfo: {}
             }
@@ -161,7 +161,9 @@ export const createQuotation = async (model: any, access_token: any, grand_code:
             },
             taxDeduction: model.extInfo.taxDeduction
         },
-    }, {
+    }
+
+    const res_quotation: any = await axios.post('https://sandbox.gw.thai.ebaocloud.com/eBaoTHAI/1.0.0/api/pub/std/quotation/create', from_, {
         headers: {
             Authorization: 'Bearer' + access_token,
             grantCode: grand_code

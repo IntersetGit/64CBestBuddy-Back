@@ -10,7 +10,7 @@ export const bulkCreateInsurancePriceService = async (model: any, transaction: a
 
 export const getPriceInsuranceService = async (model: any) => {
 
-    let sql = `SELECT b.id AS mas_age_range_id, b.age_range,
+    let sql = `SELECT a.id as id , b.id AS mas_age_range_id, b.age_range,
     (IF(d.status = 1, a.price_sale , a.price_normal)) AS price
     FROM insurance_price AS a
     INNER JOIN mas_age_range AS b ON a.mas_age_range_id = b.id

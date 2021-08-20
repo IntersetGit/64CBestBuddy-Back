@@ -1,5 +1,6 @@
 import * as Sequelize from 'sequelize';
 import { DataTypes, Model, Optional } from 'sequelize';
+import type { insurance_order, insurance_orderId } from './insurance_order';
 import type { mas_age_range, mas_age_rangeId } from './mas_age_range';
 import type { mas_installment, mas_installmentId } from './mas_installment';
 
@@ -30,6 +31,18 @@ export class insurance_price extends Model<insurance_priceAttributes, insurance_
   mas_plan_id?: string;
   is_show_price?: number;
 
+  // insurance_price hasMany insurance_order via insurance_price_id
+  insurance_orders!: insurance_order[];
+  getInsurance_orders!: Sequelize.HasManyGetAssociationsMixin<insurance_order>;
+  setInsurance_orders!: Sequelize.HasManySetAssociationsMixin<insurance_order, insurance_orderId>;
+  addInsurance_order!: Sequelize.HasManyAddAssociationMixin<insurance_order, insurance_orderId>;
+  addInsurance_orders!: Sequelize.HasManyAddAssociationsMixin<insurance_order, insurance_orderId>;
+  createInsurance_order!: Sequelize.HasManyCreateAssociationMixin<insurance_order>;
+  removeInsurance_order!: Sequelize.HasManyRemoveAssociationMixin<insurance_order, insurance_orderId>;
+  removeInsurance_orders!: Sequelize.HasManyRemoveAssociationsMixin<insurance_order, insurance_orderId>;
+  hasInsurance_order!: Sequelize.HasManyHasAssociationMixin<insurance_order, insurance_orderId>;
+  hasInsurance_orders!: Sequelize.HasManyHasAssociationsMixin<insurance_order, insurance_orderId>;
+  countInsurance_orders!: Sequelize.HasManyCountAssociationsMixin;
   // insurance_price belongsTo mas_age_range via mas_age_range_id
   mas_age_range!: mas_age_range;
   getMas_age_range!: Sequelize.BelongsToGetAssociationMixin<mas_age_range>;

@@ -30,7 +30,7 @@ export const addInsuranceOrderService = async (model: any, transaction: any = nu
     if (model.height) _value.height = model.height;
     if (model.weight) _value.weight = model.weight;
     if (model.bmi) _value.bmi = model.bmi;
-    if (model.insurance_plan_id) _value.insurance_plan_id = model.insurance_plan_id;
+    if (model.insurance_price_id) _value.insurance_price_id = model.insurance_price_id;
     if (model.gender_id) _value.gender_id = model.gender_id;
     if (model.type_card_number_id) _value.type_card_number_id = model.type_card_number_id;
     if (model.card_number) _value.card_number = model.card_number;
@@ -86,7 +86,7 @@ export const updateInsuranceOrderService = async (model: any, transaction: any =
     if (model.height) _value.height = model.height;
     if (model.weight) _value.weight = model.weight;
     if (model.bmi) _value.bmi = model.bmi;
-    if (model.insurance_plan_id) _value.insurance_plan_id = model.insurance_plan_id;
+    if (model.insurance_price_id) _value.insurance_price_id = model.insurance_price_id;
     if (model.gender_id) _value.gender_id = model.gender_id;
     if (model.type_card_number_id) _value.type_card_number_id = model.type_card_number_id;
     if (model.card_number) _value.card_number = model.card_number;

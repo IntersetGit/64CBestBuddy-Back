@@ -148,14 +148,14 @@ export function initModels(sequelize: Sequelize) {
   insurance.hasMany(insurance_order, { as: "insurance_orders", foreignKey: "insurance_id"});
   insurance.belongsTo(insurance_category, { as: "insurance_category", foreignKey: "insurance_category_id"});
   insurance_category.hasMany(insurance, { as: "insurances", foreignKey: "insurance_category_id"});
-  insurance_order.belongsTo(insurance_mas_plan, { as: "insurance_plan", foreignKey: "insurance_plan_id"});
-  insurance_mas_plan.hasMany(insurance_order, { as: "insurance_orders", foreignKey: "insurance_plan_id"});
   match_protection_plan.belongsTo(insurance_mas_plan, { as: "mas_plan", foreignKey: "mas_plan_id"});
   insurance_mas_plan.hasMany(match_protection_plan, { as: "match_protection_plans", foreignKey: "mas_plan_id"});
   match_protection_plan.belongsTo(insurance_mas_protection, { as: "mas_protection", foreignKey: "mas_protection_id"});
   insurance_mas_protection.hasMany(match_protection_plan, { as: "match_protection_plans", foreignKey: "mas_protection_id"});
   insurance_beneficiary.belongsTo(insurance_order, { as: "insurance_order", foreignKey: "insurance_order_id"});
   insurance_order.hasMany(insurance_beneficiary, { as: "insurance_beneficiaries", foreignKey: "insurance_order_id"});
+  insurance_order.belongsTo(insurance_price, { as: "insurance_price", foreignKey: "insurance_price_id"});
+  insurance_price.hasMany(insurance_order, { as: "insurance_orders", foreignKey: "insurance_price_id"});
   insurance_order.belongsTo(mas_address_district, { as: "district", foreignKey: "district_id"});
   mas_address_district.hasMany(insurance_order, { as: "insurance_orders", foreignKey: "district_id"});
   insurance_order.belongsTo(mas_address_district, { as: "district_id_insured_mas_address_district", foreignKey: "district_id_insured"});

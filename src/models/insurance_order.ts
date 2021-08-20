@@ -2,7 +2,7 @@ import * as Sequelize from 'sequelize';
 import { DataTypes, Model, Optional } from 'sequelize';
 import type { insurance, insuranceId } from './insurance';
 import type { insurance_beneficiary, insurance_beneficiaryId } from './insurance_beneficiary';
-import type { insurance_mas_plan, insurance_mas_planId } from './insurance_mas_plan';
+import type { insurance_price, insurance_priceId } from './insurance_price';
 import type { mas_address_district, mas_address_districtId } from './mas_address_district';
 import type { mas_address_province, mas_address_provinceId } from './mas_address_province';
 import type { mas_address_sub_district, mas_address_sub_districtId } from './mas_address_sub_district';
@@ -30,7 +30,7 @@ export interface insurance_orderAttributes {
   height?: number;
   weight?: number;
   bmi?: number;
-  insurance_plan_id?: string;
+  insurance_price_id?: string;
   gender_id?: number;
   type_card_number_id?: number;
   card_number?: string;
@@ -89,7 +89,7 @@ export class insurance_order extends Model<insurance_orderAttributes, insurance_
   height?: number;
   weight?: number;
   bmi?: number;
-  insurance_plan_id?: string;
+  insurance_price_id?: string;
   gender_id?: number;
   type_card_number_id?: number;
   card_number?: string;
@@ -130,11 +130,6 @@ export class insurance_order extends Model<insurance_orderAttributes, insurance_
   getInsurance!: Sequelize.BelongsToGetAssociationMixin<insurance>;
   setInsurance!: Sequelize.BelongsToSetAssociationMixin<insurance, insuranceId>;
   createInsurance!: Sequelize.BelongsToCreateAssociationMixin<insurance>;
-  // insurance_order belongsTo insurance_mas_plan via insurance_plan_id
-  insurance_plan!: insurance_mas_plan;
-  getInsurance_plan!: Sequelize.BelongsToGetAssociationMixin<insurance_mas_plan>;
-  setInsurance_plan!: Sequelize.BelongsToSetAssociationMixin<insurance_mas_plan, insurance_mas_planId>;
-  createInsurance_plan!: Sequelize.BelongsToCreateAssociationMixin<insurance_mas_plan>;
   // insurance_order hasMany insurance_beneficiary via insurance_order_id
   insurance_beneficiaries!: insurance_beneficiary[];
   getInsurance_beneficiaries!: Sequelize.HasManyGetAssociationsMixin<insurance_beneficiary>;
@@ -147,6 +142,11 @@ export class insurance_order extends Model<insurance_orderAttributes, insurance_
   hasInsurance_beneficiary!: Sequelize.HasManyHasAssociationMixin<insurance_beneficiary, insurance_beneficiaryId>;
   hasInsurance_beneficiaries!: Sequelize.HasManyHasAssociationsMixin<insurance_beneficiary, insurance_beneficiaryId>;
   countInsurance_beneficiaries!: Sequelize.HasManyCountAssociationsMixin;
+  // insurance_order belongsTo insurance_price via insurance_price_id
+  insurance_price!: insurance_price;
+  getInsurance_price!: Sequelize.BelongsToGetAssociationMixin<insurance_price>;
+  setInsurance_price!: Sequelize.BelongsToSetAssociationMixin<insurance_price, insurance_priceId>;
+  createInsurance_price!: Sequelize.BelongsToCreateAssociationMixin<insurance_price>;
   // insurance_order belongsTo mas_address_district via district_id
   district!: mas_address_district;
   getDistrict!: Sequelize.BelongsToGetAssociationMixin<mas_address_district>;
@@ -312,12 +312,12 @@ export class insurance_order extends Model<insurance_orderAttributes, insurance_
       allowNull: true,
       comment: "BMI"
     },
-    insurance_plan_id: {
+    insurance_price_id: {
       type: DataTypes.STRING(255),
       allowNull: true,
-      comment: "ไอดี ตาราง  insurance_mas_plan",
+      comment: "ตาราง insurance_price",
       references: {
-        model: 'insurance_mas_plan',
+        model: 'insurance_price',
         key: 'id'
       }
     },
@@ -572,13 +572,6 @@ export class insurance_order extends Model<insurance_orderAttributes, insurance_
         ]
       },
       {
-        name: "insurance_plan_id",
-        using: "BTREE",
-        fields: [
-          { name: "insurance_plan_id" },
-        ]
-      },
-      {
         name: "type_card_number_id",
         using: "BTREE",
         fields: [
@@ -653,6 +646,13 @@ export class insurance_order extends Model<insurance_orderAttributes, insurance_
         using: "BTREE",
         fields: [
           { name: "sub_district_id_insured" },
+        ]
+      },
+      {
+        name: "insurance_price_id",
+        using: "BTREE",
+        fields: [
+          { name: "insurance_price_id" },
         ]
       },
     ]

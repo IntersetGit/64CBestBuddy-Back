@@ -150,6 +150,15 @@ export const getByIdInsuranceOrderService = async (id: string) => {
 
 	,(SELECT risk_class_falcon FROM mas_occupation WHERE id = a.occupation_id) AS occupation_risk_class
 
+    ,(SELECT IF(isr.status = 1 , ip.price_sale , ip.price_normal)
+	FROM insurance_price AS ip
+	INNER JOIN insurance AS isr ON isr.id = ip.insurance_id
+	WHERE ip.id = a.insurance_price_id) AS price
+
+	,(SELECT mi.name
+	FROM insurance_price AS ip
+	INNER JOIN mas_installment AS mi ON mi.id = ip.mas_installment_id
+	WHERE ip.id = a.insurance_price_id ) AS installment_name
 
     FROM insurance_order AS a
     WHERE a.id = $1 `

@@ -62,6 +62,7 @@ export const addInsuranceOrderService = async (model: any, transaction: any = nu
     if (model.province_id_insured) _value.province_id_insured = model.province_id_insured;
     if (model.district_id_insured) _value.district_id_insured = model.district_id_insured;
     if (model.sub_district_id_insured) _value.sub_district_id_insured = model.sub_district_id_insured;
+    if (model.status_tax) _value.status_tax = model.status_tax;
 
     await insurance_order.create(_value, { transaction });
     return id
@@ -118,6 +119,7 @@ export const updateInsuranceOrderService = async (model: any, transaction: any =
     if (model.province_id_insured) _value.province_id_insured = model.province_id_insured;
     if (model.district_id_insured) _value.district_id_insured = model.district_id_insured;
     if (model.sub_district_id_insured) _value.sub_district_id_insured = model.sub_district_id_insured;
+    if (model.status_tax) _value.status_tax = model.status_tax;
     if (model.status) _value.status = model.status;
 
     await insurance_order.update(_value, { where: { id: model.id }, transaction });

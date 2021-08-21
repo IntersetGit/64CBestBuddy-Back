@@ -62,6 +62,7 @@ export interface insurance_orderAttributes {
   province_id_insured?: number;
   district_id_insured?: number;
   sub_district_id_insured?: number;
+  status_tax?: '1' | '2';
   created_date?: Date;
   update_date?: Date;
   status?: '1' | '2' | '3';
@@ -121,6 +122,7 @@ export class insurance_order extends Model<insurance_orderAttributes, insurance_
   province_id_insured?: number;
   district_id_insured?: number;
   sub_district_id_insured?: number;
+  status_tax?: '1' | '2';
   created_date?: Date;
   update_date?: Date;
   status?: '1' | '2' | '3';
@@ -395,11 +397,13 @@ export class insurance_order extends Model<insurance_orderAttributes, insurance_
     beneficiary_status: {
       type: DataTypes.ENUM('1','2'),
       allowNull: true,
+      defaultValue: "1",
       comment: "ผู้รับผลประโยชน์ 1 = ทายาทตามกฎหมาย 2 = อื่นๆ"
     },
     insured_status: {
       type: DataTypes.ENUM('1','2'),
       allowNull: true,
+      defaultValue: "1",
       comment: "ผู้ถือกรมธรรม์ 1 = เหมือนผู้เอาประกันภัย 2 = บุคคลอื่น"
     },
     prefix_id_insured: {
@@ -519,6 +523,11 @@ export class insurance_order extends Model<insurance_orderAttributes, insurance_
         model: 'mas_address_sub_district',
         key: 'id'
       }
+    },
+    status_tax: {
+      type: DataTypes.ENUM('1','2'),
+      allowNull: true,
+      comment: "ผู้ขอเอาประกันภัยประสงค์จะใช้สิทธิขอยกเว้นภาษีเงินได้ตามกฎหมายว่าด้วยภาษีอากรหรือไม่\r\n\r\n1 = ไม่\r\n2 =  ประสงค์"
     },
     created_date: {
       type: DataTypes.DATE,

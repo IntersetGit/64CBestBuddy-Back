@@ -1,6 +1,6 @@
 import axios from "axios"
 import config from "../config"
-import { initModels, insurance_order, mas_occupation, mas_address_province, mas_address_district, mas_address_sub_district } from "../models/init-models";
+import { initModels, insurance, insurance_order, mas_occupation, mas_address_province, mas_address_district, mas_address_sub_district } from "../models/init-models";
 import { sequelize } from '../models';
 import moment from 'moment'
 
@@ -78,6 +78,7 @@ export const getGrandCode = async (models_: any, access_token: any) => {
 
 export const createQuotation = async (model: any, access_token: any, grand_code: any) => {
     const quotations = await insurance_order.findOne({ where: { id: model.id } })
+    const product_insurance = await insurance.findOne({ where: { id: quotations?.insurance_id } })
     const occupation = await mas_occupation.findOne({ where: { id: quotations?.occupation_id } }) // อาชีพ
     const province = await mas_address_province.findOne({ where: { id: quotations?.province_id } }) // จังหวัด
     const district = await mas_address_district.findOne({ where: { id: quotations?.district_id } }) // อำเภอ
@@ -129,7 +130,7 @@ export const createQuotation = async (model: any, access_token: any, grand_code:
 
     const from_: any = {
         insurerTenantCode: "FALCON_TH",
-        prdtCode: "PIPRD",
+        prdtCode: product_insurance?.product_code,
         planCode: model.planCode ?? "PIPRD_PLAN1",
         proposalDate: moment(quotations?.protection_date_start).format('DD/MM/YYYY') + " " + "16:30:00",
         effDate: moment(quotations?.protection_date_start).format('DD/MM/YYYY') + " " + "16:30:00",
@@ -240,39 +241,43 @@ export const createQuotation = async (model: any, access_token: any, grand_code:
 
     console.log(res_bindquotaion.data.data);
 
-    /** ขั้นตอนยืนยันรหัส policyId */
-    const res_confirm: any = await axios.get(`https://sandbox.gw.thai.ebaocloud.com/eBaoTHAI/1.0.0/api/pub/std/quotation/confirm/${res_bindquotaion.data.data.policyId}`, {
-        headers: {
-            Authorization: 'Bearer' + access_token,
-            grantCode: grand_code
-        }
-    })
+    // /** ขั้นตอนยืนยันรหัส policyId */
+    // const res_confirm: any = await axios.get(`https://sandbox.gw.thai.ebaocloud.com/eBaoTHAI/1.0.0/api/pub/std/quotation/confirm/${res_bindquotaion.data.data.policyId}`, {
+    //     headers: {
+    //         Authorization: 'Bearer' + access_token,
+    //         grantCode: grand_code
+    //     }
+    // })
 
-    console.log(res_confirm.data.data);
+    // console.log(res_confirm.data.data);
 
-    const pay_quotation = {
-        policyId: res_confirm.data.data.policyId,
-        payMode: {
-            payMode: "twoCTwoP",
-            urlOfPaySuccess: "",
-            urlOfPayFailure: "",
-            extInfo: {}
-        }
-    }
+    // const pay_quotation = {
+    //     policyId: res_confirm.data.data.policyId,
+    //     payMode: {
+    //         payMode: "twoCTwoP",
+    //         urlOfPaySuccess: "",
+    //         urlOfPayFailure: "",
+    //         extInfo: {}
+    //     }
+    // }
 
-    /** ขั้นตอนการชำระเงิน */
-    const res_pay: any = await axios.post(`https://sandbox.gw.thai.ebaocloud.com/eBaoTHAI/1.0.0/api/pub/std/quotation/pay`, pay_quotation, {
-        headers: {
-            Authorization: 'Bearer' + access_token,
-            grantCode: grand_code
-        }
-    })
+    // /** ขั้นตอนการชำระเงิน */
+    // const res_pay: any = await axios.post(`https://sandbox.gw.thai.ebaocloud.com/eBaoTHAI/1.0.0/api/pub/std/quotation/pay`, pay_quotation, {
+    //     headers: {
+    //         Authorization: 'Bearer' + access_token,
+    //         grantCode: grand_code
+    //     }
+    // })
 
-    console.log(res_pay.data.data);
+    // console.log(res_pay.data.data);
 
     return {
-        id: model.id,
-        pay: res_pay.data.data
+        policyId: res_quotation.data.data.policyId,
+        token: {
+            access_token,
+            grand_code
+        },
+        id: model.id
     }
 
 }

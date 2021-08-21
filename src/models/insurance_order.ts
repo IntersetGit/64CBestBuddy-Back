@@ -14,6 +14,7 @@ import type { mas_type_card_number, mas_type_card_numberId } from './mas_type_ca
 
 export interface insurance_orderAttributes {
   id: string;
+  policy_id?: string;
   insurance_code?: string;
   insurance_id: string;
   protection_date_start: string;
@@ -74,6 +75,7 @@ export type insurance_orderCreationAttributes = Optional<insurance_orderAttribut
 
 export class insurance_order extends Model<insurance_orderAttributes, insurance_orderCreationAttributes> implements insurance_orderAttributes {
   id!: string;
+  policy_id?: string;
   insurance_code?: string;
   insurance_id!: string;
   protection_date_start!: string;
@@ -221,6 +223,11 @@ export class insurance_order extends Model<insurance_orderAttributes, insurance_
       type: DataTypes.STRING(255),
       allowNull: false,
       primaryKey: true
+    },
+    policy_id: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      comment: "รหัสยืนยัน falcon"
     },
     insurance_code: {
       type: DataTypes.STRING(255),

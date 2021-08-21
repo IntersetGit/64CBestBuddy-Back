@@ -298,7 +298,7 @@ const mangeInsuranceFalcon = async (model: any, transaction: any) => {
         /* เชื่มต่อ API ของ Falcon */
         if (model.page == 3) {
             const res_falcon: any = await connectApiFalcon(model)
-            model.insurance_code = res_falcon.pay.quoteNo
+            model.policy_id = res_falcon.policyId
             model.id = res_falcon.id
             await updateInsuranceOrderService(model)
             return res_falcon

@@ -17,17 +17,17 @@ export const addInsuranceBeneficiaryService = async (model: any, transaction: an
         last_name: model.last_name,
         beneficiary_id: model.beneficiary_id,
         ratio: model.ratio,
+        sort: model.sort,
     }
 
     await insurance_beneficiary.create(_value, { transaction });
     return id
 }
 
-export const destroyInsuranceBeneficiaryService = async (id: any, transaction: any = null) => {
-    await insurance_beneficiary.destroy({
-        where: { id }, transaction
+export const destroyInsuranceBeneficiaryService = async (insurance_order_id: any, transaction: any = null) => {
+    return await insurance_beneficiary.destroy({
+        where: { insurance_order_id }, transaction
     });
-    return true
 }
 
 

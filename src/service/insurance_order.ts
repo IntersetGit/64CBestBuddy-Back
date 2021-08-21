@@ -140,8 +140,8 @@ export const getByIdInsuranceOrderService = async (id: string) => {
         ,'last_name', aa.last_name
         ,'beneficiary_id', aa.beneficiary_id
         ,'ratio', aa.ratio
-
-        )), ']')
+        ,'sort', aa.sort
+        ) ORDER BY aa.sort ASC), ']')
         
     FROM insurance_beneficiary AS aa
     INNER JOIN mas_prefix AS bb ON aa.prefix_id = bb.id

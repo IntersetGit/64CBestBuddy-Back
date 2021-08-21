@@ -1,8 +1,12 @@
 import axios from "axios"
 import config from "../config"
+import { initModels, insurance_order, mas_occupation, mas_address_province, mas_address_district, mas_address_sub_district } from "../models/init-models";
+import { sequelize } from '../models';
+import moment from 'moment'
+
+initModels(sequelize);
 
 export const getAccesstokenGrandCodeService = async (model: any) => {
-
     const models: any = {
         username: config.USERNAME_FALCON,
         password: config.PASSWORD_FALCON
@@ -73,48 +77,97 @@ export const getGrandCode = async (models_: any, access_token: any) => {
 }
 
 export const createQuotation = async (model: any, access_token: any, grand_code: any) => {
+    const quotations = await insurance_order.findOne({ where: { id: model.id } })
+    const occupation = await mas_occupation.findOne({ where: { id: quotations?.occupation_id } }) // อาชีพ
+    const province = await mas_address_province.findOne({ where: { id: quotations?.province_id } }) // จังหวัด
+    const district = await mas_address_district.findOne({ where: { id: quotations?.district_id } }) // อำเภอ
+    const sub_district = await mas_address_sub_district.findOne({ where: { id: quotations?.sub_district_id } }) // ตำบล
+    console.log(quotations);
+    const random_num = (Math.floor(Math.random() * 100) + 1)
+    const insureds = []
+    const insured = {
+        detail: {
+            insuredType: 1,
+            idType: quotations?.type_card_number_id == 1 ? 3 : 5,
+            idNo: quotations?.card_number,
+            prefix: quotations?.prefix_id,
+            firstName: quotations?.first_name,
+            lastName: quotations?.last_name,
+            nationality: "THA",
+            dob: moment(quotations?.birthday).format('DD/MM/YYYY'),
+            age: quotations?.age,
+            mobile: quotations?.mobile_phone,
+            telNo: quotations?.phone ?? "",
+            email: quotations?.email,
+            gender: quotations?.gender_id == 1 ? "M" : "F",
+            occupation: occupation?.code_falcon,
+            taxNo: "",
+            address: {
+                addressType: 2,
+                province: province?.code_falcon,
+                district: district?.code_falcon,
+                subDistrict: sub_district?.code_falcon,
+                postalCode: sub_district?.postal_code,
+                addressNo: quotations?.house_no,
+                village: quotations?.village ?? "",
+                alley: quotations?.lane ?? "",
+                road: quotations?.road ?? "",
+                moo: quotations?.village_no ?? ""
+            },
+            extInfo: {
+                BMI: quotations?.bmi,
+                weight: quotations?.weight,
+                height: quotations?.height,
+                income: "",
+                jobDescription: "",
+                position: "",
+                occupationClass: ""
+            }
+        }
+    }
+    insureds.push(insured)
 
     const from_: any = {
-        insurerTenantCode: model.insurerTenantCode,
-        prdtCode: model.prdtCode,
-        planCode: model.planCode,
-        proposalDate: model.protection_date_start,
-        effDate: model.protection_date_start,
-        expDate: model.protection_date_end,
-        referenceNo: model.referenceNo,
-        insureds: model.insureds,
+        insurerTenantCode: "FALCON_TH",
+        prdtCode: "PIPRD",
+        planCode: model.planCode ?? "PIPRD_PLAN1",
+        proposalDate: moment(quotations?.protection_date_start).format('DD/MM/YYYY') + " " + "16:30:00",
+        effDate: moment(quotations?.protection_date_start).format('DD/MM/YYYY') + " " + "16:30:00",
+        expDate: moment(quotations?.protection_date_end).format('DD/MM/YYYY') + " " + "16:30:00",
+        referenceNo: `BrokerTest${random_num}`,
+        insureds: insureds,
         policyholder: {
-            isSameAsInsured: model.policyholder.isSameAsInsured,
+            isSameAsInsured: true,
             customer: {
                 customerType: 1,
-                idType: model.policyholder.customer.idType,
-                idNo: model.policyholder.customer.idNo,
-                prefix: model.policyholder.customer.prefix,
-                firstName: model.first_name,
-                lastName: model.last_name,
+                idType: quotations?.type_card_number_id == 1 ? 3 : 5,
+                idNo: quotations?.card_number,
+                prefix: quotations?.prefix_id,
+                firstName: quotations?.first_name,
+                lastName: quotations?.last_name,
                 nationality: "THA",
-                mobile: model.mobile_phone,
-                telNo: model.policyholder.customer.telNo ?? "",
-                email: model.policyholder.customer.email,
-                gender: model.policyholder.customer.gender,
-                occupation: model.policyholder.customer.occupation,
-                taxNo: model.policyholder.customer.taxNo,
-                branch: model.policyholder.customer.branch,
+                mobile: quotations?.mobile_phone,
+                telNo: quotations?.phone ?? "",
+                email: quotations?.email,
+                gender: quotations?.gender_id == 1 ? "M" : "F",
+                occupation: occupation?.code_falcon,
+                taxNo: "",
+                branch: "",
                 address: {
                     addressType: 2,
-                    province: model.policyholder.customer.address.province,
-                    district: model.policyholder.customer.address.district,
-                    subDistrict: model.policyholder.customer.address.subDistrict,
-                    postalCode: model.policyholder.customer.address.postalCode,
-                    addressNo: model.policyholder.customer.address.addressNo,
-                    village: model.policyholder.customer.address.village,
-                    alley: model.policyholder.customer.address.alley,
-                    road: model.policyholder.customer.address.road,
-                    moo: model.policyholder.customer.address.moo
+                    province: province?.code_falcon,
+                    district: district?.code_falcon,
+                    subDistrict: sub_district?.code_falcon,
+                    postalCode: sub_district?.postal_code,
+                    addressNo: quotations?.house_no,
+                    village: quotations?.village ?? "",
+                    alley: quotations?.lane ?? "",
+                    road: quotations?.road ?? "",
+                    moo: quotations?.village_no ?? ""
                 },
                 extInfo: {
-                    infoType: model.policyholder.customer.extInfo.infoType,
-                    relationship: model.policyholder.customer.extInfo.relationship
+                    infoType: "individual",
+                    relationship: ""
                 }
             },
         },
@@ -123,32 +176,36 @@ export const createQuotation = async (model: any, access_token: any, grand_code:
             payerType: 1,
             customer: {
                 customerType: 1,
-                idType: model.payer.customer.idType,
-                idNo: model.payer.customer.idNo,
-                prefix: model.payer.customer.prefix,
-                firstName: model.payer.customer.firstName,
-                lastName: model.payer.customer.lastName,
+                idType: quotations?.type_card_number_id == 1 ? 3 : 5,
+                idNo: quotations?.card_number,
+                prefix: quotations?.prefix_id,
+                firstName: quotations?.first_name,
+                lastName: quotations?.last_name,
                 nationality: "THA",
-                dob: model.payer.customer.dob,
-                age: model.payer.customer.age,
-                mobile: model.payer.customer.mobile,
-                telNo: model.payer.customer.telNo,
-                email: model.payer.customer.email,
-                gender: model.payer.customer.gender,
-                occupation: model.payer.customer.occupation,
-                taxNo: model.payer.customer.taxNo,
-                branch: model.payer.customer.branch,
+                dob: moment(quotations?.birthday).format('DD/MM/YYYY'),
+                age: quotations?.age,
+                mobile: quotations?.mobile_phone,
+                telNo: quotations?.phone ?? "",
+                email: quotations?.email,
+                gender: quotations?.gender_id == 1 ? "M" : "F",
+                occupation: occupation?.code_falcon,
+                taxNo: "",
+                branch: "",
                 address: {
                     addressType: 1,
-                    province: model.payer.customer.province,
-                    district: model.payer.customer.district,
-                    subDistrict: model.payer.customer.subDistrict,
-                    postalCode: model.payer.customer.postalCode,
-                    addressLine1: model.payer.customer.addressLine1 ?? "",
-                    addressLine2: model.payer.customer.addressLine2 ?? ""
+                    province: province?.code_falcon,
+                    district: district?.code_falcon,
+                    subDistrict: sub_district?.code_falcon,
+                    postalCode: sub_district?.postal_code,
+                    addressLine1: "",
+                    addressLine2: ""
                 },
                 extInfo: {}
             }
+        },
+        payMode: {
+            payMode: "twoCTwoP",
+            extInfo: {}
         },
         extInfo: {
             questionnaire: {
@@ -159,18 +216,21 @@ export const createQuotation = async (model: any, access_token: any, grand_code:
                 question6: 0,
                 question1: 0
             },
-            taxDeduction: model.extInfo.taxDeduction
+            taxDeduction: 1
         },
     }
 
+    /** ขั้นตอนสร้างใบเสนอราคาประกัน */
     const res_quotation: any = await axios.post('https://sandbox.gw.thai.ebaocloud.com/eBaoTHAI/1.0.0/api/pub/std/quotation/create', from_, {
         headers: {
             Authorization: 'Bearer' + access_token,
             grantCode: grand_code
         }
     })
-    from_.policyId = res_quotation.data.policyId
+    console.log(res_quotation.data.data);
+    from_.policyId = res_quotation.data.data.policyId
 
+    /** ขั้นตอนผูกใบเสนอราคา */
     const res_bindquotaion: any = await axios.post('https://sandbox.gw.thai.ebaocloud.com/eBaoTHAI/1.0.0/api/pub/std/quotation/bind', from_, {
         headers: {
             Authorization: 'Bearer' + access_token,
@@ -178,7 +238,37 @@ export const createQuotation = async (model: any, access_token: any, grand_code:
         }
     })
 
-    return res_quotation.data
+    console.log(res_bindquotaion.data.data);
+
+    /** ขั้นตอนยืนยันรหัส policyId */
+    const res_confirm: any = await axios.get(`https://sandbox.gw.thai.ebaocloud.com/eBaoTHAI/1.0.0/api/pub/std/quotation/confirm/${res_bindquotaion.data.data.policyId}`, {
+        headers: {
+            Authorization: 'Bearer' + access_token,
+            grantCode: grand_code
+        }
+    })
+
+    console.log(res_confirm.data.data);
+
+    const pay_quotation = {
+        policyId: res_confirm.data.data.policyId,
+        payMode: {
+            payMode: "twoCTwoP",
+            extInfo: {}
+        }
+    }
+
+    /** ขั้นตอนการชำระเงิน */
+    const res_pay: any = await axios.post(`https://sandbox.gw.thai.ebaocloud.com/eBaoTHAI/1.0.0/api/pub/std/quotation/pay`, pay_quotation, {
+        headers: {
+            Authorization: 'Bearer' + access_token,
+            grantCode: grand_code
+        }
+    })
+
+    console.log(res_pay.data.data);
+
+    return res_pay.data.data
 
 }
 

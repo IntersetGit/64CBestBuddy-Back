@@ -66,17 +66,17 @@ export const getByidUserService = async (id: any) => {
         ,su.username
         ,su.email
         ,su.isuse
-        ,ps.mas_title_name_id
-        ,(SELECT title_name FROM mas_title_name WHERE id = ps.mas_title_name_id ) AS title_name
-        ,ps.first_name_th
-        ,ps.last_name_th
-        ,ps.nick_name_th
-        ,ps.tel
-        ,ps.id_card
-        ,ps.birthday
-        ,ps.gender
-        ,ps.passport_number
-        ,ps.insurance_code
+        ,su.mas_prefix_id
+        ,(SELECT name FROM mas_prefix WHERE id = su.mas_prefix_id ) AS prefix
+        ,su.first_name
+        ,su.last_name
+        ,su.nick_name
+        ,su.tel
+        ,su.id_card
+        ,su.birthday
+        ,su.gender
+        ,su.passport_number
+        ,su.insurance_code
         ,(SELECT id FROM sysm_roles WHERE id = su.roles_id) AS role_id
         ,(SELECT roles_name FROM sysm_roles WHERE id = su.roles_id) AS role
         ,su.created_by
@@ -85,7 +85,6 @@ export const getByidUserService = async (id: any) => {
         ,su.updated_date
 
         FROM sysm_users su
-        INNER JOIN person ps ON su.id = ps.user_id
         WHERE su.isuse = 1 AND su.id = $1`, [id])
 }
 
@@ -96,16 +95,16 @@ export const getAllusersService = async (search: any, limit: any) => {
         ,su.username
         ,su.email
         ,su.isuse
-        ,(SELECT title_name FROM mas_title_name WHERE id = ps.mas_title_name_id ) AS title_name
-        ,ps.first_name_th
-        ,ps.last_name_th
-        ,ps.nick_name_th
-        ,ps.tel
-        ,ps.id_card
-        ,ps.birthday
-        ,ps.gender
-        ,ps.passport_number
-        ,ps.insurance_code
+        ,(SELECT name FROM mas_prefix WHERE id = su.mas_prefix_id ) AS prefix
+        ,su.first_name
+        ,su.last_name
+        ,su.nick_name
+        ,su.tel
+        ,su.id_card
+        ,su.birthday
+        ,su.gender
+        ,su.passport_number
+        ,su.insurance_code
         ,(SELECT id FROM sysm_roles WHERE id = su.roles_id) AS role_id
         ,(SELECT roles_name FROM sysm_roles WHERE id = su.roles_id) AS role
         ,su.created_by
@@ -114,27 +113,25 @@ export const getAllusersService = async (search: any, limit: any) => {
         ,su.updated_date
 
         FROM sysm_users su
-        INNER JOIN person ps ON su.id = ps.user_id
         WHERE su.isuse = 1`
 
     let sql_count = `
         SELECT COUNT(su.id) AS count
 
         FROM sysm_users su
-        INNER JOIN person ps ON su.id = ps.user_id
         WHERE su.isuse = 1`
 
     if (search) {
         sql += ` AND su.username LIKE '%${search}%'
         OR su.email LIKE '%${search}%'
-        OR ps.first_name_th LIKE '%${search}%'
-        OR ps.last_name_th LIKE '%${search}%' 
+        OR su.first_name LIKE '%${search}%'
+        OR su.last_name LIKE '%${search}%' 
         OR (SELECT roles_name FROM sysm_roles WHERE id = su.roles_id) LIKE '%${search}%' `
 
         sql_count += ` AND su.username LIKE '%${search}%'
         OR su.email LIKE '%${search}%'
-        OR ps.first_name_th LIKE '%${search}%'
-        OR ps.last_name_th LIKE '%${search}%' 
+        OR su.first_name LIKE '%${search}%'
+        OR su.last_name LIKE '%${search}%' 
         OR (SELECT roles_name FROM sysm_roles WHERE id = su.roles_id) LIKE '%${search}%' `
     }
 

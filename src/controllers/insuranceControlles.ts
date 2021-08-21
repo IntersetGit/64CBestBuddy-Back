@@ -276,11 +276,12 @@ const mangeInsuranceFalcon = async (model: any, transaction: any) => {
 
         /* ข้อมูลผู้รับผลประโยชน์ */
         model.insurance_beneficiary = model.insurance_beneficiary ?? []
+
+        await destroyInsuranceBeneficiaryService(id, transaction)
+
         for (const key in model.insurance_beneficiary) {
             if (Object.prototype.hasOwnProperty.call(model.insurance_beneficiary, key)) {
                 const e: any = model.insurance_beneficiary[key];
-
-                if (e.id) await destroyInsuranceBeneficiaryService(e.id, transaction)
                 await addInsuranceBeneficiaryService({
                     insurance_order_id: id,
                     prefix_id: e.prefix_id,
@@ -288,8 +289,8 @@ const mangeInsuranceFalcon = async (model: any, transaction: any) => {
                     last_name: e.last_name,
                     beneficiary_id: e.beneficiary_id,
                     ratio: e.ratio,
+                    sort: Number(key) + 1,
                 }, transaction)
-
             }
         }
         await transaction.commit();

@@ -12,6 +12,7 @@ export interface insurance_beneficiaryAttributes {
   last_name: string;
   beneficiary_id: number;
   ratio: number;
+  sort: number;
 }
 
 export type insurance_beneficiaryPk = "id";
@@ -26,6 +27,7 @@ export class insurance_beneficiary extends Model<insurance_beneficiaryAttributes
   last_name!: string;
   beneficiary_id!: number;
   ratio!: number;
+  sort!: number;
 
   // insurance_beneficiary belongsTo insurance_order via insurance_order_id
   insurance_order!: insurance_order;
@@ -90,6 +92,11 @@ export class insurance_beneficiary extends Model<insurance_beneficiaryAttributes
       type: DataTypes.FLOAT(10,2),
       allowNull: false,
       comment: "อัตราส่วน"
+    },
+    sort: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      comment: "ลำดับ"
     }
   }, {
     sequelize,

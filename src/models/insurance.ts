@@ -9,7 +9,6 @@ import type { sysm_users, sysm_usersId } from './sysm_users';
 
 export interface insuranceAttributes {
   id: string;
-  code_id?: string;
   product_code?: string;
   name?: string;
   img_header?: string;
@@ -38,7 +37,6 @@ export type insuranceCreationAttributes = Optional<insuranceAttributes, insuranc
 
 export class insurance extends Model<insuranceAttributes, insuranceCreationAttributes> implements insuranceAttributes {
   id!: string;
-  code_id?: string;
   product_code?: string;
   name?: string;
   img_header?: string;
@@ -119,15 +117,10 @@ export class insurance extends Model<insuranceAttributes, insuranceCreationAttri
       allowNull: false,
       primaryKey: true
     },
-    code_id: {
-      type: DataTypes.STRING(100),
-      allowNull: true,
-      comment: "รหัสประกันของ cigna, falcon"
-    },
     product_code: {
       type: DataTypes.STRING(100),
       allowNull: true,
-      comment: "รหัสโค้ดประกัน",
+      comment: "รหัสประกันของ cigna, falcon",
       unique: "product_code"
     },
     name: {

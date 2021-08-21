@@ -297,7 +297,11 @@ const mangeInsuranceFalcon = async (model: any, transaction: any) => {
 
         /* เชื่มต่อ API ของ Falcon */
         if (model.page == 3) {
-            return await connectApiFalcon(model)
+            const res_falcon: any = await connectApiFalcon(model)
+            model.insurance_code = res_falcon.pay.quoteNo
+            model.id = res_falcon.id
+            await updateInsuranceOrderService(model)
+            return res_falcon
         }
 
         return id
@@ -341,13 +345,7 @@ const connectApiFalcon = async (model: any) => {
     const res___ = await createQuotation(model, res_.access_token, res__.data)
     console.log(res___);
 
-    return {
-        quotation: res___,
-        token_falcon: {
-            access_token: res_.access_token,
-            grandCode: res__.data
-        }
-    }
+    return res___
 }
 
 export default {

@@ -254,6 +254,8 @@ export const createQuotation = async (model: any, access_token: any, grand_code:
         policyId: res_confirm.data.data.policyId,
         payMode: {
             payMode: "twoCTwoP",
+            urlOfPaySuccess: "",
+            urlOfPayFailure: "",
             extInfo: {}
         }
     }
@@ -268,7 +270,10 @@ export const createQuotation = async (model: any, access_token: any, grand_code:
 
     console.log(res_pay.data.data);
 
-    return res_pay.data.data
+    return {
+        id: model.id,
+        pay: res_pay.data.data
+    }
 
 }
 

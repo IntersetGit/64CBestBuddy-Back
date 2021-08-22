@@ -66,7 +66,7 @@ export interface insurance_orderAttributes {
   status_tax?: '1' | '2';
   created_date?: Date;
   update_date?: Date;
-  status?: '1' | '2' | '3';
+  status?: '1' | '2' | '3' | '4';
 }
 
 export type insurance_orderPk = "id";
@@ -127,7 +127,7 @@ export class insurance_order extends Model<insurance_orderAttributes, insurance_
   status_tax?: '1' | '2';
   created_date?: Date;
   update_date?: Date;
-  status?: '1' | '2' | '3';
+  status?: '1' | '2' | '3' | '4';
 
   // insurance_order belongsTo insurance via insurance_id
   insurance!: insurance;
@@ -548,10 +548,10 @@ export class insurance_order extends Model<insurance_orderAttributes, insurance_
       comment: "วันเวลาที่แก้ไข"
     },
     status: {
-      type: DataTypes.ENUM('1','2','3'),
+      type: DataTypes.ENUM('1','2','3','4'),
       allowNull: false,
       defaultValue: "1",
-      comment: "1 = ยังไม่ได้กรอกคำถามสุขภาพ\r\n2 = ยังไม่ได้ชำระเงิน\r\n3 = เสร็จสิ้น"
+      comment: "1 = ยังไม่ได้กรอกคำถามสุขภาพ\r\n2 = ยังไม่ได้ยืนยัน\r\n3 = ยังไม่ได้ชำระเงิน\r\n4 = เสร็จสิ้น"
     }
   }, {
     sequelize,

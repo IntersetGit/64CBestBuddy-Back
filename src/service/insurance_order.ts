@@ -72,7 +72,6 @@ export const updateInsuranceOrderService = async (model: any, transaction: any =
 
     const _value: any = {}
     if (model.insurance_id) _value.insurance_id = model.insurance_id;
-    if (model.policy_id) _value.policy_id = model.policy_id
     if (model.protection_date_start) _value.protection_date_start = model.protection_date_start;
     if (model.protection_date_end) _value.protection_date_end = model.protection_date_end;
     if (model.prefix_id) _value.prefix_id = model.prefix_id;
@@ -163,6 +162,8 @@ export const getByIdInsuranceOrderService = async (id: string) => {
 	INNER JOIN mas_installment AS mi ON mi.id = ip.mas_installment_id
 	WHERE ip.id = a.insurance_price_id ) AS installment_name
 
+    ,(SELECT mas_plan_id FROM insurance_price WHERE id = a.insurance_price_id) AS insurance_plan_id
+    
     FROM insurance_order AS a
     WHERE a.id = $1 `
     return sequelizeStringFindOne(sql, [id])

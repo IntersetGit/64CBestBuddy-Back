@@ -165,6 +165,8 @@ export const getByIdInsuranceOrderService = async (id: string) => {
     ,(SELECT name FROM mas_gender WHERE a.gender_id_insured = id) AS gender_insured
     ,(SELECT name FROM mas_occupation WHERE a.occupation_id = id) AS occupation
     ,(SELECT name FROM mas_beneficiary_relationship WHERE a.beneficiary_id_insured = id) AS beneficiary_insured
+    ,(SELECT name FROM mas_type_card_number WHERE a.type_card_number_id = id) AS type_card_number
+	,(SELECT name FROM mas_type_card_number WHERE a.type_card_number_id_insured = id) AS type_card_number_insured
     ,(SELECT provicne_name_th FROM mas_address_province WHERE a.province_id = id) AS provicne_name
     ,(SELECT district_name_th FROM mas_address_district WHERE a.district_id = id) AS district_name
     ,(SELECT sub_district_name_th FROM mas_address_sub_district WHERE a.sub_district_id = id) AS sub_district_name

@@ -157,12 +157,8 @@ export const getByIdInsuranceOrderService = async (id: string) => {
 	INNER JOIN insurance AS isr ON isr.id = ip.insurance_id
 	WHERE ip.id = a.insurance_price_id) AS price
 
-	,(SELECT mi.name
-	FROM insurance_price AS ip
-	INNER JOIN mas_installment AS mi ON mi.id = ip.mas_installment_id
-	WHERE ip.id = a.insurance_price_id ) AS installment_name
-
     ,(SELECT mas_plan_id FROM insurance_price WHERE id = a.insurance_price_id) AS insurance_plan_id
+    ,(SELECT name FROM insurance_mas_plan WHERE id = (SELECT mas_plan_id FROM insurance_price WHERE id = a.insurance_price_id)) AS insurance_plan_name
     
     FROM insurance_order AS a
     WHERE a.id = $1 `

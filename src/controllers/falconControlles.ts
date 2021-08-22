@@ -8,6 +8,8 @@ import { sequelize } from '../models';
 
 initModels(sequelize)
 
+const token_falcon: any = {}
+
 /** ขั้นตอนยืนยันรหัส policyId */
 export const confirm_falcon = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -22,7 +24,7 @@ export const confirm_falcon = async (req: Request, res: Response, next: NextFunc
         }
 
         /** ดึง PolicyId */
-        const policy_id = await getPolicyId(id)
+        const policy = await getPolicyId(id)
 
         /** เรียก token */
         const res_: any = await getewayToken(models)
@@ -32,7 +34,11 @@ export const confirm_falcon = async (req: Request, res: Response, next: NextFunc
         const res__ = await getGrandCode(models_, res_.access_token)
         console.log(res__);
 
-        if (!policy_id) {
+        token_falcon.access_token = res_.access_token
+        token_falcon.grand_code = res__.data
+        token_falcon.policy = policy?.policy_id
+
+        if (!policy?.policy_id) {
             const err: any = new Error('ไม่มี Token Falcon')
             err.statusCode = 500
             throw err
@@ -44,7 +50,7 @@ export const confirm_falcon = async (req: Request, res: Response, next: NextFunc
             throw error;
         }
 
-        const res_confirm: any = await axios.get(`https://sandbox.gw.thai.ebaocloud.com/eBaoTHAI/1.0.0/api/pub/std/quotation/confirm/${policy_id}`, {
+        const res_confirm: any = await axios.get(`https://sandbox.gw.thai.ebaocloud.com/eBaoTHAI/1.0.0/api/pub/std/quotation/confirm/${policy?.policy_id}`, {
             headers: {
                 Authorization: 'Bearer' + res_.access_token,
                 grantCode: res__.grand_code
@@ -52,9 +58,25 @@ export const confirm_falcon = async (req: Request, res: Response, next: NextFunc
         })
 
         console.log(res_confirm.data.data);
+        result(res, res_confirm.data.data);
+
+    } catch (error) {
+        next(error)
+    }
+
+}
+
+export const pay = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+
+        if (!token_falcon.policy) {
+            const err: any = new Error('ไม่มี Token Falcon')
+            err.statusCode = 500
+            throw err
+        }
 
         const pay_quotation = {
-            policyId: policy_id,
+            policyId: token_falcon.policy,
             payMode: {
                 payMode: "twoCTwoP",
                 urlOfPaySuccess: "",// redirect
@@ -66,19 +88,17 @@ export const confirm_falcon = async (req: Request, res: Response, next: NextFunc
         /** ขั้นตอนการชำระเงิน */
         const res_pay: any = await axios.post(`https://sandbox.gw.thai.ebaocloud.com/eBaoTHAI/1.0.0/api/pub/std/quotation/pay`, pay_quotation, {
             headers: {
-                Authorization: 'Bearer' + res_.access_token,
-                grantCode: res__.grand_code
+                Authorization: 'Bearer' + token_falcon.access_token,
+                grantCode: token_falcon.grand_code
             }
         })
 
         console.log(res_pay.data.data);
-
-        result(res, res_pay.data.data)
+        result(res, res_pay.data.data);
 
     } catch (error) {
         next(error)
     }
-
 }
 
 const getPolicyId = async (id: string) => {

@@ -159,7 +159,19 @@ export const getByIdInsuranceOrderService = async (id: string) => {
 
     ,(SELECT mas_plan_id FROM insurance_price WHERE id = a.insurance_price_id) AS insurance_plan_id
     ,(SELECT name FROM insurance_mas_plan WHERE id = (SELECT mas_plan_id FROM insurance_price WHERE id = a.insurance_price_id)) AS insurance_plan_name
-    
+    ,(SELECT name FROM mas_prefix WHERE a.prefix_id = id) AS prefix
+    ,(SELECT name FROM mas_prefix WHERE a.prefix_id_insured = id) AS prefix_insured
+    ,(SELECT name FROM mas_gender WHERE a.gender_id = id) AS gender
+    ,(SELECT name FROM mas_gender WHERE a.gender_id_insured = id) AS gender_insured
+    ,(SELECT name FROM mas_occupation WHERE a.occupation_id = id) AS occupation
+    ,(SELECT name FROM mas_beneficiary_relationship WHERE a.beneficiary_id_insured = id) AS beneficiary_insured
+    ,(SELECT provicne_name_th FROM mas_address_province WHERE a.province_id = id) AS provicne_name
+    ,(SELECT district_name_th FROM mas_address_district WHERE a.district_id = id) AS district_name
+    ,(SELECT sub_district_name_th FROM mas_address_sub_district WHERE a.sub_district_id = id) AS sub_district_name
+    ,(SELECT provicne_name_th FROM mas_address_province WHERE a.province_id_insured = id) AS province_insured
+    ,(SELECT district_name_th FROM mas_address_district WHERE a.district_id_insured = id) AS district_insured
+    ,(SELECT sub_district_name_th FROM mas_address_sub_district WHERE a.sub_district_id_insured = id) AS sub_district_insured
+
     FROM insurance_order AS a
     WHERE a.id = $1 `
     return sequelizeStringFindOne(sql, [id])

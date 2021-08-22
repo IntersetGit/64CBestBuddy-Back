@@ -56,9 +56,28 @@ export const confirmFalcon = async (req: Request, res: Response, next: NextFunct
                 grantCode: res__.data
             }
         })
+        console.log(res_confirm.data.data);
 
-        console.log(res_confirm.data);
-        result(res, res_confirm.data);
+        const pay_quotation = {
+            policyId: res_confirm.data.data.policyId,
+            payMode: {
+                payMode: "twoCTwoP",
+                urlOfPaySuccess: "",// redirect
+                urlOfPayFailure: "",
+                extInfo: {}
+            }
+        }
+
+        /** ขั้นตอนการชำระเงิน */
+        const res_pay: any = await axios.post(`https://sandbox.gw.thai.ebaocloud.com/eBaoTHAI/1.0.0/api/pub/std/quotation/pay`, pay_quotation, {
+            headers: {
+                Authorization: 'Bearer' + res_.access_token,
+                grantCode: res__.data
+            }
+        })
+
+        console.log(res_pay.data.data);
+        result(res, res_pay.data.data);
 
     } catch (error) {
         next(error)

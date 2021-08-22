@@ -29,4 +29,5 @@ router.post('/getByInsuranceAndInstallment', insuranceControlles.getByInsuranceA
 /* insurance_order */
 router.post('/mangeInsuranceOrder', insuranceControlles.mangeInsuranceOrder);
 
+
 export default router;

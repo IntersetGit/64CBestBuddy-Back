@@ -1,9 +1,9 @@
 import express from 'express';
-import { confirm_falcon, pay } from '../controllers/falconControlles';
+import { confirmFalcon, pay } from '../controllers/falconControlles';
 const router = express.Router();
 
 /** ยืนยันการสั่งซื้อประกัน */
-router.get('/confirm', confirm_falcon)
+router.get('/confirm/:id', confirmFalcon)
 
 /** จ่ายเงิน */
 router.post('/pay', pay)

@@ -11,7 +11,7 @@ initModels(sequelize)
 const token_falcon: any = {}
 
 /** ขั้นตอนยืนยันรหัส policyId */
-export const confirm_falcon = async (req: Request, res: Response, next: NextFunction) => {
+export const confirmFalcon = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id } = req.params;
         const models: any = {
@@ -53,12 +53,12 @@ export const confirm_falcon = async (req: Request, res: Response, next: NextFunc
         const res_confirm: any = await axios.get(`https://sandbox.gw.thai.ebaocloud.com/eBaoTHAI/1.0.0/api/pub/std/quotation/confirm/${policy?.policy_id}`, {
             headers: {
                 Authorization: 'Bearer' + res_.access_token,
-                grantCode: res__.grand_code
+                grantCode: res__.data
             }
         })
 
-        console.log(res_confirm.data.data);
-        result(res, res_confirm.data.data);
+        console.log(res_confirm.data);
+        result(res, res_confirm.data);
 
     } catch (error) {
         next(error)
@@ -106,5 +106,5 @@ const getPolicyId = async (id: string) => {
 }
 
 export default {
-    confirm_falcon
+    confirmFalcon
 }

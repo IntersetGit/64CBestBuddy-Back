@@ -39,9 +39,14 @@ export const confirmFalcon = async (req: Request, res: Response, next: NextFunct
         token_falcon.policy = policy?.policy_id
 
         if (!policy?.policy_id) {
-            const err: any = new Error('ไม่มี Token Falcon')
+            const err: any = new Error('ต้องมี policy_id')
             err.statusCode = 500
             throw err
+        }
+        if (!res__.data) {
+            const error: any = new Error('ต้องมี grand_code');
+            error.statusCode = 500;
+            throw error;
         }
 
         if (!res_.access_token) {

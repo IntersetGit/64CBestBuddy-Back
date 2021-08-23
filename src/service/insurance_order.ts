@@ -72,6 +72,7 @@ export const updateInsuranceOrderService = async (model: any, transaction: any =
 
     const _value: any = {}
     if (model.insurance_id) _value.insurance_id = model.insurance_id;
+    if (model.policy_id) _value.policy_id = model.policy_id
     if (model.protection_date_start) _value.protection_date_start = model.protection_date_start;
     if (model.protection_date_end) _value.protection_date_end = model.protection_date_end;
     if (model.prefix_id) _value.prefix_id = model.prefix_id;

@@ -275,6 +275,7 @@ export const createQuotation = async (model: any, access_token: any, grand_code:
 
     return {
         policyId: res_quotation.data.data.policyId,
+        quoteNo: res_quotation.data.data.quoteNo,
         token: {
             access_token,
             grand_code

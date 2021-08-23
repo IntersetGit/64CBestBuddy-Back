@@ -84,7 +84,7 @@ export const createQuotation = async (model: any, access_token: any, grand_code:
     const district = await mas_address_district.findOne({ where: { id: quotations?.district_id } }) // อำเภอ
     const sub_district = await mas_address_sub_district.findOne({ where: { id: quotations?.sub_district_id } }) // ตำบล
     console.log(quotations);
-    const random_num = (Math.floor(Math.random() * 100) + 1)
+    const random_num = Math.floor(Math.random() * 10000)
     const insureds = []
     const insured = {
         detail: {

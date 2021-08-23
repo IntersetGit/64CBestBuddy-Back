@@ -8,6 +8,8 @@ export interface insurance_mas_planAttributes {
   insurance_id?: string;
   name?: string;
   sort?: number;
+  code_falcon?: string;
+  code_cigna?: string;
 }
 
 export type insurance_mas_planPk = "id";
@@ -19,6 +21,8 @@ export class insurance_mas_plan extends Model<insurance_mas_planAttributes, insu
   insurance_id?: string;
   name?: string;
   sort?: number;
+  code_falcon?: string;
+  code_cigna?: string;
 
   // insurance_mas_plan belongsTo insurance via insurance_id
   insurance!: insurance;
@@ -64,6 +68,16 @@ export class insurance_mas_plan extends Model<insurance_mas_planAttributes, insu
       type: DataTypes.SMALLINT,
       allowNull: true,
       comment: "เรียงลำดับ"
+    },
+    code_falcon: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      comment: "รหัส ของ falcon"
+    },
+    code_cigna: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      comment: "รหัส ของ cigna"
     }
   }, {
     sequelize,

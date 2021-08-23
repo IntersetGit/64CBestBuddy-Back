@@ -1,6 +1,6 @@
 import axios from "axios"
 import config from "../config"
-import { initModels, insurance, insurance_order, mas_occupation, mas_address_province, mas_address_district, mas_address_sub_district } from "../models/init-models";
+import { initModels, insurance, insurance_order, insurance_price, mas_occupation, mas_address_province, mas_address_district, mas_address_sub_district, insurance_mas_plan } from "../models/init-models";
 import { sequelize } from '../models';
 import moment from 'moment'
 
@@ -78,6 +78,8 @@ export const getGrandCode = async (models_: any, access_token: any) => {
 
 export const createQuotation = async (model: any, access_token: any, grand_code: any) => {
     const quotations = await insurance_order.findOne({ where: { id: model.id } })
+    const price = await insurance_price.findOne({ where: { id: quotations?.insurance_price_id } })
+    const plan = await insurance_mas_plan.findOne({ where: { id: price?.mas_plan_id } })
     const product_insurance = await insurance.findOne({ where: { id: quotations?.insurance_id } })
     const occupation = await mas_occupation.findOne({ where: { id: quotations?.occupation_id } }) // อาชีพ
     const province = await mas_address_province.findOne({ where: { id: quotations?.province_id } }) // จังหวัด
@@ -131,7 +133,7 @@ export const createQuotation = async (model: any, access_token: any, grand_code:
     const from_: any = {
         insurerTenantCode: "FALCON_TH",
         prdtCode: product_insurance?.product_code,
-        planCode: model.planCode ?? "PIPRD_PLAN1",
+        planCode: plan?.code_falcon ?? plan?.code_cigna,
         proposalDate: moment(quotations?.protection_date_start).format('DD/MM/YYYY') + " " + "16:30:00",
         effDate: moment(quotations?.protection_date_start).format('DD/MM/YYYY') + " " + "16:30:00",
         expDate: moment(quotations?.protection_date_end).format('DD/MM/YYYY') + " " + "16:30:00",

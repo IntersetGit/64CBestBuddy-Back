@@ -3,7 +3,7 @@ import { confirmFalcon, pay } from '../controllers/falconControlles';
 const router = express.Router();
 
 /** ยืนยันการสั่งซื้อประกัน */
-router.get('/confirm/:id', confirmFalcon)
+router.post('/confirm/:id', confirmFalcon)
 
 /** จ่ายเงิน */
 router.post('/pay', pay)

@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express'
 import axios from 'axios';
 import config from '../config';
 import { getewayToken, getGrandCode } from '../service/falcon_api';
-import { result } from '../util';
+import { result, DecryptCryptoJS } from '../util';
 import { initModels, insurance_order } from "../models/init-models";
 import { sequelize } from '../models';
 
@@ -14,6 +14,10 @@ const token_falcon: any = {}
 export const confirmFalcon = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id } = req.params;
+        const { token } = req.body
+
+        const { urlOfPaySuccess, urlOfPayFailure } = await DecryptCryptoJS(token)
+
         const models: any = {
             username: config.USERNAME_FALCON,
             password: config.PASSWORD_FALCON
@@ -67,8 +71,8 @@ export const confirmFalcon = async (req: Request, res: Response, next: NextFunct
             policyId: res_confirm.data.data.policyId,
             payMode: {
                 payMode: "twoCTwoP",
-                urlOfPaySuccess: "",// redirect
-                urlOfPayFailure: "",
+                urlOfPaySuccess, // redirect
+                urlOfPayFailure,
                 extInfo: {}
             }
         }

@@ -16,9 +16,10 @@ import { bulkCreateInsurancePriceService, getPriceInsuranceService } from '../se
 import { getInstallmentByIdInsuranceService } from '../service/mas_installment';
 import { createInsuranceApplicantService } from '../service/insurance_applicant';
 import messages from '../messages';
-import { addInsuranceOrderService, getByIdInsuranceOrderService, updateInsuranceOrderService } from '../service/insurance_order';
+import { addInsuranceOrderService, getAllInsuranceOrderService, getByIdInsuranceOrderService, updateInsuranceOrderService, } from '../service/insurance_order';
 import { addInsuranceBeneficiaryService, destroyInsuranceBeneficiaryService } from '../service/insurance_beneficiary';
 import { getewayToken, createQuotation, getGrandCode } from '../service/falcon_api'
+
 
 export const mangeInsurance = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -310,6 +311,14 @@ const mangeInsuranceFalcon = async (model: any, transaction: any) => {
         if (transaction) await transaction.rollback();
     }
 }
+/**คำสั่งซื้อประกัน */
+export const getAllInsuranceOrder = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        result(res, await getAllInsuranceOrderService());
+    } catch (error) {
+        next(error);
+    }
+}
 
 const connectApiFalcon = async (model: any) => {
 
@@ -349,6 +358,8 @@ const connectApiFalcon = async (model: any) => {
     return res___
 }
 
+
+
 export default {
     mangeInsurance,
     getAllInsurance,
@@ -359,5 +370,6 @@ export default {
     getImagesHeaderInsurance,
     createInsuranceApplicant,
     getByInsuranceAndInstallment,
-    mangeInsuranceOrder
+    mangeInsuranceOrder,
+    getAllInsuranceOrder,
 }

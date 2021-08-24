@@ -4,6 +4,8 @@ import config from '../config'
 import { sequelizeString, sequelizeStringFindOne } from '../util';
 import { UsersInterface } from '../interface/loginInterface'
 import { v4 as uuidv4 } from 'uuid';
+import exp from "constants";
+
 
 initModels(sequelize);
 
@@ -127,7 +129,6 @@ export const updateInsuranceOrderService = async (model: any, transaction: any =
     return model.id
 }
 
-
 export const getByIdInsuranceOrderService = async (id: string) => {
     let sql = `
     SELECT
@@ -182,9 +183,99 @@ export const getByIdInsuranceOrderService = async (id: string) => {
     return sequelizeStringFindOne(sql, [id])
 }
 
+export const getAllInsuranceOrderService = async () => {
+    let sql = `SELECT io.id
+        ,io.policy_id
+        ,io.insurance_code
+        ,io.insurance_id
+        ,io.protection_date_start
+        ,io.protection_date_end
+        ,io.prefix_id
+        ,io.first_name
+        ,io.last_name
+        ,io.mobile_phone
+        ,io.phone
+        ,io.email
+        ,io.birthday
+        ,io.age
+        ,io.occupation_id
+        ,io.height
+        ,io.weight
+        ,io.bmi
+        ,io.insurance_price_id
+        ,io.gender_id
+        ,io.type_card_number_id
+        ,io.card_number
+        ,io.house_no
+        ,io.village_no
+        ,io.lane
+        ,io.village
+        ,io.road
+        ,io.province_id
+        ,io.district_id
+        ,io.sub_district_id
+        ,io.beneficiary_status
+        ,io.insured_status
+        ,io.prefix_id_insured
+        ,io.first_name_insured
+        ,io.last_name_insured
+        ,io.type_card_number_id_insured
+        ,io.card_number_insured
+        ,io.gender_id_insured
+        ,io.mobile_phone_insured
+        ,io.phone_insured
+        ,io.email_insured
+        ,io.beneficiary_id_insured
+        ,io.house_no_insured
+        ,io.village_no_insured
+        ,io.lane_insured
+        ,io.village_insured
+        ,io.road_insured
+        ,io.province_id_insured
+        ,io.district_id_insured
+        ,io.sub_district_id_insured
+        ,io.status_tax
+        ,io.created_date
+        ,io.update_date
+        ,io.status
+        ,mp.name AS prefix
+        ,mo.name AS occupation
+        ,ip.price_normal AS price
+        ,mg.name AS gender
+        ,mn.name AS type_card_number
+        ,ap.provicne_name_th AS province
+        ,ad.district_name_th AS district
+        ,sd.sub_district_name_th AS sub_district
+        ,pr.name AS prefix_insured
+        ,tc.name AS type_card_number_insured
+        ,ge.name AS gender_insured
+        ,mb.name AS beneficiary_relationship
+        ,pe.provicne_name_th AS province_insured
+        ,dt.district_name_th AS district_insured
+        ,bt.sub_district_name_th AS sub_district_insured
+
+    FROM insurance_order AS io
+    INNER JOIN mas_prefix AS mp ON io.prefix_id = mp.id
+    INNER JOIN mas_occupation AS mo ON io.occupation_id = mo.id
+    INNER JOIN insurance_price AS ip ON io.insurance_price_id = ip.id
+    INNER JOIN mas_gender AS mg ON io.gender_id = mg.id
+    INNER JOIN mas_type_card_number AS mn ON io.type_card_number_id = mn.id
+    INNER JOIN mas_address_province AS ap ON io.province_id = ap.id
+    INNER JOIN mas_address_district AS ad ON io.district_id = ad.id
+    INNER JOIN mas_address_sub_district AS sd ON io.sub_district_id = sd.id
+    LEFT JOIN mas_prefix AS pr ON io.prefix_id_insured = pr.id
+    LEFT JOIN mas_type_card_number AS tc ON io.type_card_number_id_insured = tc.id
+    LEFT JOIN mas_gender AS ge ON io.gender_id_insured = ge.id
+    LEFT JOIN mas_beneficiary_relationship AS mb ON io.beneficiary_id_insured = mb.id
+    LEFT JOIN mas_address_province AS pe ON io.province_id_insured = pe.id
+    LEFT JOIN mas_address_district AS dt ON io.district_id_insured = dt.id
+    LEFT JOIN mas_address_sub_district AS bt ON io.sub_district_id_insured = bt.id`
+    return await sequelizeString(sql)
+}
 
 
 export default {
     addInsuranceOrderService,
     updateInsuranceOrderService,
+    getAllInsuranceOrderService,
 }

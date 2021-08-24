@@ -2,6 +2,7 @@ import express from 'express';
 const router = express.Router();
 import insuranceControlles from '../controllers/insuranceControlles';
 import authenticateToken from '../middleware/authenticateToken'
+import insurance from '../service/insurance';
 
 /** เพิ่มแก้ไข ประกัน */
 router.post('/mangeInsurance', [authenticateToken], insuranceControlles.mangeInsurance);
@@ -29,5 +30,7 @@ router.post('/getByInsuranceAndInstallment', insuranceControlles.getByInsuranceA
 /* insurance_order */
 router.post('/mangeInsuranceOrder', insuranceControlles.mangeInsuranceOrder);
 
+/**คำสั่งซื้อประกัน */
+router.get('/getAllInsuranceOrder', insuranceControlles.getAllInsuranceOrder);
 
 export default router;

@@ -11,7 +11,8 @@ export interface mas_type_card_numberAttributes {
 
 export type mas_type_card_numberPk = "id";
 export type mas_type_card_numberId = mas_type_card_number[mas_type_card_numberPk];
-export type mas_type_card_numberCreationAttributes = Optional<mas_type_card_numberAttributes, mas_type_card_numberPk>;
+export type mas_type_card_numberOptionalAttributes = "id" | "code_cigna" | "code_falcon";
+export type mas_type_card_numberCreationAttributes = Optional<mas_type_card_numberAttributes, mas_type_card_numberOptionalAttributes>;
 
 export class mas_type_card_number extends Model<mas_type_card_numberAttributes, mas_type_card_numberCreationAttributes> implements mas_type_card_numberAttributes {
   id!: number;

@@ -13,7 +13,8 @@ export interface mas_age_rangeAttributes {
 
 export type mas_age_rangePk = "id";
 export type mas_age_rangeId = mas_age_range[mas_age_rangePk];
-export type mas_age_rangeCreationAttributes = Optional<mas_age_rangeAttributes, mas_age_rangePk>;
+export type mas_age_rangeOptionalAttributes = "id" | "age_range" | "age_start" | "age_end" | "note" | "sort";
+export type mas_age_rangeCreationAttributes = Optional<mas_age_rangeAttributes, mas_age_rangeOptionalAttributes>;
 
 export class mas_age_range extends Model<mas_age_rangeAttributes, mas_age_rangeCreationAttributes> implements mas_age_rangeAttributes {
   id!: string;

@@ -10,7 +10,8 @@ export interface sysm_rolesAttributes {
 
 export type sysm_rolesPk = "id";
 export type sysm_rolesId = sysm_roles[sysm_rolesPk];
-export type sysm_rolesCreationAttributes = Optional<sysm_rolesAttributes, sysm_rolesPk>;
+export type sysm_rolesOptionalAttributes = "id" | "sort";
+export type sysm_rolesCreationAttributes = Optional<sysm_rolesAttributes, sysm_rolesOptionalAttributes>;
 
 export class sysm_roles extends Model<sysm_rolesAttributes, sysm_rolesCreationAttributes> implements sysm_rolesAttributes {
   id!: string;

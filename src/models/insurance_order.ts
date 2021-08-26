@@ -64,14 +64,16 @@ export interface insurance_orderAttributes {
   district_id_insured?: number;
   sub_district_id_insured?: number;
   status_tax?: '1' | '2';
-  created_date?: Date;
+  created_date: Date;
   update_date?: Date;
-  status?: '1' | '2' | '3' | '4';
+  status: '1' | '2' | '3' | '4';
+  isuse?: number;
 }
 
 export type insurance_orderPk = "id";
 export type insurance_orderId = insurance_order[insurance_orderPk];
-export type insurance_orderCreationAttributes = Optional<insurance_orderAttributes, insurance_orderPk>;
+export type insurance_orderOptionalAttributes = "id" | "policy_id" | "insurance_code" | "phone" | "birthday" | "age" | "occupation_id" | "height" | "weight" | "bmi" | "insurance_price_id" | "gender_id" | "type_card_number_id" | "card_number" | "house_no" | "village_no" | "lane" | "village" | "road" | "province_id" | "district_id" | "sub_district_id" | "beneficiary_status" | "insured_status" | "prefix_id_insured" | "first_name_insured" | "last_name_insured" | "type_card_number_id_insured" | "card_number_insured" | "gender_id_insured" | "mobile_phone_insured" | "phone_insured" | "email_insured" | "beneficiary_id_insured" | "house_no_insured" | "village_no_insured" | "lane_insured" | "village_insured" | "road_insured" | "province_id_insured" | "district_id_insured" | "sub_district_id_insured" | "status_tax" | "created_date" | "update_date" | "status" | "isuse";
+export type insurance_orderCreationAttributes = Optional<insurance_orderAttributes, insurance_orderOptionalAttributes>;
 
 export class insurance_order extends Model<insurance_orderAttributes, insurance_orderCreationAttributes> implements insurance_orderAttributes {
   id!: string;
@@ -125,9 +127,10 @@ export class insurance_order extends Model<insurance_orderAttributes, insurance_
   district_id_insured?: number;
   sub_district_id_insured?: number;
   status_tax?: '1' | '2';
-  created_date?: Date;
+  created_date!: Date;
   update_date?: Date;
-  status?: '1' | '2' | '3' | '4';
+  status!: '1' | '2' | '3' | '4';
+  isuse?: number;
 
   // insurance_order belongsTo insurance via insurance_id
   insurance!: insurance;
@@ -552,6 +555,11 @@ export class insurance_order extends Model<insurance_orderAttributes, insurance_
       allowNull: false,
       defaultValue: "1",
       comment: "1 = ยังไม่ได้กรอกคำถามสุขภาพ\r\n2 = ยังไม่ได้ยืนยัน\r\n3 = ยังไม่ได้ชำระเงิน\r\n4 = เสร็จสิ้น"
+    },
+    isuse: {
+      type: DataTypes.SMALLINT,
+      allowNull: true,
+      comment: "สถานะข้อมูล"
     }
   }, {
     sequelize,

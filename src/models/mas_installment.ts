@@ -10,7 +10,8 @@ export interface mas_installmentAttributes {
 
 export type mas_installmentPk = "id";
 export type mas_installmentId = mas_installment[mas_installmentPk];
-export type mas_installmentCreationAttributes = Optional<mas_installmentAttributes, mas_installmentPk>;
+export type mas_installmentOptionalAttributes = "id" | "name" | "sort";
+export type mas_installmentCreationAttributes = Optional<mas_installmentAttributes, mas_installmentOptionalAttributes>;
 
 export class mas_installment extends Model<mas_installmentAttributes, mas_installmentCreationAttributes> implements mas_installmentAttributes {
   id!: string;

@@ -12,7 +12,8 @@ export interface mas_beneficiary_relationshipAttributes {
 
 export type mas_beneficiary_relationshipPk = "id";
 export type mas_beneficiary_relationshipId = mas_beneficiary_relationship[mas_beneficiary_relationshipPk];
-export type mas_beneficiary_relationshipCreationAttributes = Optional<mas_beneficiary_relationshipAttributes, mas_beneficiary_relationshipPk>;
+export type mas_beneficiary_relationshipOptionalAttributes = "id" | "code_cigna" | "code_falcon";
+export type mas_beneficiary_relationshipCreationAttributes = Optional<mas_beneficiary_relationshipAttributes, mas_beneficiary_relationshipOptionalAttributes>;
 
 export class mas_beneficiary_relationship extends Model<mas_beneficiary_relationshipAttributes, mas_beneficiary_relationshipCreationAttributes> implements mas_beneficiary_relationshipAttributes {
   id!: number;

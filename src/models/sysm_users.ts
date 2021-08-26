@@ -31,7 +31,8 @@ export interface sysm_usersAttributes {
 
 export type sysm_usersPk = "id";
 export type sysm_usersId = sysm_users[sysm_usersPk];
-export type sysm_usersCreationAttributes = Optional<sysm_usersAttributes, sysm_usersPk>;
+export type sysm_usersOptionalAttributes = "id" | "email" | "mas_prefix_id" | "first_name" | "last_name" | "nick_name" | "birthday" | "gender" | "id_card" | "tel" | "passport_number" | "insurance_code" | "created_by" | "created_date" | "updated_by" | "updated_date" | "status_login" | "refresh_token";
+export type sysm_usersCreationAttributes = Optional<sysm_usersAttributes, sysm_usersOptionalAttributes>;
 
 export class sysm_users extends Model<sysm_usersAttributes, sysm_usersCreationAttributes> implements sysm_usersAttributes {
   id!: string;

@@ -17,7 +17,8 @@ export interface insurance_beneficiaryAttributes {
 
 export type insurance_beneficiaryPk = "id";
 export type insurance_beneficiaryId = insurance_beneficiary[insurance_beneficiaryPk];
-export type insurance_beneficiaryCreationAttributes = Optional<insurance_beneficiaryAttributes, insurance_beneficiaryPk>;
+export type insurance_beneficiaryOptionalAttributes = "id";
+export type insurance_beneficiaryCreationAttributes = Optional<insurance_beneficiaryAttributes, insurance_beneficiaryOptionalAttributes>;
 
 export class insurance_beneficiary extends Model<insurance_beneficiaryAttributes, insurance_beneficiaryCreationAttributes> implements insurance_beneficiaryAttributes {
   id!: string;

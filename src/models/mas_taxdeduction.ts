@@ -10,7 +10,8 @@ export interface mas_taxdeductionAttributes {
 
 export type mas_taxdeductionPk = "id";
 export type mas_taxdeductionId = mas_taxdeduction[mas_taxdeductionPk];
-export type mas_taxdeductionCreationAttributes = Optional<mas_taxdeductionAttributes, mas_taxdeductionPk>;
+export type mas_taxdeductionOptionalAttributes = "id" | "code_cigna" | "code_falcon";
+export type mas_taxdeductionCreationAttributes = Optional<mas_taxdeductionAttributes, mas_taxdeductionOptionalAttributes>;
 
 export class mas_taxdeduction extends Model<mas_taxdeductionAttributes, mas_taxdeductionCreationAttributes> implements mas_taxdeductionAttributes {
   id!: number;

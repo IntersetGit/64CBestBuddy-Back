@@ -18,7 +18,8 @@ export interface insurance_priceAttributes {
 
 export type insurance_pricePk = "id";
 export type insurance_priceId = insurance_price[insurance_pricePk];
-export type insurance_priceCreationAttributes = Optional<insurance_priceAttributes, insurance_pricePk>;
+export type insurance_priceOptionalAttributes = "id" | "insurance_id" | "mas_installment_id" | "mas_age_range_id" | "price_normal" | "price_sale" | "gender" | "mas_plan_id" | "is_show_price";
+export type insurance_priceCreationAttributes = Optional<insurance_priceAttributes, insurance_priceOptionalAttributes>;
 
 export class insurance_price extends Model<insurance_priceAttributes, insurance_priceCreationAttributes> implements insurance_priceAttributes {
   id!: string;

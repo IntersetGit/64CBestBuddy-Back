@@ -12,7 +12,8 @@ export interface insurance_mas_protectionAttributes {
 
 export type insurance_mas_protectionPk = "id";
 export type insurance_mas_protectionId = insurance_mas_protection[insurance_mas_protectionPk];
-export type insurance_mas_protectionCreationAttributes = Optional<insurance_mas_protectionAttributes, insurance_mas_protectionPk>;
+export type insurance_mas_protectionOptionalAttributes = "id" | "insurance_id" | "details" | "sort";
+export type insurance_mas_protectionCreationAttributes = Optional<insurance_mas_protectionAttributes, insurance_mas_protectionOptionalAttributes>;
 
 export class insurance_mas_protection extends Model<insurance_mas_protectionAttributes, insurance_mas_protectionCreationAttributes> implements insurance_mas_protectionAttributes {
   id!: string;

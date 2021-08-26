@@ -183,11 +183,12 @@ export const getByIdInsuranceOrderService = async (id: string) => {
     return sequelizeStringFindOne(sql, [id])
 }
 
-export const getAllInsuranceOrderService = async () => {
-    let sql = `SELECT io.id
+export const getAllInsuranceOrderService = async (search: any, limit: any) => {
+    let sql = ` SELECT io.id
         ,io.policy_id
         ,io.insurance_code
         ,io.insurance_id
+		,ie.name AS insurance_name
         ,io.protection_date_start
         ,io.protection_date_end
         ,io.prefix_id
@@ -238,7 +239,7 @@ export const getAllInsuranceOrderService = async () => {
         ,io.created_date
         ,io.update_date
         ,io.status
-        ,mp.name AS prefix
+		,mp.name AS prefix
         ,mo.name AS occupation
         ,ip.price_normal AS price
         ,mg.name AS gender
@@ -255,6 +256,7 @@ export const getAllInsuranceOrderService = async () => {
         ,bt.sub_district_name_th AS sub_district_insured
 
     FROM insurance_order AS io
+	INNER JOIN insurance AS ie ON io.insurance_id = ie.id
     INNER JOIN mas_prefix AS mp ON io.prefix_id = mp.id
     INNER JOIN mas_occupation AS mo ON io.occupation_id = mo.id
     INNER JOIN insurance_price AS ip ON io.insurance_price_id = ip.id
@@ -269,8 +271,50 @@ export const getAllInsuranceOrderService = async () => {
     LEFT JOIN mas_beneficiary_relationship AS mb ON io.beneficiary_id_insured = mb.id
     LEFT JOIN mas_address_province AS pe ON io.province_id_insured = pe.id
     LEFT JOIN mas_address_district AS dt ON io.district_id_insured = dt.id
-    LEFT JOIN mas_address_sub_district AS bt ON io.sub_district_id_insured = bt.id`
-    return await sequelizeString(sql)
+    LEFT JOIN mas_address_sub_district AS bt ON io.sub_district_id_insured = bt.id
+
+    WHERE io.isuse=1 `
+
+    let sql_count = `
+        SELECT COUNT(*) AS count
+
+        FROM insurance_order AS io
+        INNER JOIN insurance AS ie ON io.insurance_id = ie.id
+        INNER JOIN mas_prefix AS mp ON io.prefix_id = mp.id
+        INNER JOIN mas_occupation AS mo ON io.occupation_id = mo.id
+        INNER JOIN insurance_price AS ip ON io.insurance_price_id = ip.id
+        INNER JOIN mas_gender AS mg ON io.gender_id = mg.id
+        INNER JOIN mas_type_card_number AS mn ON io.type_card_number_id = mn.id
+        INNER JOIN mas_address_province AS ap ON io.province_id = ap.id
+        INNER JOIN mas_address_district AS ad ON io.district_id = ad.id
+        INNER JOIN mas_address_sub_district AS sd ON io.sub_district_id = sd.id
+        LEFT JOIN mas_prefix AS pr ON io.prefix_id_insured = pr.id
+        LEFT JOIN mas_type_card_number AS tc ON io.type_card_number_id_insured = tc.id
+        LEFT JOIN mas_gender AS ge ON io.gender_id_insured = ge.id
+        LEFT JOIN mas_beneficiary_relationship AS mb ON io.beneficiary_id_insured = mb.id
+        LEFT JOIN mas_address_province AS pe ON io.province_id_insured = pe.id
+        LEFT JOIN mas_address_district AS dt ON io.district_id_insured = dt.id
+        LEFT JOIN mas_address_sub_district AS bt ON io.sub_district_id_insured = bt.id `
+
+    if (search) {
+        sql += ` AND io.first_name LIKE '%${search}%'  
+        OR io.last_name LIKE '%${search}%' 
+        OR ie.name LIKE '%${search}%' `
+
+        sql_count += ` AND io.first_name LIKE '%${search}%'  
+        OR io.last_name LIKE '%${search}%' 
+        OR ie.name LIKE '%${search}%' `
+    }
+
+    sql += ` LIMIT ${limit} `
+
+    const result_count: any = await sequelizeString(sql_count)
+    const count: number = result_count.length > 0 ? Number(result_count[0].count) : 0
+    return {
+        data: await sequelizeString(sql),
+        count
+    }
+
 }
 
 

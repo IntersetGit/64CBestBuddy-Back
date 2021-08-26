@@ -13,7 +13,8 @@ export interface mas_address_provinceAttributes {
 
 export type mas_address_provincePk = "id";
 export type mas_address_provinceId = mas_address_province[mas_address_provincePk];
-export type mas_address_provinceCreationAttributes = Optional<mas_address_provinceAttributes, mas_address_provincePk>;
+export type mas_address_provinceOptionalAttributes = "id" | "code_cigna" | "code_falcon";
+export type mas_address_provinceCreationAttributes = Optional<mas_address_provinceAttributes, mas_address_provinceOptionalAttributes>;
 
 export class mas_address_province extends Model<mas_address_provinceAttributes, mas_address_provinceCreationAttributes> implements mas_address_provinceAttributes {
   id!: number;

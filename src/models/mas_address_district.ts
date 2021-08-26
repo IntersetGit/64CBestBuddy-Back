@@ -14,7 +14,8 @@ export interface mas_address_districtAttributes {
 
 export type mas_address_districtPk = "id";
 export type mas_address_districtId = mas_address_district[mas_address_districtPk];
-export type mas_address_districtCreationAttributes = Optional<mas_address_districtAttributes, mas_address_districtPk>;
+export type mas_address_districtOptionalAttributes = "id" | "code_cigna" | "code_falcon";
+export type mas_address_districtCreationAttributes = Optional<mas_address_districtAttributes, mas_address_districtOptionalAttributes>;
 
 export class mas_address_district extends Model<mas_address_districtAttributes, mas_address_districtCreationAttributes> implements mas_address_districtAttributes {
   id!: number;

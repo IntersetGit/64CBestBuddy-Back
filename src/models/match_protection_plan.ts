@@ -12,7 +12,8 @@ export interface match_protection_planAttributes {
 
 export type match_protection_planPk = "id";
 export type match_protection_planId = match_protection_plan[match_protection_planPk];
-export type match_protection_planCreationAttributes = Optional<match_protection_planAttributes, match_protection_planPk>;
+export type match_protection_planOptionalAttributes = "id" | "mas_plan_id" | "mas_protection_id" | "value";
+export type match_protection_planCreationAttributes = Optional<match_protection_planAttributes, match_protection_planOptionalAttributes>;
 
 export class match_protection_plan extends Model<match_protection_planAttributes, match_protection_planCreationAttributes> implements match_protection_planAttributes {
   id!: string;

@@ -11,7 +11,8 @@ export interface mas_insurance_typeAttributes {
 
 export type mas_insurance_typePk = "id";
 export type mas_insurance_typeId = mas_insurance_type[mas_insurance_typePk];
-export type mas_insurance_typeCreationAttributes = Optional<mas_insurance_typeAttributes, mas_insurance_typePk>;
+export type mas_insurance_typeOptionalAttributes = "id" | "name" | "isuse" | "sort";
+export type mas_insurance_typeCreationAttributes = Optional<mas_insurance_typeAttributes, mas_insurance_typeOptionalAttributes>;
 
 export class mas_insurance_type extends Model<mas_insurance_typeAttributes, mas_insurance_typeCreationAttributes> implements mas_insurance_typeAttributes {
   id!: string;

@@ -11,7 +11,8 @@ export interface mas_genderAttributes {
 
 export type mas_genderPk = "id";
 export type mas_genderId = mas_gender[mas_genderPk];
-export type mas_genderCreationAttributes = Optional<mas_genderAttributes, mas_genderPk>;
+export type mas_genderOptionalAttributes = "id" | "code_cigna" | "code_falcon";
+export type mas_genderCreationAttributes = Optional<mas_genderAttributes, mas_genderOptionalAttributes>;
 
 export class mas_gender extends Model<mas_genderAttributes, mas_genderCreationAttributes> implements mas_genderAttributes {
   id!: number;

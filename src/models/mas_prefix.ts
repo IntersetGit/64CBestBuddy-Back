@@ -14,7 +14,8 @@ export interface mas_prefixAttributes {
 
 export type mas_prefixPk = "id";
 export type mas_prefixId = mas_prefix[mas_prefixPk];
-export type mas_prefixCreationAttributes = Optional<mas_prefixAttributes, mas_prefixPk>;
+export type mas_prefixOptionalAttributes = "id" | "code_cigna" | "code_falcon" | "isuse";
+export type mas_prefixCreationAttributes = Optional<mas_prefixAttributes, mas_prefixOptionalAttributes>;
 
 export class mas_prefix extends Model<mas_prefixAttributes, mas_prefixCreationAttributes> implements mas_prefixAttributes {
   id!: number;

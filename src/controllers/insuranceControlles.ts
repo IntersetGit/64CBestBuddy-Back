@@ -19,6 +19,8 @@ import messages from '../messages';
 import { addInsuranceOrderService, getAllInsuranceOrderService, getByIdInsuranceOrderService, updateInsuranceOrderService, } from '../service/insurance_order';
 import { addInsuranceBeneficiaryService, destroyInsuranceBeneficiaryService } from '../service/insurance_beneficiary';
 import { getewayToken, createQuotation, getGrandCode } from '../service/falcon_api'
+import { any } from 'sequelize/types/lib/operators';
+import paginate from 'express-paginate'
 
 
 export const mangeInsurance = async (req: Request, res: Response, next: NextFunction) => {
@@ -312,9 +314,21 @@ const mangeInsuranceFalcon = async (model: any, transaction: any) => {
     }
 }
 /**คำสั่งซื้อประกัน */
-export const getAllInsuranceOrder = async (req: Request, res: Response, next: NextFunction) => {
+export const getAllInsuranceOrderControlles = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        result(res, await getAllInsuranceOrderService());
+        const { search, limit = 10, page = 1 }: any = req.query
+
+        const getAllInsuranceOrder: any = await getAllInsuranceOrderService(search, limit)
+        const itemcount = getAllInsuranceOrder.count;
+        const pagecount = Math.ceil(itemcount / limit);
+
+        result(res, {
+            result: getAllInsuranceOrder.data,
+            itemcount,
+            pagecount,
+            page: paginate.getArrayPages(req)(pagecount, pagecount, page)
+        })
+        // result(res, await getAllInsuranceOrderService(search));
     } catch (error) {
         next(error);
     }
@@ -371,5 +385,5 @@ export default {
     createInsuranceApplicant,
     getByInsuranceAndInstallment,
     mangeInsuranceOrder,
-    getAllInsuranceOrder,
+    getAllInsuranceOrderControlles,
 }

@@ -10,7 +10,8 @@ export interface insurance_categoryAttributes {
 
 export type insurance_categoryPk = "id";
 export type insurance_categoryId = insurance_category[insurance_categoryPk];
-export type insurance_categoryCreationAttributes = Optional<insurance_categoryAttributes, insurance_categoryPk>;
+export type insurance_categoryOptionalAttributes = "id" | "name" | "isuse";
+export type insurance_categoryCreationAttributes = Optional<insurance_categoryAttributes, insurance_categoryOptionalAttributes>;
 
 export class insurance_category extends Model<insurance_categoryAttributes, insurance_categoryCreationAttributes> implements insurance_categoryAttributes {
   id!: string;

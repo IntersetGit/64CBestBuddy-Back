@@ -13,7 +13,8 @@ export interface mas_occupationAttributes {
 
 export type mas_occupationPk = "id";
 export type mas_occupationId = mas_occupation[mas_occupationPk];
-export type mas_occupationCreationAttributes = Optional<mas_occupationAttributes, mas_occupationPk>;
+export type mas_occupationOptionalAttributes = "id" | "risk_class_falcon" | "original_text_falcon" | "code_cigna" | "code_falcon";
+export type mas_occupationCreationAttributes = Optional<mas_occupationAttributes, mas_occupationOptionalAttributes>;
 
 export class mas_occupation extends Model<mas_occupationAttributes, mas_occupationCreationAttributes> implements mas_occupationAttributes {
   id!: number;

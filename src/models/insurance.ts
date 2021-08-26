@@ -33,7 +33,8 @@ export interface insuranceAttributes {
 
 export type insurancePk = "id";
 export type insuranceId = insurance[insurancePk];
-export type insuranceCreationAttributes = Optional<insuranceAttributes, insurancePk>;
+export type insuranceOptionalAttributes = "id" | "product_code" | "name" | "img_header" | "img_cover" | "details" | "note" | "status" | "percentage" | "isuse" | "sort" | "is_one_price" | "insurance_category_id" | "mas_insurance_type_id" | "haed_highlight" | "number_visitors" | "user_id" | "created_by" | "created_date" | "updated_by" | "updated_date";
+export type insuranceCreationAttributes = Optional<insuranceAttributes, insuranceOptionalAttributes>;
 
 export class insurance extends Model<insuranceAttributes, insuranceCreationAttributes> implements insuranceAttributes {
   id!: string;

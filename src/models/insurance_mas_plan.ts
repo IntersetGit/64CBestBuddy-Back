@@ -14,7 +14,8 @@ export interface insurance_mas_planAttributes {
 
 export type insurance_mas_planPk = "id";
 export type insurance_mas_planId = insurance_mas_plan[insurance_mas_planPk];
-export type insurance_mas_planCreationAttributes = Optional<insurance_mas_planAttributes, insurance_mas_planPk>;
+export type insurance_mas_planOptionalAttributes = "id" | "insurance_id" | "name" | "sort" | "code_falcon" | "code_cigna";
+export type insurance_mas_planCreationAttributes = Optional<insurance_mas_planAttributes, insurance_mas_planOptionalAttributes>;
 
 export class insurance_mas_plan extends Model<insurance_mas_planAttributes, insurance_mas_planCreationAttributes> implements insurance_mas_planAttributes {
   id!: string;

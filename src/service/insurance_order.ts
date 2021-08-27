@@ -5,6 +5,7 @@ import { sequelizeString, sequelizeStringFindOne } from '../util';
 import { UsersInterface } from '../interface/loginInterface'
 import { v4 as uuidv4 } from 'uuid';
 import exp from "constants";
+import moment from 'moment'
 
 
 initModels(sequelize);
@@ -183,7 +184,7 @@ export const getByIdInsuranceOrderService = async (id: string) => {
     return sequelizeStringFindOne(sql, [id])
 }
 
-export const getAllInsuranceOrderService = async (search: any, limit: any) => {
+export const getAllInsuranceOrderService = async (search: any, limit: any, order: string, sort: string) => {
     let sql = ` SELECT io.id
         ,io.policy_id
         ,io.insurance_code
@@ -306,13 +307,21 @@ export const getAllInsuranceOrderService = async (search: any, limit: any) => {
         OR ie.name LIKE '%${search}%' `
     }
 
+    sql += ` ORDER BY ${order} ${sort} `
     sql += ` LIMIT ${limit} `
 
     const result_count: any = await sequelizeString(sql_count)
     const count: number = result_count.length > 0 ? Number(result_count[0].count) : 0
+    const result_data: any = await sequelizeString(sql)
+    result_data.forEach((e: any) => {
+        console.log(e.created_date);
+        e.created_date = moment(e.created_date).format("YYYY-MM-DD HH:mm:ss")
+    })
+
     return {
-        data: await sequelizeString(sql),
+        data: result_data,
         count
+
     }
 
 }

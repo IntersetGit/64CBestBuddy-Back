@@ -316,9 +316,9 @@ const mangeInsuranceFalcon = async (model: any, transaction: any) => {
 /**คำสั่งซื้อประกัน */
 export const getAllInsuranceOrderControlles = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { search, limit = 10, page = 1 }: any = req.query
+        const { search, limit = 10, page = 1, order = 'first_name', sort }: any = req.query
 
-        const getAllInsuranceOrder: any = await getAllInsuranceOrderService(search, limit)
+        const getAllInsuranceOrder: any = await getAllInsuranceOrderService(search, limit, order, sort)
         const itemcount = getAllInsuranceOrder.count;
         const pagecount = Math.ceil(itemcount / limit);
 

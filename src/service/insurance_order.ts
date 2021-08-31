@@ -184,7 +184,7 @@ export const getByIdInsuranceOrderService = async (id: string) => {
     return sequelizeStringFindOne(sql, [id])
 }
 
-export const getAllInsuranceOrderService = async (search: any, limit: any, order: string, sort: string) => {
+export const getAllInsuranceOrderService = async (search: any, limit: any, order: string, sort: string, insure_type: string) => {
     let sql = ` SELECT io.id
         ,io.policy_id
         ,io.insurance_code
@@ -296,6 +296,14 @@ export const getAllInsuranceOrderService = async (search: any, limit: any, order
         LEFT JOIN mas_address_province AS pe ON io.province_id_insured = pe.id
         LEFT JOIN mas_address_district AS dt ON io.district_id_insured = dt.id
         LEFT JOIN mas_address_sub_district AS bt ON io.sub_district_id_insured = bt.id `
+
+    if (insure_type) {
+        if (insure_type === 'online') {
+            sql += ` AND ie.type_status = 'online' `
+        } else if (insure_type === 'offline') {
+            sql += ` AND ie.type_status = 'offline' `
+        }
+    }
 
     if (search) {
         sql += ` AND io.first_name LIKE '%${search}%'  

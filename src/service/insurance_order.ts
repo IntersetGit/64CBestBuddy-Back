@@ -184,7 +184,7 @@ export const getByIdInsuranceOrderService = async (id: string) => {
     return sequelizeStringFindOne(sql, [id])
 }
 
-export const getAllInsuranceOrderService = async (search: any, limit: any, order: string, sort: string, insure_type: string) => {
+export const getAllInsuranceOrderService = async (search: any, limit: any, order: string, sort: string, insure_type: string, duration: Date) => {
     let sql = ` SELECT io.id
         ,io.policy_id
         ,io.insurance_code
@@ -314,6 +314,8 @@ export const getAllInsuranceOrderService = async (search: any, limit: any, order
         OR io.last_name LIKE '%${search}%' 
         OR ie.name LIKE '%${search}%' `
     }
+
+    if (duration) sql += ` AND io.created_date LIKE '%${duration}%' `
 
     sql += ` ORDER BY ${order} ${sort} `
     sql += ` LIMIT ${limit} `

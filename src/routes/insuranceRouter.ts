@@ -31,6 +31,6 @@ router.post('/getByInsuranceAndInstallment', insuranceControlles.getByInsuranceA
 router.post('/mangeInsuranceOrder', insuranceControlles.mangeInsuranceOrder);
 
 /**คำสั่งซื้อประกัน */
-router.get('/getAllInsuranceOrder', insuranceControlles.getAllInsuranceOrderControlles);
+router.get('/getAllInsuranceOrder', [authenticateToken], insuranceControlles.getAllInsuranceOrderControlles);
 
 export default router;

@@ -149,7 +149,8 @@ export const getByIdInsurance = async (req: Request, res: Response, next: NextFu
 
 export const delInsurance = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const id: string = req.params.id
+        const decode: any = await decodeToken(req.headers['authorization'])
+        const { id } = req.params
 
         result(res, await delInsuranceService(id));
 
@@ -316,9 +317,10 @@ const mangeInsuranceFalcon = async (model: any, transaction: any) => {
 /**คำสั่งซื้อประกัน */
 export const getAllInsuranceOrderControlles = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { search, limit = 10, page = 1, order = 'first_name', sort = 'ASC', insure_type }: any = req.query
+        const decode: any = await decodeToken(req.headers['authorization'])
+        const { search, limit = 10, page = 1, order = 'first_name', sort = 'ASC', insure_type, duration }: any = req.query
 
-        const getAllInsuranceOrder: any = await getAllInsuranceOrderService(search, limit, order, sort, insure_type)
+        const getAllInsuranceOrder: any = await getAllInsuranceOrderService(search, limit, order, sort, insure_type, duration)
         const itemcount = getAllInsuranceOrder.count;
         const pagecount = Math.ceil(itemcount / limit);
 

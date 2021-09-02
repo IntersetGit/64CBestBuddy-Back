@@ -122,9 +122,9 @@ export const getByIdInsuranceService = async (id: string) => {
 
 
 export const delInsuranceService = async (id: string) => {
-    await insurance.destroy({
-        where: { id }
-    });
+    await insurance.update({
+        isuse: 2
+    }, { where: { id } });
 
     return true
 }

@@ -68,8 +68,12 @@ export const getAllInsuranceService = async (model: any) => {
     return await sequelizeString(sql, [model.insurance_category_id, model.mas_insurance_type_id]);
 }
 
-export const getImagesHeaderInsuranceService = async () => {
-    return await sequelizeString(`SELECT a.img_header FROM insurance AS a WHERE a.isuse = 1 AND a.img_header IS NOT null ORDER BY a.sort LIMIT 5`);
+export const getImagesHeaderInsuranceService = async (insurance_category_id: any) => {
+    let sql = `SELECT a.img_header FROM insurance AS a WHERE a.isuse = 1`
+    if (insurance_category_id) sql += ` AND a.insurance_category_id = '${insurance_category_id}'`
+
+    sql += ` ORDER BY a.sort LIMIT 5`
+    return await sequelizeString(sql);
 }
 
 

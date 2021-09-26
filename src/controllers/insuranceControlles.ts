@@ -204,7 +204,8 @@ export const addInsurance = async (req: Request, res: Response, next: NextFuncti
 
 export const getImagesHeaderInsurance = async (req: Request, res: Response, next: NextFunction) => {
     const _res: any = []
-    await (await getImagesHeaderInsuranceService()).forEach((e: any) => (e.img_header) ? _res.push(`${config.SERVICE_HOST}/${JSON.parse(e.img_header).path}`) : null);
+    const { insurance_category_id } = req.query
+    await (await getImagesHeaderInsuranceService(insurance_category_id)).forEach((e: any) => (e.img_header) ? _res.push(`${config.SERVICE_HOST}/${JSON.parse(e.img_header).path}`) : null);
     result(res, _res);
 }
 
@@ -239,7 +240,6 @@ export const getByInsuranceAndInstallment = async (req: Request, res: Response, 
 
 /**  */
 export const mangeInsuranceOrder = async (req: Request, res: Response, next: NextFunction) => {
-    const transaction = await sequelize.transaction();
     try {
         const { postman, token }: any = req.body
         let model: any;
@@ -254,7 +254,7 @@ export const mangeInsuranceOrder = async (req: Request, res: Response, next: Nex
 
 
         if (model.category_name === "falcon") {
-            result(res, await mangeInsuranceFalcon(model, transaction))
+            result(res, await mangeInsuranceFalcon(model))
         } else {
             const error: any = new Error(model.category_name ? "category ไม่ถูกต้อง" : "ส่ง category_name มาด้วย");
             error.statusCode = 404;
@@ -262,26 +262,25 @@ export const mangeInsuranceOrder = async (req: Request, res: Response, next: Nex
         }
 
     } catch (error) {
-        if (transaction) await transaction.rollback();
         next(error);
     }
 }
 
 /* จัดการ ประกัน ของ Falcon */
-const mangeInsuranceFalcon = async (model: any, transaction: any) => {
+const mangeInsuranceFalcon = async (model: any) => {
     try {
         let id;
         if (model.id) { //แก้ไข
-            await updateInsuranceOrderService(model, transaction)
+            await updateInsuranceOrderService(model)
             id = model.id
         } else {
-            id = await addInsuranceOrderService(model, transaction)
+            id = await addInsuranceOrderService(model)
         }
 
         /* ข้อมูลผู้รับผลประโยชน์ */
         model.insurance_beneficiary = model.insurance_beneficiary ?? []
 
-        await destroyInsuranceBeneficiaryService(id, transaction)
+        await destroyInsuranceBeneficiaryService(id)
 
         for (const key in model.insurance_beneficiary) {
             if (Object.prototype.hasOwnProperty.call(model.insurance_beneficiary, key)) {
@@ -294,10 +293,10 @@ const mangeInsuranceFalcon = async (model: any, transaction: any) => {
                     beneficiary_id: e.beneficiary_id,
                     ratio: e.ratio,
                     sort: Number(key) + 1,
-                }, transaction)
+                })
             }
         }
-        await transaction.commit();
+
 
         /* เชื่มต่อ API ของ Falcon */
         if (model.page == 3) {
@@ -311,7 +310,7 @@ const mangeInsuranceFalcon = async (model: any, transaction: any) => {
 
         return id
     } catch (error) {
-        if (transaction) await transaction.rollback();
+
     }
 }
 /**คำสั่งซื้อประกัน */

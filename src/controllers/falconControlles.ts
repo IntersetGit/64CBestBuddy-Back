@@ -16,7 +16,7 @@ export const confirmFalcon = async (req: Request, res: Response, next: NextFunct
         const { id } = req.params;
         const { token } = req.body
 
-        const { urlOfPaySuccess, urlOfPayFailure } = await DecryptCryptoJS(token)
+        // const { urlOfPaySuccess, urlOfPayFailure } = await DecryptCryptoJS(token)
 
         const models: any = {
             username: config.USERNAME_FALCON,
@@ -71,8 +71,8 @@ export const confirmFalcon = async (req: Request, res: Response, next: NextFunct
             policyId: res_confirm.data.data.policyId,
             payMode: {
                 payMode: "twoCTwoP",
-                urlOfPaySuccess, // redirect
-                urlOfPayFailure,
+                urlOfPaySuccess: "https://buy.bbd.co.th", // redirect
+                urlOfPayFailure: "https://www.google.co.th/?hl=th",
                 extInfo: {}
             }
         }
@@ -107,7 +107,7 @@ export const pay = async (req: Request, res: Response, next: NextFunction) => {
             policyId: token_falcon.policy,
             payMode: {
                 payMode: "twoCTwoP",
-                urlOfPaySuccess: "",// redirect
+                urlOfPaySuccess: "https://buy.bbd.co.th",// redirect
                 urlOfPayFailure: "",
                 extInfo: {}
             }

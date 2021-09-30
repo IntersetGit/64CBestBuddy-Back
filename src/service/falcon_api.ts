@@ -1,8 +1,9 @@
 import axios from "axios"
 import config from "../config"
-import { initModels, insurance, insurance_order, insurance_price, mas_occupation, mas_address_province, mas_address_district, mas_address_sub_district, insurance_mas_plan } from "../models/init-models";
+import { initModels, insurance, insurance_order, insurance_price, mas_occupation, mas_address_province, mas_address_district, mas_address_sub_district, insurance_mas_plan, insurance_beneficiary, mas_beneficiary_relationship } from "../models/init-models";
 import { sequelize } from '../models';
 import moment from 'moment'
+import { v4 as uuid } from 'uuid'
 
 initModels(sequelize);
 
@@ -85,7 +86,55 @@ export const createQuotation = async (model: any, access_token: any, grand_code:
     const province = await mas_address_province.findOne({ where: { id: quotations?.province_id } }) // จังหวัด
     const district = await mas_address_district.findOne({ where: { id: quotations?.district_id } }) // อำเภอ
     const sub_district = await mas_address_sub_district.findOne({ where: { id: quotations?.sub_district_id } }) // ตำบล
-    console.log(quotations);
+    const beneficiarie_: any = await insurance_beneficiary.findAll({ where: { insurance_order_id: quotations?.id } })
+    // console.log(beneficiarie_);
+    const beneficiaries = []
+    if (beneficiarie_.length > 0) {
+
+        for (let a = 0; a < beneficiarie_.length; a++) {
+            const e = beneficiarie_[a];
+
+            const mas_beneficiarie = await mas_beneficiary_relationship.findOne({ where: { id: e?.beneficiary_id } })
+            const beneficiarie = {
+                beneficiaryType: 2,
+                customer: {
+                    customerType: 1,
+                    idType: beneficiarie_?.type_card_number_id == 1 ? 3 : 5,
+                    idNo: quotations?.card_number,
+                    prefix: e?.prefix_id,
+                    firstName: e?.first_name,
+                    lastName: e?.last_name,
+                    nationality: "THA",
+                    dob: moment(quotations?.birthday).format('DD/MM/YYYY'),
+                    age: quotations?.age,
+                    mobile: quotations?.mobile_phone,
+                    telNo: "",
+                    email: quotations?.email,
+                    gender: quotations?.gender_id == 1 ? "M" : "F",
+                    occupation: occupation?.code_falcon,
+                    taxNo: "",
+                    branch: "",
+                    address: {
+                        addressType: 1,
+                        province: province?.code_falcon,
+                        district: district?.code_falcon,
+                        subDistrict: sub_district?.code_falcon,
+                        postalCode: sub_district?.postal_code,
+                        addressLine1: "",
+                        addressLine2: ""
+                    },
+                    extInfo: {
+                        relationshipWithInsured: mas_beneficiarie?.code_falcon,
+                        shareRate: e?.ratio
+                    }
+
+                }
+            }
+            beneficiaries.push(beneficiarie)
+        }
+    }
+
+    // console.log(quotations);
     const random_num = Math.floor(Math.random() * 10000)
     const insureds = []
     const insured = {
@@ -126,18 +175,21 @@ export const createQuotation = async (model: any, access_token: any, grand_code:
                 position: "",
                 occupationClass: ""
             }
-        }
+        },
+        "coverages": [
+        ]
     }
     insureds.push(insured)
 
     const from_: any = {
         insurerTenantCode: "FALCON_TH",
+        // channelToken: "7556d60f4b6e923f9972e90b795ad0a1",
         prdtCode: product_insurance?.product_code,
         planCode: plan?.code_falcon ?? plan?.code_cigna,
         proposalDate: moment(quotations?.protection_date_start).format('DD/MM/YYYY') + " " + "16:30:00",
         effDate: moment(quotations?.protection_date_start).format('DD/MM/YYYY') + " " + "16:30:00",
         expDate: moment(quotations?.protection_date_end).format('DD/MM/YYYY') + " " + "16:30:00",
-        referenceNo: `BrokerTest${random_num}`,
+        referenceNo: `bbd_${uuid()}`,
         insureds: insureds,
         policyholder: {
             isSameAsInsured: true,
@@ -154,7 +206,7 @@ export const createQuotation = async (model: any, access_token: any, grand_code:
                 email: quotations?.email,
                 gender: quotations?.gender_id == 1 ? "M" : "F",
                 occupation: occupation?.code_falcon,
-                taxNo: "",
+                taxNo: quotations?.card_number,
                 branch: "",
                 address: {
                     addressType: 2,
@@ -174,7 +226,7 @@ export const createQuotation = async (model: any, access_token: any, grand_code:
                 }
             },
         },
-        beneficiaries: model.beneficiaries ?? [],
+        beneficiaries: [],
         payer: {
             payerType: 1,
             customer: {
@@ -192,7 +244,7 @@ export const createQuotation = async (model: any, access_token: any, grand_code:
                 email: quotations?.email,
                 gender: quotations?.gender_id == 1 ? "M" : "F",
                 occupation: occupation?.code_falcon,
-                taxNo: "",
+                taxNo: quotations?.card_number,
                 branch: "",
                 address: {
                     addressType: 1,
@@ -210,14 +262,37 @@ export const createQuotation = async (model: any, access_token: any, grand_code:
             payMode: "twoCTwoP",
             extInfo: {}
         },
+        deliveryInfo: {
+            deliveryMethod: 3,
+            email: quotations?.email,
+            firstName: quotations?.first_name,
+            lastName: quotations?.last_name,
+            extInfo: {
+                contactNo: quotations?.mobile_phone,
+                sendTo: 1
+            },
+
+        },
+        discounts: [],
+        documents: [],
         extInfo: {
             questionnaire: {
-                question2: 0,
-                question3: 0,
-                question4: 0,
-                question5: 0,
-                question6: 0,
-                question1: 0
+                "question2": 0,
+                "question3": 0,
+                "question3.1": 0,
+                "question3.2": 0,
+                "question3.3": 0,
+                "question4": 0,
+                "question5": 0,
+                "question5.1": 0,
+                "question5.2": 0,
+                "question6": 0,
+                "question6.1": 0,
+                "question6.2": 0,
+                "question6.3": 0,
+                "question6.4": 0,
+                "question6.5": 0,
+                "question1": 0
             },
             taxDeduction: 1
         },
@@ -231,6 +306,11 @@ export const createQuotation = async (model: any, access_token: any, grand_code:
         }
     })
     console.log(res_quotation.data.data);
+    if (!res_quotation.data.data) {
+        const error: any = new Error('ไม่มีข้อมูลคำขอประกัน หรือ ข้อมูลผู้รับผลประโยชน์ผิด');
+        error.statusCode = 500;
+        throw error;
+    }
     from_.policyId = res_quotation.data.data.policyId
 
     /** ขั้นตอนผูกใบเสนอราคา */

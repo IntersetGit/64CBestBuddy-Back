@@ -71,7 +71,7 @@ export const confirmFalcon = async (req: Request, res: Response, next: NextFunct
             policyId: res_confirm.data.data.policyId,
             payMode: {
                 payMode: "twoCTwoP",
-                urlOfPaySuccess: "https://buy.bbd.co.th", // redirect
+                urlOfPaySuccess: "https://pantip.com", // redirect
                 urlOfPayFailure: "https://www.google.co.th/?hl=th",
                 extInfo: {}
             }

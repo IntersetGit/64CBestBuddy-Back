@@ -36,9 +36,9 @@ export const loginControllers = async (req: Request, res: Response, next: NextFu
             username: _res.username,
             roles_id: _res.roles_id,
             roles_name: _res.roles_name,
-            first_name_th: _res.first_name,
-            last_name_th: _res.last_name,
-            nick_name_th: _res.nick_name,
+            first_name: _res.first_name,
+            last_name: _res.last_name,
+            nick_name: _res.nick_name,
         }
 
         //สร้าง token

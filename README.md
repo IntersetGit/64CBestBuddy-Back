@@ -58,3 +58,18 @@ git flow feature start <ชื่อ>
 git flow feature finish <ชื่อ>
 git flow feature public <ชื่อ>
 ```
+
+"prdtCode": "PIPRD", //กำหนดค่า ฟิค ไว้
+"planCode": "PIPRD_PLAN1", "PIPRD_PLAN2" , "PIPRD_PLAN3"
+referenceNo จาก Broger //ส่งมาด้วยเช่น เลข buddyB
+
+"policyholder": //เป็นคนเดียวกับผู้เอาประกัน
+"isSameAsInsured": //ตัวแปรนี้ให้ส่ง true ได้เลย
+
+"payer": //ให้เป็นบุคคลเดียวกับผู้เอาประกัน
+
+"beneficiaries": //ผู้รับผลประโยชน์ ไำด้ไม่เกิน 2 คนตามกฏหมาย
+"extInfo": {
+"relationshipWithInsured": "3", คือสถานภาพ
+"shareRate": "100"
+}

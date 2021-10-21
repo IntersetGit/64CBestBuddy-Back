@@ -8,7 +8,7 @@ import { sequelize } from '../models';
 
 initModels(sequelize)
 
-const token_falcon: any = {}
+// const token_falcon: any = {}
 
 /** ขั้นตอนยืนยันรหัส policyId */
 export const confirmFalcon = async (req: Request, res: Response, next: NextFunction) => {
@@ -38,9 +38,9 @@ export const confirmFalcon = async (req: Request, res: Response, next: NextFunct
         const res__ = await getGrandCode(models_, res_.access_token)
         console.log(res__);
 
-        token_falcon.access_token = res_.access_token
-        token_falcon.grand_code = res__.data
-        token_falcon.policy = policy?.policy_id
+        // token_falcon.access_token = res_.access_token
+        // token_falcon.grand_code = res__.data
+        // token_falcon.policy = policy?.policy_id
 
         if (!policy?.policy_id) {
             const err: any = new Error('ต้องมี policy_id')
@@ -95,38 +95,38 @@ export const confirmFalcon = async (req: Request, res: Response, next: NextFunct
 }
 
 export const pay = async (req: Request, res: Response, next: NextFunction) => {
-    try {
+    // try {
 
-        if (!token_falcon.policy) {
-            const err: any = new Error('ไม่มี Token Falcon')
-            err.statusCode = 500
-            throw err
-        }
+    //     if (!token_falcon.policy) {
+    //         const err: any = new Error('ไม่มี Token Falcon')
+    //         err.statusCode = 500
+    //         throw err
+    //     }
 
-        const pay_quotation = {
-            policyId: token_falcon.policy,
-            payMode: {
-                payMode: "twoCTwoP",
-                urlOfPaySuccess: "https://buy.bbd.co.th",// redirect
-                urlOfPayFailure: "",
-                extInfo: {}
-            }
-        }
+    //     const pay_quotation = {
+    //         policyId: token_falcon.policy,
+    //         payMode: {
+    //             payMode: "twoCTwoP",
+    //             urlOfPaySuccess: "https://buy.bbd.co.th",// redirect
+    //             urlOfPayFailure: "",
+    //             extInfo: {}
+    //         }
+    //     }
 
-        /** ขั้นตอนการชำระเงิน */
-        const res_pay: any = await axios.post(`https://sandbox.gw.thai.ebaocloud.com/eBaoTHAI/1.0.0/api/pub/std/quotation/pay`, pay_quotation, {
-            headers: {
-                Authorization: 'Bearer' + token_falcon.access_token,
-                grantCode: token_falcon.grand_code
-            }
-        })
+    //     /** ขั้นตอนการชำระเงิน */
+    //     const res_pay: any = await axios.post(`https://sandbox.gw.thai.ebaocloud.com/eBaoTHAI/1.0.0/api/pub/std/quotation/pay`, pay_quotation, {
+    //         headers: {
+    //             Authorization: 'Bearer' + token_falcon.access_token,
+    //             grantCode: token_falcon.grand_code
+    //         }
+    //     })
 
-        console.log(res_pay.data.data);
-        result(res, res_pay.data.data);
+    //     console.log(res_pay.data.data);
+    //     result(res, res_pay.data.data);
 
-    } catch (error) {
-        next(error)
-    }
+    // } catch (error) {
+    //     next(error)
+    // }
 }
 
 const getPolicyId = async (id: string) => {

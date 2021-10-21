@@ -189,7 +189,7 @@ export const createQuotation = async (model: any, access_token: any, grand_code:
         proposalDate: moment(quotations?.protection_date_start).format('DD/MM/YYYY') + " " + "16:30:00",
         effDate: moment(quotations?.protection_date_start).format('DD/MM/YYYY') + " " + "16:30:00",
         expDate: moment(quotations?.protection_date_end).format('DD/MM/YYYY') + " " + "16:30:00",
-        referenceNo: `bbd_${uuid()}`,
+        referenceNo: `bbd-${uuid()}`,
         insureds: insureds,
         policyholder: {
             isSameAsInsured: true,
